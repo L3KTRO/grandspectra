@@ -1,0 +1,45 @@
+@import "tailwindcss";
+@import "./fonts.css";
+
+:root {
+    --background: #111111;
+    --background-contrast: #252020;
+    --text: #FFEFD4;
+    --contrast-1: #FB2B2B;
+    --contrast-1-2: #880000;
+    --contrast-2: #FFFFFF;
+    --contrast-3: #00A4CF;
+    --contrast-3-2: #1C49FF;
+    --secondary: #FFCC33;
+    --third: #33FF33;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    font-weight: normal;
+}
+
+html, body {
+    min-height: 100vh;
+    background-color: var(--background);
+    color: var(--text);
+    transition: color 0.5s,
+    background-color 0.5s;
+    line-height: 1.6;
+    font-family: 'CharisSIL', "Times New Roman", serif;
+    font-weight: bold;
+    font-size: 15px;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    padding: 0;
+    margin: 0;
+}
+
+.light-neon-effect-text {
+    text-shadow: 0 0 15px var(--contrast-1);
+    font-weight: bold;
+}
