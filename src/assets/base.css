@@ -1,9 +1,23 @@
 @import "tailwindcss";
 @import "./fonts.css";
 
+@theme {
+    --color-background: #111111;
+    --color-background-contrast: #252020;
+    --color-text: #FFEFD4;
+    --color-contrast-1: #FB2B2B;
+    --color-contrast-1-2: #880000;
+    --color-contrast-2: #FFFFFF;
+    --color-contrast-3: #00A4CF;
+    --color-contrast-3-2: #1C49FF;
+    --color-secondary: #FFCC33;
+    --color-third: #33FF33;
+}
+
 :root {
     --background: #111111;
     --background-contrast: #252020;
+    --background-contrast-mid: #191616;
     --text: #FFEFD4;
     --contrast-1: #FB2B2B;
     --contrast-1-2: #880000;

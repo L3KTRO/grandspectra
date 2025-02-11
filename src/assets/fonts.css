@@ -1,27 +1,132 @@
 @font-face {
     font-family: 'CharisSIL';
-    src: url('@/assets/fonts/CharisSILR.ttf') format('truetype');
+    src: url('@/assets/fonts/charis/CharisSILR.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'CharisSIL';
-    src: url('@/assets/fonts/CharisSILB.ttf') format('truetype');
+    src: url('@/assets/fonts/charis/CharisSILB.ttf') format('truetype');
     font-weight: bold;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'CharisSIL';
-    src: url('@/assets/fonts/CharisSILI.ttf') format('truetype');
+    src: url('@/assets/fonts/charis/CharisSILI.ttf') format('truetype');
     font-weight: normal;
     font-style: italic;
 }
 
 @font-face {
     font-family: 'CharisSIL';
-    src: url('@/assets/fonts/CharisSILBI.ttf') format('truetype');
+    src: url('@/assets/fonts/charis/CharisSILBI.ttf') format('truetype');
     font-weight: bold;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'GTVCS';
+    src: url('@/assets/fonts/gtvcs/GTVCS-Black.otf') format('opentype');
+    font-weight: 900;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'GTVCS';
+    src: url('@/assets/fonts/gtvcs/GTVCS-BlackItalic.otf') format('opentype');
+    font-weight: 900;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'GTVCS';
+    src: url('@/assets/fonts/gtvcs/GTVCS-BlackSoftItalic.otf') format('opentype');
+    font-weight: 900;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'GTVCS';
+    src: url('@/assets/fonts/gtvcs/GTVCS-Bold.otf') format('opentype');
+    font-weight: 700;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'GTVCS';
+    src: url('@/assets/fonts/gtvcs/GTVCS-BoldItalic.otf') format('opentype');
+    font-weight: 700;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'GTVCS';
+    src: url('@/assets/fonts/gtvcs/GTVCS-BoldSoftItalic.otf') format('opentype');
+    font-weight: 700;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'GTVCS';
+    src: url('@/assets/fonts/gtvcs/GTVCS-Book.otf') format('opentype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'GTVCS';
+    src: url('@/assets/fonts/gtvcs/GTVCS-BookItalic.otf') format('opentype');
+    font-weight: 400;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'GTVCS';
+    src: url('@/assets/fonts/gtvcs/GTVCS-BookSoftItalic.otf') format('opentype');
+    font-weight: 400;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'GTVCS';
+    src: url('@/assets/fonts/gtvcs/GTVCS-Light.otf') format('opentype');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'GTVCS';
+    src: url('@/assets/fonts/gtvcs/GTVCS-LightItalic.otf') format('opentype');
+    font-weight: 300;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'GTVCS';
+    src: url('@/assets/fonts/gtvcs/GTVCS-LightSoftItalic.otf') format('opentype');
+    font-weight: 300;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'GTVCS';
+    src: url('@/assets/fonts/gtvcs/GTVCS-Medium.otf') format('opentype');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'GTVCS';
+    src: url('@/assets/fonts/gtvcs/GTVCS-MediumItalic.otf') format('opentype');
+    font-weight: 500;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'GTVCS';
+    src: url('@/assets/fonts/gtvcs/GTVCS-MediumSoftItalic.otf') format('opentype');
+    font-weight: 500;
     font-style: italic;
 }
