@@ -1,9 +1,11 @@
 <script>
 import Header from "@/components/Header.vue";
+import Footer from "@/components/Footer.vue";
+import ContentList from "@/subcomponents/ContentList.vue";
 
 export default {
   name: "Home",
-  components: {Header}
+  components: {ContentList, Footer, Header}
 }
 </script>
 
@@ -31,6 +33,10 @@ export default {
       <p>Comparte tus favoritos, califica y comenta los shows y películas que más te gustan.</p>
     </div>
   </div>
+
+  <ContentList/>
+  <Footer/>
+
 </template>
 
 <style scoped>

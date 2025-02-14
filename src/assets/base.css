@@ -57,3 +57,8 @@ html, body {
     text-shadow: 0 0 15px var(--contrast-1);
     font-weight: bold;
 }
+
+.light-neon-effect-box {
+    box-shadow: 0 0 10px var(--text);
+    font-weight: bold;
+}
