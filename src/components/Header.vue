@@ -25,7 +25,6 @@ export default {
   background-color: var(--background-contrast);
   color: var(--text);
   text-align: center;
-  width: 100vw;
   height: 5.5rem;
   display: flex;
   flex-direction: row;
