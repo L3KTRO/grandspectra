@@ -1,15 +1,24 @@
 <script>
 export default {
   name: "ContentList",
-  data() {
-    return {
-      posters: [
-        {id: 1, title: 'Película 1', image: 'https://placehold.co/200x300'},
-        {id: 2, title: 'Película 2', image: 'https://placehold.co/200x300'},
-        {id: 3, title: 'Película 3', image: 'https://placehold.co/200x300'},
-        {id: 4, title: 'Película 4', image: 'https://placehold.co/200x300'},
-        {id: 5, title: 'Película 5', image: 'https://placehold.co/200x300'},
-        {id: 6, title: 'Película 6', image: 'https://placehold.co/200x300'}
+  props: {
+    title: {
+      type: String,
+      default: 'Más populares'
+    },
+    content: {
+      type: Array,
+      default: [
+        {id: 1, title: 'Media 1', image: 'https://placehold.co/150x225'},
+        {id: 2, title: 'Media 2', image: 'https://placehold.co/150x225'},
+        {id: 3, title: 'Media 3', image: 'https://placehold.co/150x225'},
+        {id: 4, title: 'Media 4', image: 'https://placehold.co/150x225'},
+        {id: 5, title: 'Media 5', image: 'https://placehold.co/150x225'},
+        {id: 6, title: 'Media 6', image: 'https://placehold.co/150x225'},
+        {id: 7, title: 'Media 7', image: 'https://placehold.co/150x225'},
+        {id: 8, title: 'Media 8', image: 'https://placehold.co/150x225'},
+        {id: 9, title: 'Media 9', image: 'https://placehold.co/150x225'},
+        {id: 10, title: 'Media 10', image: 'https://placehold.co/150x225'},
       ]
     }
   }
@@ -17,19 +26,29 @@ export default {
 </script>
 
 <template>
-  <h2 id="title" class="light-neon-effect-text">Más populares</h2>
+  <h2 id="title" class="light-neon-effect-text">{{ this.title }}</h2>
   <div class="horizontal-poster-list">
     <div
         class="poster-item"
-        v-for="poster in posters"
-        :key="poster.id"
+        v-for="media in this.content"
+        :key="media.id"
     >
-      <img :src="poster.image" :alt="poster.title" class=""/>
+      <img :src="media.image" :alt="media.title" class="poster"/>
+      <h4 class="subtitle">{{ media.title }}</h4>
     </div>
   </div>
 </template>
 
 <style scoped>
+
+template {
+  margin: 5rem 0;
+}
+
+.subtitle {
+  font-family: "GTVCS", serif;
+  font-size: 1rem;
+}
 
 #title {
   margin: 0 2rem;
@@ -42,12 +61,12 @@ export default {
   padding: 16px;
   box-sizing: border-box;
   scroll-behavior: smooth;
+  margin: 0 0 3rem 0;
 }
 
 .poster-item {
   flex: 0 0 auto;
   margin: 0 auto;
-  width: 200px; /* Relación de aspecto estándar de carteles de cine (2:3) */
 }
 
 .poster-item img {

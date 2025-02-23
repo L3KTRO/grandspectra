@@ -1,11 +1,3 @@
-<template>
-  <footer class="grand-spectra-footer">
-    <div class="footer-bottom">
-      <p>&copy; 2025 Grand Spectra. Todos los derechos reservados.</p>
-    </div>
-  </footer>
-</template>
-
 <script>
 import GrandSpectraBrand from "@/subcomponents/GrandSpectraBrand.vue";
 
@@ -15,10 +7,29 @@ export default {
 }
 </script>
 
+<template>
+  <footer class="grand-spectra-footer">
+    <div class="footer-brand">
+      <div>
+        <h4>Datos básicos de IMDB datasets</h4>
+      </div>
+      <div>
+        <h4>Datos de plataformas de JustWatch</h4>
+      </div>
+      <div>
+        <h4>Datos adicionales de TMDB API</h4>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 Grand Spectra. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+</template>
+
 <style scoped>
 .grand-spectra-footer {
   background: var(--background-contrast-mid);
-  color: var(--text);
+  color: var(--text-contrast);
   padding: 2rem 0;
 }
 
@@ -34,6 +45,9 @@ export default {
   flex: 1 1 250px;
   margin-bottom: 1.5rem;
   min-width: 10rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
 }
 
 /* Navegación */

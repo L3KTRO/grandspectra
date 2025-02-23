@@ -19,6 +19,7 @@
     --background-contrast: #252020;
     --background-contrast-mid: #191616;
     --text: #FFEFD4;
+    --text-contrast: #736c60;
     --contrast-1: #FB2B2B;
     --contrast-1-2: #880000;
     --contrast-2: #FFFFFF;
@@ -43,7 +44,7 @@ html, body {
     transition: color 0.5s,
     background-color 0.5s;
     line-height: 1.6;
-    font-family: 'CharisSIL', "Times New Roman", serif;
+    font-family: "GTVCS", serif;
     font-weight: bold;
     font-size: 15px;
     text-rendering: optimizeLegibility;

@@ -22,6 +22,7 @@ export default {
 
 <style>
 #header {
+  font-family: 'CharisSIL', "GTVCS", serif;
   background-color: var(--background-contrast);
   color: var(--text);
   text-align: center;
@@ -33,7 +34,7 @@ export default {
   align-items: center;
   font-weight: bold;
   filter: drop-shadow(0 0 20px rgba(251, 43, 43, 0.5));
-  box-shadow: inset 0 -10px 10px -10px rgba(251, 43, 43, 0.5);
+  box-shadow: inset 0 -15px 20px -10px rgba(251, 43, 43, 0.2);
 }
 
 .header-item {

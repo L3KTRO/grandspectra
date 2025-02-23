@@ -1,14 +1,15 @@
 <script>
 import Header from "@/components/Header.vue";
 import Home from "@/pages/Home.vue";
+import MainLayout from "@/layouts/MainLayout.vue";
 
 export default {
-  components: {Home, Header}
+  components: {MainLayout, Home, Header}
 }
 </script>
 
 <template>
-  <Home/>
+  <RouterView/>
 </template>
 
 <style>

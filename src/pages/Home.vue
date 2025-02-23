@@ -10,7 +10,6 @@ export default {
 </script>
 
 <template>
-  <Header/>
   <div id="slogan">
     <p id="quote" class="light-neon-effect-text">
       Sigue de cerca tus películas y series favoritas, <br>
@@ -34,12 +33,24 @@ export default {
     </div>
   </div>
 
-  <ContentList/>
-  <Footer/>
+  <div id="trending">
+    <ContentList title="Películas más populares"/>
+    <ContentList title="Series más populares"/>
+  </div>
 
 </template>
 
 <style scoped>
+
+#trending {
+  display: flex;
+  flex-direction: column;
+}
+
+#quote {
+  font-family: 'CharisSIL', "GTVCS", serif;
+}
+
 #slogan {
   height: 350px;
   background-image: url('@/assets/slogan-bg.svg');
