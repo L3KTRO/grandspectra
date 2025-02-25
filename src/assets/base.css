@@ -65,5 +65,7 @@ div {
 }
 
 a {
-    text-decoration: underline
+    text-decoration: underline;
+    margin: 0;
+    cursor: pointer;
 }

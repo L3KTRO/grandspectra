@@ -3,6 +3,8 @@ import Content from "@/pages/Content.vue";
 import NotFound from "@/pages/NotFound.vue";
 import Home from "@/pages/Home.vue";
 import MainLayout from "@/layouts/MainLayout.vue";
+import SignIn from "@/pages/SignIn.vue";
+import SignUp from "@/pages/SignUp.vue";
 
 const routes = [
     {
@@ -18,6 +20,16 @@ const routes = [
                 path: '/content/:id',
                 name: 'content',
                 component: Content
+            },
+            {
+                path: "signin",
+                name: 'signin',
+                component: SignIn
+            },
+            {
+                path: "signup",
+                name: 'signup',
+                component: SignUp
             },
             {
                 path: '/:pathMatch(.*)*',

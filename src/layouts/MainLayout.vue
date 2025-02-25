@@ -12,7 +12,25 @@ export default {
 </script>
 
 <template>
-  <Header/>
-  <router-view></router-view>
-  <Footer/>
+  <div id="wrapper">
+    <Header/>
+    <main>
+      <router-view></router-view>
+    </main>
+    <Footer/>
+  </div>
 </template>
+
+<style scoped>
+
+#wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Abarca toda la altura de la pantalla */
+}
+
+main {
+  flex: 1; /* El contenido principal ocupa el espacio restante */
+}
+
+</style>

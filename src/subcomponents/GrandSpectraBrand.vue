@@ -17,5 +17,6 @@ export default {
 
 #title {
   font-size: 3rem;
+  font-family: 'CharisSIL', "GTVCS", serif;
 }
 </style>
