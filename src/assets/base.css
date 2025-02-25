@@ -1,25 +1,13 @@
 @import "tailwindcss";
 @import "./fonts.css";
 
-@theme {
-    --color-background: #111111;
-    --color-background-contrast: #252020;
-    --color-text: #FFEFD4;
-    --color-contrast-1: #FB2B2B;
-    --color-contrast-1-2: #880000;
-    --color-contrast-2: #FFFFFF;
-    --color-contrast-3: #00A4CF;
-    --color-contrast-3-2: #1C49FF;
-    --color-secondary: #FFCC33;
-    --color-third: #33FF33;
-}
-
 :root {
     --background: #111111;
     --background-contrast: #252020;
     --background-contrast-mid: #191616;
     --text: #FFEFD4;
     --text-contrast: #736c60;
+    --text-contrast-mid: #a89f8e;
     --contrast-1: #FB2B2B;
     --contrast-1-2: #880000;
     --contrast-2: #FFFFFF;
@@ -27,6 +15,9 @@
     --contrast-3-2: #1C49FF;
     --secondary: #FFCC33;
     --third: #33FF33;
+
+    --shadow-darker: rgba(251, 43, 43, 0.2);
+
 }
 
 *,
@@ -62,4 +53,17 @@ html, body {
 .light-neon-effect-box {
     box-shadow: 0 0 10px var(--text);
     font-weight: bold;
+}
+
+div {
+    border-radius: 0.5rem;
+}
+
+* {
+    text-decoration-thickness: 0.01rem; /* Línea fina */
+    text-underline-offset: 5px; /* Línea más separada del texto */
+}
+
+a {
+    text-decoration: underline
 }

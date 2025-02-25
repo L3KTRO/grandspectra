@@ -11,13 +11,13 @@ export default {
   <footer class="grand-spectra-footer">
     <div class="footer-brand">
       <div>
-        <h4>Datos básicos de IMDB datasets</h4>
+        <h4>Datos básicos de <a>IMDB datasets</a></h4>
       </div>
       <div>
-        <h4>Datos de plataformas de JustWatch</h4>
+        <h4>Datos de plataformas de <a>JustWatch</a></h4>
       </div>
       <div>
-        <h4>Datos adicionales de TMDB API</h4>
+        <h4>Datos adicionales de <a>TMDB API</a></h4>
       </div>
     </div>
     <div class="footer-bottom">
@@ -33,13 +33,6 @@ export default {
   padding: 2rem 0;
 }
 
-.footer-top {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  margin-bottom: 1.5rem;
-}
-
 /* Marca */
 .footer-brand {
   flex: 1 1 250px;
@@ -48,14 +41,6 @@ export default {
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
-}
-
-/* Navegación */
-.footer-nav {
-  display: flex;
-  flex: 2 1 500px;
-  justify-content: space-around;
-  margin-bottom: 1.5rem;
 }
 
 .footer-column h3 {
@@ -80,12 +65,6 @@ export default {
 
 .footer-column a:hover {
   color: #ff9800;
-}
-
-/* Contacto */
-.footer-contact {
-  flex: 1 1 250px;
-  margin-bottom: 1.5rem;
 }
 
 .footer-contact h3 {

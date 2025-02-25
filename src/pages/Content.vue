@@ -12,19 +12,34 @@ export default {
     <div id="initial">
       <img src="https://placehold.co/200x300" alt="Media" id="poster"/>
       <div id="metadata">
-        <h1 id="title">Media</h1>
+        <h1 class="title">Media</h1>
+        <h2>Directed by <a>Clint Eastwood</a></h2>
         <p id="overview">Overview Overview Overview Overview Overview Overview Overview Overview Overview Overview
+          Overview Overview Overview Overview Overview Overview Overview Overview Overview Overview Overview
+          Overview Overview Overview Overview Overview Overview Overview Overview Overview Overview Overview
           Overview </p>
+        <div id="aditional-metadata">
+          <h3>Release: 2025</h3>
+          <h3>Runtime: 120m</h3>
+          <h3>Genres: Drama, Action, Adventure</h3>
+        </div>
       </div>
     </div>
     <div id="second">
       <div id="cast">
+        <div id="title">
+          <h1 class="light-neon-effect-text">Casting & Crew</h1>
+        </div>
         <div class="person">
-          <h2 class="person-name">Person <span style="font-style: italic">as</span> director</h2>
+          <h2 class="person-name"><a>Person</a> <span
+              style="font-style: italic">as</span> director</h2>
         </div>
       </div>
       <div id="providers">
-        <div class="provider">Netflix</div>
+        <h1 style="font-size: 1.5rem; font-weight: bold">JustWatch</h1>
+        <div class="provider">- Netflix</div>
+        <div class="provider">- Disney+</div>
+        <div class="provider">- Max</div>
       </div>
     </div>
   </div>
@@ -32,12 +47,28 @@ export default {
 
 <style scoped>
 
+a {
+  font-weight: bold;
+}
+
+#aditional-metadata {
+  display: flex;
+  flex-direction: row;
+  color: var(--text-contrast-mid);
+
+  * {
+    margin: 0 1rem;
+  }
+}
+
 #providers {
   display: flex;
   flex-direction: column;
+  padding: 1rem;
   margin: 3rem 0;
   background-color: var(--background-contrast);
   flex-basis: 20%;
+  height: fit-content;
 }
 
 #cast {
@@ -45,6 +76,14 @@ export default {
   flex-direction: column;
   margin: 3rem 0;
   flex-basis: 75%;
+
+  #title {
+    font-family: 'CharisSIL', "GTVCS", serif;
+    font-size: 1.75rem;
+    border-bottom: 1px solid var(--shadow-darker);
+    margin: 0 1rem;
+    padding: 1rem;
+  }
 }
 
 #second {
@@ -65,8 +104,10 @@ export default {
   background-color: var(--background-contrast-mid);
 }
 
-#title {
+.title {
+  font-family: 'CharisSIL', "GTVCS", serif;
   font-size: 3rem;
+  font-weight: normal;
 }
 
 #initial {
@@ -85,6 +126,8 @@ export default {
 #overview {
   font-size: 1.25rem;
   margin: 2rem;
+  background-color: var(--background-contrast-mid);
+  height: 10rem;
 }
 
 #body {
