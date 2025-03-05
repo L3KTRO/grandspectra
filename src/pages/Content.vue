@@ -35,11 +35,13 @@ export default {
               style="font-style: italic">as</span> director</h2>
         </div>
       </div>
-      <div id="providers">
-        <h1 style="font-size: 1.5rem; font-weight: bold">JustWatch</h1>
-        <div class="provider">- Netflix</div>
-        <div class="provider">- Disney+</div>
-        <div class="provider">- Max</div>
+      <div id="actions">
+        <h1 style="font-size: 1.5rem; font-weight: bold">Actions</h1>
+        <div class="action">Mark as watched</div>
+        <div class="action">Add to watchlist</div>
+        <div class="action">Add to favourites</div>
+        <div class="action">Rate</div>
+        <div class="action">Share</div>
       </div>
     </div>
   </div>
@@ -61,7 +63,7 @@ a {
   }
 }
 
-#providers {
+#actions {
   display: flex;
   flex-direction: column;
   padding: 1rem;

@@ -5,6 +5,7 @@ import Home from "@/pages/Home.vue";
 import MainLayout from "@/layouts/MainLayout.vue";
 import SignIn from "@/pages/SignIn.vue";
 import SignUp from "@/pages/SignUp.vue";
+import Profile from "@/pages/Profile.vue";
 
 const routes = [
     {
@@ -30,6 +31,11 @@ const routes = [
                 path: "signup",
                 name: 'signup',
                 component: SignUp
+            },
+            {
+                path: "profile",
+                name: 'profile',
+                component: Profile
             },
             {
                 path: '/:pathMatch(.*)*',
