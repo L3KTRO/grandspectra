@@ -34,7 +34,7 @@ export default {
           placeholder="Re-enter Password"/>
     </div>
     <div id="bottom">
-      <div id="submit">
+      <div id="submit" class="light-neon-effect-text">
         <h2 v-if="isSignIn">Sign In</h2>
         <h2 v-else>Sign Up</h2>
       </div>
@@ -86,5 +86,7 @@ export default {
   padding: 0.25rem 2rem;
   background-color: var(--text);
   color: var(--contrast-1-2);
+  font-family: 'CharisSIL', "GTVCS", serif;
+  text-transform: uppercase;
 }
 </style>

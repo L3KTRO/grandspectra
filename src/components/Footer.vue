@@ -11,17 +11,14 @@ export default {
   <footer class="grand-spectra-footer">
     <div class="footer-brand">
       <div>
-        <h4>Datos básicos de <a>IMDB datasets</a></h4>
+        <h4>Data from <a>TMDB</a> y <a>JustWatch</a></h4>
       </div>
       <div>
-        <h4>Datos de plataformas de <a>JustWatch</a></h4>
-      </div>
-      <div>
-        <h4>Datos adicionales de <a>TMDB API</a></h4>
+        <h4>Pictures from <a>Pinterest</a></h4>
       </div>
     </div>
     <div class="footer-bottom">
-      <p>&copy; 2025 Grand Spectra. Todos los derechos reservados.</p>
+      <p>&copy; 2025 Grand Spectra. All rights reserved.</p>
     </div>
   </footer>
 </template>

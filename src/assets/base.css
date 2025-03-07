@@ -10,12 +10,12 @@
     --text-contrast-mid: #a89f8e;
     --contrast-1: #FB2B2B;
     --contrast-1-2: #880000;
+    --contrast-1-3: rgb(51, 14, 14);
     --contrast-2: #FFFFFF;
     --contrast-3: #00A4CF;
     --contrast-3-2: #1C49FF;
     --secondary: #FFCC33;
     --third: #33FF33;
-
     --shadow-darker: rgba(251, 43, 43, 0.2);
 
 }

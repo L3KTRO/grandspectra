@@ -11,7 +11,7 @@ export default {
 <template>
   <div id="wrapper-box">
     <div id="box">
-      <BrandHeader/>
+      <h1 id="title">Welcome back</h1>
       <AuthForm :isSignIn="true"/>
     </div>
   </div>
@@ -31,8 +31,12 @@ export default {
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  width: 50vw;
-  height: 50vh;
-  background-color: rgb(51, 14, 14);
+  padding: 1.5rem 5rem;
+  background-color: var(--contrast-1-3);
+}
+
+#title {
+  font-size: 3.5rem;
+  font-family: 'CharisSIL', "GTVCS", serif;
 }
 </style>

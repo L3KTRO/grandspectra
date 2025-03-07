@@ -5,7 +5,7 @@ export default {
 </script>
 
 <template>
-  <h1 class="light-neon-effect-text" id="title">GRAND SPECTRA</h1>
+  <a class="light-neon-effect-text" id="title" href="/">GRAND SPECTRA</a>
 </template>
 
 <style scoped>

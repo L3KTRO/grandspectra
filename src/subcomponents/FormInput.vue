@@ -29,13 +29,12 @@ export default {
 .form-input {
   display: flex;
   flex-direction: column;
-
 }
 
 input {
   border-bottom: 1px solid var(--text);
   background-color: rgba(0, 0, 0, 0.1);
   margin: 0 0 2rem;
-
+  padding: 0.5rem;
 }
 </style>

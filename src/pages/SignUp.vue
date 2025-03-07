@@ -11,7 +11,7 @@ export default {
 <template>
   <div id="wrapper-box">
     <div id="box">
-      <BrandHeader/>
+      <h1 id="title">Join</h1>
       <AuthForm :isSignIn="false"/>
     </div>
   </div>
@@ -31,8 +31,12 @@ export default {
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  width: 50vw;
-  height: 50vh;
+  padding: 1.5rem 5rem;
   background-color: rgb(51, 14, 14);
+}
+
+#title {
+  font-size: 4rem;
+  font-family: 'CharisSIL', "GTVCS", serif;
 }
 </style>

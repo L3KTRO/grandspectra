@@ -13,14 +13,32 @@ export default {
     <div class="header-item">
       <GrandSpectraBrand/>
     </div>
-    <div class="header-item" id="header-login">
-      <h3 class="light-neon-effect-text">INICIA SESIÓN</h3>
+    <div id="buttons">
+      <a href="/signin">
+        <div class="header-item" id="header-login">
+          <h3 class="light-neon-effect-text">SIGN IN</h3>
+        </div>
+      </a>
+      <a href="/signup">
+        <div class="header-item" id="header-login">
+          <h3 class="light-neon-effect-text">JOIN US</h3>
+        </div>
+      </a>
     </div>
   </header>
 
 </template>
 
-<style>
+<style scoped>
+* {
+  text-decoration: none;
+}
+
+#buttons {
+  display: flex;
+  flex-direction: row;
+}
+
 #header {
   font-family: 'CharisSIL', "GTVCS", serif;
   background-color: var(--background-contrast);
@@ -39,7 +57,7 @@ export default {
 
 .header-item {
   padding: 10px;
-  margin: 2rem;
+  margin: 0 1rem;
   font-size: 1.5em;
   font-weight: bold;
 }

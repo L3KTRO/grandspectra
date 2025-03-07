@@ -4,7 +4,40 @@ import ContentListWrap from "@/subcomponents/ContentListWrap.vue";
 
 export default {
   name: "Profile",
-  components: {ContentListWrap, ContentList}
+  components: {ContentListWrap, ContentList},
+  data() {
+    return {
+      activeView: 'watched',
+      contentData: {
+        watched: [
+          {id: 9, title: 'Media 9', image: 'https://placehold.co/150x225'},
+          {id: 10, title: 'Media 10', image: 'https://placehold.co/150x225'},
+        ],
+        rated: [
+          {id: 2, title: 'Media 2', image: 'https://placehold.co/150x225'},
+          {id: 3, title: 'Media 3', image: 'https://placehold.co/150x225'},
+          {id: 4, title: 'Media 4', image: 'https://placehold.co/150x225'},
+        ],
+        watchlist: [
+          {id: 1, title: 'Media 1', image: 'https://placehold.co/150x225'},
+          {id: 5, title: 'Media 5', image: 'https://placehold.co/150x225'},
+          {id: 6, title: 'Media 6', image: 'https://placehold.co/150x225'},
+          {id: 7, title: 'Media 7', image: 'https://placehold.co/150x225'},
+          {id: 8, title: 'Media 8', image: 'https://placehold.co/150x225'},
+        ]
+      }
+    }
+  },
+  computed: {
+    currentContent() {
+      return this.contentData[this.activeView]
+    }
+  },
+  methods: {
+    setActiveView(view) {
+      this.activeView = view
+    }
+  }
 }
 </script>
 
@@ -26,19 +59,22 @@ export default {
         </div>
       </div>
     </div>
-    <div id="views-bar">
-      <div>Watched</div>
-      <div style="text-decoration: underline">Rated</div>
-      <div>Watchlist</div>
-    </div>
-
+    <nav id="views-bar">
+      <div @click="setActiveView('watched')" :class="{ underline: activeView === 'watched' }">Watched</div>
+      <div @click="setActiveView('rated')" :class="{ underline: activeView === 'rated' }">Rated</div>
+      <div @click="setActiveView('watchlist')" :class="{ underline: activeView === 'watchlist' }">Watchlist</div>
+    </nav>
     <div id="contents">
-      <ContentListWrap/>
+      <ContentListWrap :content="currentContent"/>
     </div>
   </div>
 </template>
 
 <style scoped>
+
+.underline {
+  text-decoration: underline;
+}
 
 .follow-data {
   display: flex;
