@@ -1,5 +1,7 @@
 <script>
 import FormInput from "./FormInput.vue";
+import {ref} from "vue";
+import {useRouter} from "vue-router";
 
 export default {
   name: "AuthForm",
@@ -17,27 +19,137 @@ export default {
       type: String,
       default: "/signin"
     }
+  },
+  setup(props) {
+    const router = useRouter();
+    const formData = ref({
+      username: "",
+      email: "",
+      password: "",
+      confirmPassword: ""
+    });
+
+    const error = ref("");
+    const loading = ref(false);
+
+    const handleSubmit = async () => {
+      error.value = "";
+      loading.value = true;
+
+      try {
+        if (props.isSignIn) {
+          await login();
+        } else {
+          await register();
+        }
+      } catch (err) {
+        error.value = err.message || "Ocurrió un error";
+      } finally {
+        loading.value = false;
+      }
+    };
+
+    const login = async () => {
+      const urlencoded = new URLSearchParams();
+      urlencoded.append("email", formData.value.email);
+      urlencoded.append("password", formData.value.password);
+
+      console.log(formData.value)
+      // Implementación de login
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: urlencoded
+      });
+
+      console.log(response);
+
+      if (!response.ok) {
+        throw new Error('Credenciales incorrectas');
+      }
+
+      const data = await response.json();
+
+      // Guardar token en localStorage
+      localStorage.setItem('token', data.token);
+
+      // Redirigir al usuario a la página principal
+      router.push('/dashboard');
+    };
+
+    const register = async () => {
+      // Validar que las contraseñas coincidan
+      if (formData.value.password !== formData.value.confirmPassword) {
+        throw new Error('Las contraseñas no coinciden');
+      }
+
+      // Implementación de registro
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/register`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          username: formData.value.username,
+          email: formData.value.email,
+          password: formData.value.password,
+          confirmPassword: formData.value.confirmPassword
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Error al registrar usuario');
+      }
+
+      // Opcional: iniciar sesión automáticamente tras registro
+      await login();
+    };
+
+    return {
+      formData,
+      error,
+      loading,
+      handleSubmit
+    };
   }
 }
 </script>
 
+
 <template>
-  <div id="box-form">
+  <form id="box-form" @submit.prevent="handleSubmit">
     <div id="inputs">
-      <FormInput label="Email" type="email" placeholder="member@example.com"/>
-      <FormInput label="Password" type="password" placeholder="MyPet123"/>
-      <!-- Campo opcional para registro -->
+      <FormInput
+          v-if="!isSignIn"
+          label="Username"
+          type="text"
+          placeholder="YourName1170"
+          v-model="formData.username"/>
+      <FormInput
+          label="Email"
+          type="email"
+          placeholder="member@example.com"
+          v-model="formData.email"/>
+      <FormInput
+          label="Password"
+          type="password"
+          placeholder="MyPet123"
+          v-model="formData.password"/>
       <FormInput
           v-if="!isSignIn"
           label="Confirm Password"
           type="password"
-          placeholder="Re-enter Password"/>
+          placeholder="Re-enter Password"
+          v-model="formData.confirmPassword"/>
     </div>
+    <div v-if="error" class="error-message">{{ error }}</div>
     <div id="bottom">
-      <div id="submit" class="light-neon-effect-text">
-        <h2 v-if="isSignIn">Sign In</h2>
-        <h2 v-else>Sign Up</h2>
-      </div>
+      <button type="submit" id="submit" class="light-neon-effect-text" :disabled="loading">
+        <h2 v-if="isSignIn">{{ loading ? 'Iniciando sesión...' : 'Sign In' }}</h2>
+        <h2 v-else>{{ loading ? 'Registrando...' : 'Sign Up' }}</h2>
+      </button>
       <h2>
         <span v-if="isSignIn">
           You don't have an account? <a :href="signupLink">Create one</a>
@@ -47,8 +159,9 @@ export default {
         </span>
       </h2>
     </div>
-  </div>
+  </form>
 </template>
+
 
 <style scoped>
 
@@ -66,6 +179,9 @@ export default {
 
 #bottom {
   margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 #bottom h2 {
@@ -78,6 +194,7 @@ export default {
   flex-direction: column;
   align-items: center;
   margin: 1rem;
+  cursor: pointer;
 }
 
 #submit h2 {

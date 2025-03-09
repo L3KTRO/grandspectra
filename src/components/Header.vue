@@ -1,10 +1,25 @@
 <script>
-import Footer from "@/components/Footer.vue";
 import GrandSpectraBrand from "@/subcomponents/GrandSpectraBrand.vue";
+import {useAuthStore} from '@/stores/auth';
+import {useRouter} from 'vue-router';
 
 export default {
   name: "Header",
-  components: {GrandSpectraBrand, Footer}
+  components: {GrandSpectraBrand},
+  setup() {
+    const authStore = useAuthStore();
+    const router = useRouter();
+
+    const handleLogout = () => {
+      authStore.logout();
+      router.push('/');
+    };
+
+    return {
+      authStore,
+      handleLogout
+    };
+  }
 }
 </script>
 
@@ -13,23 +28,76 @@ export default {
     <div class="header-item">
       <GrandSpectraBrand/>
     </div>
-    <div id="buttons">
-      <a href="/signin">
-        <div class="header-item" id="header-login">
-          <h3 class="light-neon-effect-text">SIGN IN</h3>
+
+    <div id="items">
+      <a href="/hub">
+        <div class="header-item">
+          <h3 class="header-nav">SEARCHER</h3>
         </div>
       </a>
-      <a href="/signup">
-        <div class="header-item" id="header-login">
-          <h3 class="light-neon-effect-text">JOIN US</h3>
+      <a href="/hub">
+        <div class="header-item">
+          <h3 class="header-nav">SPECTRA HUB</h3>
+        </div>
+      </a>
+      <a href="/hub">
+        <div class="header-item">
+          <h3 class="header-nav">LISTS</h3>
         </div>
       </a>
     </div>
-  </header>
 
+    <div id="buttons">
+      <template v-if="authStore.user">
+        <a href="/signin">
+          <div class="header-item header-button button">
+            <h3 class="light-neon-effect-text">ADD LOG</h3>
+          </div>
+        </a>
+        <a href="/profile">
+          <div class="header-item header-button button">
+            <h3 class="light-neon-effect-text">PROFILE</h3>
+          </div>
+        </a>
+      </template>
+      <template v-else>
+        <a href="/signin">
+          <div class="header-item header-button button">
+            <h3 class="light-neon-effect-text">SIGN IN</h3>
+          </div>
+        </a>
+        <a href="/signup">
+          <div class="header-item header-button button">
+            <h3 class="light-neon-effect-text">JOIN US</h3>
+          </div>
+        </a>
+      </template>
+    </div>
+  </header>
 </template>
 
 <style scoped>
+
+#items {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.header-nav {
+  font-size: 1.35rem;
+  font-weight: 900;
+  font-family: "GTVCS", serif;
+  color: #f1e1cb;
+  transition: 0.3s ease-in-out;
+}
+
+.header-nav:hover {
+  color: var(--text);
+  transition: 0.3s ease-in-out;
+  text-shadow: 0 0 15px var(--contrast-1);
+}
+
 * {
   text-decoration: none;
 }
@@ -62,10 +130,8 @@ export default {
   font-weight: bold;
 }
 
-#header-login {
+.header-button {
   padding: 0.35rem 1.5rem;
   border-radius: 10px;
-  color: var(--contrast-1-2);
-  background-color: var(--text);
 }
 </style>

@@ -1,28 +1,37 @@
-<template>
-  <div class="form-input">
-    <label :for="id">{{ label }}</label>
-    <input :id="id" :type="type" :placeholder="placeholder"/>
-  </div>
-</template>
-
 <script>
 export default {
   name: "FormInput",
   props: {
     label: String,
-    type: {
-      type: String,
-      default: "text"
-    },
+    type: String,
     placeholder: String,
+    modelValue: String
   },
-  computed: {
-    id() {
-      return this.label.toLowerCase().replace(/\s+/g, "-");
-    }
+  emits: ['update:modelValue'],
+  setup(props, {emit}) {
+    const updateValue = (event) => {
+      emit('update:modelValue', event.target.value);
+    };
+
+    return {
+      updateValue
+    };
   }
 }
 </script>
+
+<template>
+  <div class="form-input">
+    <label>{{ label }}</label>
+    <input
+        :type="type"
+        :placeholder="placeholder"
+        :value="modelValue"
+        @input="updateValue"
+    />
+  </div>
+</template>
+
 
 <style scoped>
 

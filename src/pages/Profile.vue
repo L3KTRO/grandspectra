@@ -1,12 +1,16 @@
 <script>
 import ContentList from "@/subcomponents/ContentList.vue";
 import ContentListWrap from "@/subcomponents/ContentListWrap.vue";
+import {useAuthStore} from "@/stores/auth.js";
+import useApi from "@/composables/api.js";
 
 export default {
   name: "Profile",
   components: {ContentListWrap, ContentList},
   data() {
     return {
+      store: useAuthStore(),
+      api: useApi().request,
       activeView: 'watched',
       contentData: {
         watched: [
@@ -36,7 +40,7 @@ export default {
   methods: {
     setActiveView(view) {
       this.activeView = view
-    }
+    },
   }
 }
 </script>
@@ -44,9 +48,14 @@ export default {
 <template>
   <div id="content">
     <div id="profile">
-      <div>
-        <h1>'email'</h1>
-        <p>Here is your profile information</p>
+      <div id="profile-left">
+        <div id="profile-data">
+          <h1>{{ store.user.username }}</h1>
+          <p>{{ store.user.email }}</p>
+        </div>
+        <div class="button" style="margin-left: 1rem">
+          <h2 id="logout">Logout</h2>
+        </div>
       </div>
       <div id="follows">
         <div class="follow-data">
@@ -72,8 +81,20 @@ export default {
 
 <style scoped>
 
+#profile-left {
+  min-width: 30vw;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+#logout {
+  padding: 0.5rem 1rem;
+}
+
 .underline {
   text-decoration: underline;
+  font-weight: bold;
 }
 
 .follow-data {
@@ -110,6 +131,10 @@ export default {
   margin: 3rem 1rem;
   padding: 1rem 0;
   background-color: var(--background-contrast-mid);
+
+  div {
+    cursor: pointer;
+  }
 }
 
 #profile {

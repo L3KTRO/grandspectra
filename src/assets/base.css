@@ -69,3 +69,15 @@ a {
     margin: 0;
     cursor: pointer;
 }
+
+.button {
+    color: var(--contrast-1-2);
+    background-color: var(--text);
+}
+
+.button * {
+    font-family: 'CharisSIL', "GTVCS", serif;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-shadow: 0 0 15px var(--contrast-1);
+}
