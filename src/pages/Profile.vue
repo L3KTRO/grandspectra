@@ -3,6 +3,9 @@ import ContentList from "@/subcomponents/ContentList.vue";
 import ContentListWrap from "@/subcomponents/ContentListWrap.vue";
 import {useAuthStore} from "@/stores/auth.js";
 import useApi from "@/composables/api.js";
+import {ref} from "vue";
+
+const {request} = useApi();
 
 export default {
   name: "Profile",
@@ -10,28 +13,16 @@ export default {
   data() {
     return {
       store: useAuthStore(),
-      api: useApi().request,
       activeView: 'watched',
-      contentData: {
-        watched: [
-          {id: 9, title: 'Media 9', image: 'https://placehold.co/150x225'},
-          {id: 10, title: 'Media 10', image: 'https://placehold.co/150x225'},
-        ],
-        rated: [
-          {id: 2, title: 'Media 2', image: 'https://placehold.co/150x225'},
-          {id: 3, title: 'Media 3', image: 'https://placehold.co/150x225'},
-          {id: 4, title: 'Media 4', image: 'https://placehold.co/150x225'},
-        ],
-        watchlist: [
-          {id: 1, title: 'Media 1', image: 'https://placehold.co/150x225'},
-          {id: 5, title: 'Media 5', image: 'https://placehold.co/150x225'},
-          {id: 6, title: 'Media 6', image: 'https://placehold.co/150x225'},
-          {id: 7, title: 'Media 7', image: 'https://placehold.co/150x225'},
-          {id: 8, title: 'Media 8', image: 'https://placehold.co/150x225'},
-        ]
-      }
+      contentData: ref({
+        watched: [],
+        rated: [],
+        watchlist: []
+      }),
+      isLoading: ref(true)
     }
   },
+  watch: {},
   computed: {
     currentContent() {
       return this.contentData[this.activeView]
@@ -41,7 +32,19 @@ export default {
     setActiveView(view) {
       this.activeView = view
     },
-  }
+    logout() {
+      this.store.logout();
+      this.$router.push("/signin");
+    }
+  },
+  async mounted() {
+    const res = await request('/me')
+    if (res.status !== 200) return this.isLoading = false
+    this.contentData.rated = res.data.contents.ratings
+    this.contentData.watchlist = res.data.contents.watchlist
+    this.contentData.watched = res.data.contents.watched
+    this.isLoading = false
+  },
 }
 </script>
 
@@ -53,7 +56,7 @@ export default {
           <h1>{{ store.user.username }}</h1>
           <p>{{ store.user.email }}</p>
         </div>
-        <div class="button" style="margin-left: 1rem">
+        <div class="button" style="margin-left: 1rem" @click="logout">
           <h2 id="logout">Logout</h2>
         </div>
       </div>
@@ -73,7 +76,10 @@ export default {
       <div @click="setActiveView('rated')" :class="{ underline: activeView === 'rated' }">Rated</div>
       <div @click="setActiveView('watchlist')" :class="{ underline: activeView === 'watchlist' }">Watchlist</div>
     </nav>
-    <div id="contents">
+    <div v-if="isLoading" style="display: flex; justify-content: center;">
+      <h2 id="title">Cargando...</h2>
+    </div>
+    <div v-else id="contents">
       <ContentListWrap :content="currentContent"/>
     </div>
   </div>

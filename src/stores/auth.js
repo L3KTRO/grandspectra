@@ -8,15 +8,21 @@ export const useAuthStore = defineStore('auth', {
         returnUrl: '/'
     }),
 
+    getters: {
+        isAuthenticated() {
+            return !!this.token;
+        }
+    },
+
     actions: {
-        async login(credentials) {
+        async login(encoded) {
             try {
                 const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/login`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded'
                     },
-                    body: new URLSearchParams(credentials)
+                    body: encoded
                 });
 
                 if (!response.ok) throw new Error('Credenciales incorrectas');
@@ -25,7 +31,7 @@ export const useAuthStore = defineStore('auth', {
 
                 // Actualizar estado del store
                 this.user = data.user;
-                this.token = data.token;
+                this.token = data.access_token;
 
                 return data;
             } catch (error) {
@@ -58,7 +64,6 @@ export const useAuthStore = defineStore('auth', {
             }
         },
         async logout() {
-            this.user = null;
             this.token = null;
         }
     },

@@ -2,6 +2,8 @@
 import FormInput from "./FormInput.vue";
 import {ref} from "vue";
 import {useRouter} from "vue-router";
+import {useAuthStore} from "@/stores/auth.js";
+
 
 export default {
   name: "AuthForm",
@@ -20,7 +22,8 @@ export default {
       default: "/signin"
     }
   },
-  setup(props) {
+  data(props) {
+    const store = useAuthStore()
     const router = useRouter();
     const formData = ref({
       username: "",
@@ -54,29 +57,10 @@ export default {
       urlencoded.append("email", formData.value.email);
       urlencoded.append("password", formData.value.password);
 
-      console.log(formData.value)
-      // Implementación de login
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: urlencoded
-      });
-
-      console.log(response);
-
-      if (!response.ok) {
-        throw new Error('Credenciales incorrectas');
-      }
-
-      const data = await response.json();
-
-      // Guardar token en localStorage
-      localStorage.setItem('token', data.token);
+      await store.login(urlencoded);
 
       // Redirigir al usuario a la página principal
-      router.push('/dashboard');
+      await router.push('/profile');
     };
 
     const register = async () => {

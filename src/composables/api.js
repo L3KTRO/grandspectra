@@ -1,12 +1,17 @@
-import {ref} from 'vue';
 import axios from 'axios';
+import {useAuthStore} from '@/stores/auth'
 
 export default function useApi() {
+
     const api = axios.create({
-        baseURL: import.meta.env.VITE_API_URL,
+        baseURL: "/api",
         headers: {
-            'Content-Type': 'application/json'
-        }
+            'Content-Type': 'application/json',
+            "Accept": "application/json"
+        },
+        validateStatus: function () {
+            return true;
+        },
     });
 
     // Interceptor para manejo global de errores
@@ -19,14 +24,20 @@ export default function useApi() {
     );
 
     const request = async (endpoint, config = {}) => {
-        const response = await api({
-            method: config.method || 'GET',
-            url: endpoint,
-            data: config.body,
-            params: config.query
-        });
-        return response.data;
-    };
+        try {
+            return await api({
+                method: config.method || 'GET',
+                url: endpoint,
+                data: config.body,
+                params: config.query,
+                headers: {
+                    Authorization: `Bearer ${useAuthStore().token}`
+                }
+            });
+        } catch (error) {
+            return error
+        }
+    }
 
     return {request};
 }

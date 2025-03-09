@@ -6,6 +6,7 @@ import MainLayout from "@/layouts/MainLayout.vue";
 import SignIn from "@/pages/SignIn.vue";
 import SignUp from "@/pages/SignUp.vue";
 import Profile from "@/pages/Profile.vue";
+import {useAuthStore} from "@/stores/auth.js";
 
 const routes = [
     {
@@ -52,6 +53,16 @@ const routes = [
 const router = createRouter({
     history: createWebHistory(),
     routes
+})
+
+router.beforeEach(async (to) => {
+    const authStore = useAuthStore()
+
+    if (to.meta.requiresAuth && !authStore.isAuthenticated) {
+        return {name: 'signin'}
+    }
+
+    return true
 })
 
 export default router

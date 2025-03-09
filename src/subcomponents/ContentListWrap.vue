@@ -4,31 +4,24 @@ export default {
   props: {
     content: {
       type: Array,
-      default: [
-        {id: 1, title: 'Media 1', image: 'https://placehold.co/150x225'},
-        {id: 2, title: 'Media 2', image: 'https://placehold.co/150x225'},
-        {id: 3, title: 'Media 3', image: 'https://placehold.co/150x225'},
-        {id: 4, title: 'Media 4', image: 'https://placehold.co/150x225'},
-        {id: 5, title: 'Media 5', image: 'https://placehold.co/150x225'},
-        {id: 6, title: 'Media 6', image: 'https://placehold.co/150x225'},
-        {id: 7, title: 'Media 7', image: 'https://placehold.co/150x225'},
-        {id: 8, title: 'Media 8', image: 'https://placehold.co/150x225'},
-        {id: 9, title: 'Media 9', image: 'https://placehold.co/150x225'},
-        {id: 10, title: 'Media 10', image: 'https://placehold.co/150x225'},
-      ]
+      default: []
     }
   }
 }
 </script>
 
 <template>
+  <div v-if="this.content.length === 0" style="display: flex; justify-content: center;">
+    <h2 id="title">No existe</h2>
+  </div>
   <div class="horizontal-poster-list">
     <div
         class="poster-item"
+        v-if="this.content"
         v-for="media in this.content"
         :key="media.id"
     >
-      <img :src="media.image" :alt="media.title" class="poster"/>
+      <img :src="media.loaded.poster ?? 'https://placehold.co/150x225'" :alt="media.title" class="poster"/>
     </div>
   </div>
 </template>
@@ -53,7 +46,7 @@ template {
 }
 
 .poster-item img {
-  width: 100%;
+  width: 150px;
   height: auto;
   border-radius: 8px;
 }
