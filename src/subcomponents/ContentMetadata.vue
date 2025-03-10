@@ -34,7 +34,7 @@ export default {
   <div id="initial">
     <img :src="data.poster ?? 'https://placehold.co/225x337'" alt="Media" id="poster"/>
     <div id="metadata">
-      <h1 class="title">{{ data.title }}</h1>
+      <h1 id="title">{{ data.title }}</h1>
       <div id="additional-metadata">
         <h2>Directed by <a :href="'/person/'+data.director.id">{{ data.director.name }}</a></h2>
         <div class="metadata">
@@ -87,10 +87,10 @@ a {
   }
 }
 
-.title {
+#title {
   font-family: 'CharisSIL', "GTVCS", serif;
   font-size: 3rem;
-  font-weight: normal;
+  font-weight: bold;
 }
 
 #metadata {

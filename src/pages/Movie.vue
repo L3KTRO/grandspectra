@@ -34,7 +34,7 @@ export default {
       })
     }
   },
-  async mounted() {
+  async beforeMount() {
     const response = await request("/movies/" + this.$route.params.id)
     if (response.status !== 200) return router.push("/notfound")
     const {

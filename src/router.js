@@ -8,6 +8,7 @@ import SignUp from "@/pages/SignUp.vue";
 import Profile from "@/pages/Profile.vue";
 import {useAuthStore} from "@/stores/auth.js";
 import Tv from "@/pages/Tv.vue";
+import Person from "@/pages/Person.vue";
 
 const routes = [
     {
@@ -25,10 +26,17 @@ const routes = [
                 component: Movie
             },
             {
+                path: '/person/:id',
+                name: 'person',
+                component: Person
+            },
+            /*
+            {
                 path: '/tv/:id',
                 name: 'tv',
                 component: Tv
             },
+            */
             {
                 path: "signin",
                 name: 'signin',

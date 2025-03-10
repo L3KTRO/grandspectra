@@ -25,6 +25,7 @@ export default {
   watch: {},
   computed: {
     currentContent() {
+      console.log(this.data)
       return this.data[this.activeView]
     }
   },
@@ -40,9 +41,9 @@ export default {
   async mounted() {
     const res = await request('/me')
     if (res.status !== 200) return this.isLoading = false
-    this.data.rated = res.data.contents.ratings
-    this.data.watchlist = res.data.contents.watchlist
-    this.data.watched = res.data.contents.watched
+    this.data.rated = res.data.contents.ratings.map((item) => item.loaded)
+    this.data.watchlist = res.data.contents.watchlist.map((item) => item.loaded)
+    this.data.watched = res.data.contents.watched.map((item) => item.loaded)
     this.isLoading = false
   },
 }

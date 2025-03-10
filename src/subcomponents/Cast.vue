@@ -1,6 +1,9 @@
 <script>
+import CastPeople from "@/subcomponents/CastPeople.vue";
+
 export default {
   name: "Cast",
+  components: {CastPeople, CastPerson: CastPeople},
   props: {
     people: {
       type: Array,
@@ -22,38 +25,23 @@ export default {
 
 <template>
   <div id="cast" v-if="this.people.length > 0">
-    <div id="people">
-      <div class="people">
-        <div class="title">
-          <h1 class="light-neon-effect-text">Casting</h1>
-        </div>
-        <div class="person"
-             v-if="this.cast.length > 0"
-             v-for="person in this.cast"
-             :key="person.id"
-        >
-          <img :src="person.person.still ?? 'https://placehold.co/150x225'" alt="person.person.name" class="poster"/>
-          <div class="info">
-            <h2 class="person-name"><a>{{ person.person.name }}</a> <span>as</span> {{ person.occupation.name }}</h2>
-            <h2 v-if="person.character">Playing <span>{{ person.character }}</span></h2>
-          </div>
-        </div>
+    <div class="people" v-if="this.cast.length > 0">
+      <div class="title">
+        <h1 class="light-neon-effect-text">Casting</h1>
       </div>
-      <div class="people">
-        <div class="title">
-          <h1 class="light-neon-effect-text">Crew</h1>
-        </div>
-        <div class="person"
-             v-if="this.crew.length > 0"
-             v-for="person in this.crew"
-             :key="person.id">
-          <img :src="person.person.still ?? 'https://placehold.co/150x225'" alt="person.person.name" class="poster"/>
-          <div class="info">
-            <h2 class="person-name"><a>{{ person.person.name }}</a> <span>as</span> {{ person.occupation.name }}</h2>
-            <h2 v-if="person.character">Playing <span>{{ person.character }}</span></h2>
-          </div>
-        </div>
+      <CastPeople :person="person"
+                  v-for="person in this.cast"
+                  :key="person.id"
+      />
+    </div>
+    <div class="people" v-if="this.crew.length > 0">
+      <div class="title">
+        <h1 class="light-neon-effect-text">Crew</h1>
       </div>
+      <CastPeople :person="person"
+                  v-for="person in this.crew"
+                  :key="person.id"
+      />
     </div>
   </div>
 </template>
@@ -62,19 +50,21 @@ export default {
 
 #people {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   flex-wrap: wrap;
 }
 
 .people {
   display: flex;
   flex-direction: column;
-  width: 50%;
+  width: 100%;
+
 }
+
 
 #cast {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   margin: 3rem 0;
   flex-basis: 75%;
 
@@ -93,33 +83,5 @@ export default {
   }
 }
 
-.person-name {
-  font-size: 1.5rem;
 
-  a {
-    font-weight: bold;
-  }
-}
-
-.person {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: start;
-  margin: 1rem;
-  padding: 2rem;
-  background-color: var(--background-contrast-mid);
-
-  img {
-    margin-right: 2rem;
-  }
-
-  span {
-    font-style: italic
-  }
-}
-
-.poster {
-  width: 4.5rem;
-}
 </style>
