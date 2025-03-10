@@ -1,5 +1,5 @@
 import {createRouter, createWebHistory} from "vue-router";
-import Content from "@/pages/Content.vue";
+import Movie from "@/pages/Movie.vue";
 import NotFound from "@/pages/NotFound.vue";
 import Home from "@/pages/Home.vue";
 import MainLayout from "@/layouts/MainLayout.vue";
@@ -7,6 +7,7 @@ import SignIn from "@/pages/SignIn.vue";
 import SignUp from "@/pages/SignUp.vue";
 import Profile from "@/pages/Profile.vue";
 import {useAuthStore} from "@/stores/auth.js";
+import Tv from "@/pages/Tv.vue";
 
 const routes = [
     {
@@ -19,19 +20,26 @@ const routes = [
                 component: Home
             },
             {
-                path: '/content/:id',
-                name: 'content',
-                component: Content
+                path: '/movie/:id',
+                name: 'movie',
+                component: Movie
+            },
+            {
+                path: '/tv/:id',
+                name: 'tv',
+                component: Tv
             },
             {
                 path: "signin",
                 name: 'signin',
-                component: SignIn
+                component: SignIn,
+                meta: {requiresAuth: false},
             },
             {
                 path: "signup",
                 name: 'signup',
-                component: SignUp
+                component: SignUp,
+                meta: {requiresAuth: false},
             },
             {
                 path: "profile",
@@ -60,6 +68,8 @@ router.beforeEach(async (to) => {
 
     if (to.meta.requiresAuth && !authStore.isAuthenticated) {
         return {name: 'signin'}
+    } else if (!to.meta.requiresAuth && authStore.isAuthenticated && (to.name === 'signin' || to.name === 'signup')) {
+        return {name: 'profile'}
     }
 
     return true

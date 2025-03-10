@@ -14,7 +14,7 @@ export default {
     return {
       store: useAuthStore(),
       activeView: 'watched',
-      contentData: ref({
+      data: ref({
         watched: [],
         rated: [],
         watchlist: []
@@ -25,7 +25,7 @@ export default {
   watch: {},
   computed: {
     currentContent() {
-      return this.contentData[this.activeView]
+      return this.data[this.activeView]
     }
   },
   methods: {
@@ -40,9 +40,9 @@ export default {
   async mounted() {
     const res = await request('/me')
     if (res.status !== 200) return this.isLoading = false
-    this.contentData.rated = res.data.contents.ratings
-    this.contentData.watchlist = res.data.contents.watchlist
-    this.contentData.watched = res.data.contents.watched
+    this.data.rated = res.data.contents.ratings
+    this.data.watchlist = res.data.contents.watchlist
+    this.data.watched = res.data.contents.watched
     this.isLoading = false
   },
 }
