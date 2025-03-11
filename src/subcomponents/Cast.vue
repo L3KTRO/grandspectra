@@ -10,14 +10,28 @@ export default {
       default: []
     }
   },
+  methods: {
+    sortPerson(a, b) {
+      if (a.order === null && b.order === null) {
+        return parseInt(b.person.popularity) - parseInt(a.person.popularity);
+      }
+      if (a.order === null) {
+        return 1;
+      }
+      if (b.order === null) {
+        return -1;
+      }
+      return a.order - b.order;
+    }
+  },
   computed: {
     cast() {
       return this.people.filter(person => person.occupation_id === 10 && person.person && person.person.name)
-          .sort((a, b) => a.order - b.order)
+          .sort(this.sortPerson)
     },
     crew() {
       return this.people.filter(person => person.occupation_id !== 10 && person.person && person.person.name)
-          .sort((a, b) => a.order - b.order)
+          .sort(this.sortPerson)
     }
   }
 }
@@ -44,15 +58,12 @@ export default {
       />
     </div>
   </div>
+  <div v-else>
+    <h1 class="light-neon-effect-text">No cast or crew found</h1>
+  </div>
 </template>
 
 <style scoped>
-
-#people {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-}
 
 .people {
   display: flex;

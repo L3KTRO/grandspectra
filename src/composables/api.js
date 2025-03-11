@@ -29,7 +29,7 @@ export default function useApi() {
                 method: config.method || 'GET',
                 url: endpoint,
                 data: config.body,
-                params: config.query,
+                params: config.params,
                 headers: {
                     Authorization: `Bearer ${useAuthStore().token}`
                 }

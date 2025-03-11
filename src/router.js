@@ -9,6 +9,7 @@ import Profile from "@/pages/Profile.vue";
 import {useAuthStore} from "@/stores/auth.js";
 import Tv from "@/pages/Tv.vue";
 import Person from "@/pages/Person.vue";
+import Hub from "@/pages/Hub.vue";
 
 const routes = [
     {
@@ -30,13 +31,11 @@ const routes = [
                 name: 'person',
                 component: Person
             },
-            /*
             {
                 path: '/tv/:id',
                 name: 'tv',
                 component: Tv
             },
-            */
             {
                 path: "signin",
                 name: 'signin',
@@ -54,6 +53,11 @@ const routes = [
                 name: 'profile',
                 component: Profile,
                 meta: {requiresAuth: true},
+            },
+            {
+                path: "hub",
+                name: 'hub',
+                component: Hub,
             },
             {
                 path: '/:pathMatch(.*)*',
