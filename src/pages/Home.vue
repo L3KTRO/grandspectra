@@ -2,45 +2,84 @@
 import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
 import ContentList from "@/subcomponents/ContentList.vue";
+import useApi from "@/composables/api.js";
+
+const {request} = useApi();
 
 export default {
   name: "Home",
-  components: {ContentList, Footer, Header}
+  components: {ContentList, Footer, Header},
+  data() {
+    return {
+      popularMovies: [],
+      popularShows: [],
+      windowWidth: window.innerWidth
+    }
+  },
+  computed: {
+    mobile() {
+      return this.windowWidth < 750;
+    }
+  },
+  mounted() {
+    window.addEventListener('resize', this.handleResize);
+  },
+  beforeUnmount() {
+    window.removeEventListener('resize', this.handleResize);
+  },
+  methods: {
+    handleResize() {
+      this.windowWidth = window.innerWidth;
+    }
+  },
+  async beforeMount() {
+    const res = await request("/movies?sort_by=popularity&sort_dir=desc")
+    this.popularMovies = res.data.data
+    const res2 = await request("/tv?sort_by=popularity&sort_dir=desc")
+    this.popularShows = res2.data.data
+  }
 }
 </script>
 
 <template>
-  <div id="slogan">
-    <p id="quote" class="light-neon-effect-text">
-      Sigue de cerca tus películas y series favoritas, <br>
-      califícalas y comparte con tus amigos.
-    </p>
-  </div>
-  <!-- New Features Section -->
-  <div id="features">
-    <div class="feature-container">
-      <h2>Organiza tu contenido</h2>
-      <p>Mantén tu lista de vistas ordenada y accesible en todo momento.</p>
+  <div id="slogan"><p id="quote" class="light-neon-effect-text" :style="mobile ? 'padding: 6rem 0 0' : '' "> Keep track
+    of
+    your favorite movies and TV shows, <br>
+    rate them and share with your friends. </p></div>
+  <div id="features" :style="mobile ? 'flex-direction: column; gap: 2rem' : ''">
+    <div class="feature-container"><h2>Organize your content</h2>
+      <p>Keep your watched list organized and accessible at all times.</p>
     </div>
-    <div class="feature-container">
-      <h2>¿No sabes que ver? SpectrAI</h2>
-      <p>Nuestra inteligencia artificial *SpectrAI* se encargará de recomendarte contenidos basados en tus gustos y en
-        el momento.<br> Disponible próximamente</p>
+    <div class="feature-container"><h2>Don't know what to watch? Check Spectra Hub</h2>
+      <p>Our database has more than 1 million movies and more than 150,000 tv shows <br/>
+        <span style="font-style: italic">More filters soon.</span>
+      </p>
     </div>
-    <div class="feature-container">
-      <h2>Comparte con tus amigos</h2>
-      <p>Comparte tus favoritos, califica y comenta los shows y películas que más te gustan.</p>
+    <div class="feature-container"><h2>Share with your friends</h2>
+      <p>Share your ratings, watchlist and watched content.</p>
     </div>
   </div>
 
   <div id="trending">
-    <ContentList title="Películas más populares"/>
-    <ContentList title="Series más populares"/>
+    <div>
+      <h1 class="trend-title light-neon-effect-text">Popular movies</h1>
+      <ContentList title="Popular movies" :content="this.popularMovies"/>
+    </div>
+    <div>
+      <h1 class="trend-title light-neon-effect-text">Popular series</h1>
+      <ContentList title="Popular tv shows" :content="this.popularShows"/>
+    </div>
   </div>
 
 </template>
 
 <style scoped>
+
+.trend-title {
+  margin: 0 2rem;
+  font-weight: bold;
+  font-size: 1.25rem;
+}
 
 #trending {
   display: flex;
@@ -49,6 +88,7 @@ export default {
 
 #quote {
   font-family: 'CharisSIL', "GTVCS", serif;
+  margin: 0 1rem;
 }
 
 #slogan {
@@ -69,7 +109,6 @@ export default {
   padding: 11rem 0 0;
 }
 
-/* New styles for the features section */
 #features {
   display: flex;
   justify-content: space-between;

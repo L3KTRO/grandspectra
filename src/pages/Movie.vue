@@ -33,7 +33,7 @@ export default {
           average: null,
           count: null
         }
-      })
+      }),
     }
   },
   async beforeMount() {

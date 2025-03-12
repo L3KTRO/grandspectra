@@ -13,8 +13,11 @@ export default {
       selectedGenres: [],
       genres: ref([]),
       content: ref([]),
+      page: 1,
+      totalPages: 0,
+      lastPage: 0,
       isTv: false,
-      isSearching: false
+      isSearching: false,
     }
   },
   watch: {
@@ -31,7 +34,60 @@ export default {
       immediate: false
     }
   },
+  computed: {
+    pageRange() {
+      // Mostrar máximo 6 páginas adicionales a la actual
+      const range = [];
+
+      // Si hay pocas páginas, mostrarlas todas
+      if (this.lastPage <= 7) {
+        for (let i = 1; i <= this.lastPage; i++) {
+          range.push(i);
+        }
+        return range;
+      }
+
+      // Siempre incluir la primera página
+      range.push(1);
+
+      // Calcular el rango alrededor de la página actual
+      let startPage = Math.max(2, this.page - 2);
+      let endPage = Math.min(this.lastPage - 1, this.page + 2);
+
+      // Ajustar el rango para mantener un máximo de 5 páginas entre los extremos
+      if (endPage - startPage > 4) {
+        if (this.page - startPage > this.lastPage - this.page) {
+          // Más páginas a la izquierda
+          startPage = endPage - 4;
+        } else {
+          // Más páginas a la derecha
+          endPage = startPage + 4;
+        }
+      }
+
+      // Añadir elipsis a la izquierda si es necesario
+      if (startPage > 2) {
+        range.push('...');
+      }
+
+      // Añadir páginas intermedias
+      for (let i = startPage; i <= endPage; i++) {
+        range.push(i);
+      }
+
+      // Añadir elipsis a la derecha si es necesario
+      if (endPage < this.lastPage - 1) {
+        range.push('...');
+      }
+
+      return range;
+    }
+  },
+
   methods: {
+    handleResize() {
+      this.windowWidth = window.innerWidth;
+    },
     toggleFilters() {
       this.showFilters = !this.showFilters;
     },
@@ -41,18 +97,44 @@ export default {
       const titleParam = this.isTv ? 'name' : 'title'
       const response = await request(`/${entity}`, {
         params: {
+          "page": this.page,
           [titleParam]: this.searchQuery,
         }
       })
 
       this.content = response.data.data
       this.isSearching = false
+
+      const {total, last_page, current_page} = response.data
+      this.totalPages = total
+      this.lastPage = last_page
+      this.page = current_page
     },
     redirectToContent(id) {
       this.$router.push(`/${this.isTv ? 'tv' : 'movie'}/${id}`)
+    },
+    prevPage() {
+      if (this.page === 1 || this.isSearching) return
+      this.page--
+      this.fetchContent()
+    },
+    nextPage() {
+      if (this.page === this.lastPage || this.isSearching) return
+      this.page++
+      this.fetchContent()
+    },
+    goToPage(page) {
+      if (this.isSearching) return
+      this.page = page
+      this.fetchContent()
     }
   },
-
+  mounted() {
+    window.addEventListener('resize', this.handleResize);
+  },
+  beforeUnmount() {
+    window.removeEventListener('resize', this.handleResize);
+  },
   async beforeMount() {
     await this.fetchContent()
     /*
@@ -92,10 +174,38 @@ export default {
         </div>
       </div>
     </div>
+
+    <div class="paginator-disabled paginator">
+      <div class="paginator-button"
+           @click="prevPage"
+           :class="{ disabled: page === 1 }">
+        &lt; Previous
+      </div>
+
+      <!-- Números de página -->
+      <template v-for="(item, index) in this.pageRange" :key="index">
+        <div v-if="item === '...'" class="page-ellipsis">...</div>
+        <div v-else
+             class="page-number"
+             :class="{ active: page === item }"
+             @click="goToPage(item)">
+          {{ item }}
+        </div>
+      </template>
+
+      <div class="paginator-button"
+           @click="nextPage"
+           :class="{ disabled: page === lastPage }">
+        Next &gt;
+      </div>
+    </div>
+
   </div>
 
+
   <div id="content-container">
-    <div class="content" v-if="!isSearching && this.content.length > 0" v-for="item in content" @click="redirectToContent(item.id)" :key="item.id">
+    <div class="content" v-if="!isSearching && this.content.length > 0" v-for="item in content"
+         @click="redirectToContent(item.id)" :key="item.id">
       <div>
         <img class="content-poster" :src="item.poster ?? 'https://placehold.co/75x112'" alt="Oppenheimer">
         <h1 class="content-title">{{ item.title ?? item.name }}</h1>
@@ -120,6 +230,67 @@ export default {
 </template>
 
 <style scoped>
+
+.paginator-disabled {
+  * {
+    cursor: not-allowed;
+  }
+}
+
+.paginator {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin: 1rem;
+  gap: 10px;
+
+  * {
+    cursor: pointer;
+  }
+}
+
+.paginator-button {
+  padding: 6px 12px;
+  background-color: var(--background-contrast-mid);
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.paginator-button:hover:not(.disabled) {
+  background-color: var(--text-contrast);
+  color: var(--background-contrast);
+}
+
+.paginator-button.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.page-number {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.page-number:hover {
+  background-color: var(--background-contrast-mid);
+}
+
+.page-number.active {
+  background-color: var(--text);
+  color: var(--contrast-1-2);
+}
+
+.ellipsis {
+  margin: 0 5px;
+}
+
 
 .container-info {
   display: flex;
@@ -197,6 +368,8 @@ export default {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 
   * {
     font-family: "GTVCS", serif;

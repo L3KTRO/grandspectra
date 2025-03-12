@@ -19,16 +19,28 @@ export default {
         rated: [],
         watchlist: []
       }),
-      isLoading: ref(true)
+      isLoading: ref(true),
+      windowWidth: window.innerWidth
     }
   },
-  watch: {},
   computed: {
     currentContent() {
       return this.data[this.activeView]
+    },
+    mobile() {
+      return this.windowWidth < 970;
+    },
+    hiperMobile() {
+      return this.windowWidth < 450;
     }
   },
+  beforeUnmount() {
+    window.removeEventListener('resize', this.handleResize);
+  },
   methods: {
+    handleResize() {
+      this.windowWidth = window.innerWidth;
+    },
     setActiveView(view) {
       this.activeView = view
     },
@@ -38,8 +50,7 @@ export default {
     },
     refresh() {
       if (this.isLoading) return;
-      this.fetch().then(() => {
-      });
+      this.fetch().then();
     },
     async fetch() {
       this.isLoading = true
@@ -52,14 +63,15 @@ export default {
     }
   },
   async mounted() {
+    window.addEventListener('resize', this.handleResize);
     await this.fetch()
   },
 }
 </script>
 
 <template>
-  <div id="content">
-    <div id="profile">
+  <div id="content" :style="mobile ? 'margin: 5rem 5%' : ''">
+    <div id="profile" :style="hiperMobile ? 'flex-direction: column; gap: 2rem' : ''">
       <div id="profile-left">
         <div id="profile-data">
           <h1>{{ store.user.username }}</h1>
@@ -80,14 +92,15 @@ export default {
         </div>
       </div>
     </div>
-    <nav id="views-bar">
+    <nav id="views-bar" :style="hiperMobile ? 'flex-direction: column; gap: 2rem' : ''">
       <div style="margin-left: 1rem;" :class="isLoading ? 'refresh' : 'refresh-disabled'" @click="refresh">Refresh</div>
-      <div style="display: flex; flex-direction: row; gap: 1rem">
+      <div style="display: flex; flex-direction: row; gap: 1rem"
+           :style="hiperMobile ? 'flex-direction: column; gap: 1rem; align-items:center;' : ''">
         <div @click="setActiveView('watched')" :class="{ underline: activeView === 'watched' }">Watched</div>
         <div @click="setActiveView('rated')" :class="{ underline: activeView === 'rated' }">Rated</div>
         <div @click="setActiveView('watchlist')" :class="{ underline: activeView === 'watchlist' }">Watchlist</div>
       </div>
-      <div style="color: var(--background-contrast-mid)">Refresh</div>
+      <div style="color: var(--background-contrast-mid)" v-if="!hiperMobile">Refresh</div>
     </nav>
     <div v-if="isLoading" style="display: flex; justify-content: center;">
       <h2 id="title">Cargando...</h2>

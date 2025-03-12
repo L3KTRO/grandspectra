@@ -6,19 +6,28 @@ import {useRouter} from 'vue-router';
 export default {
   name: "Header",
   components: {GrandSpectraBrand},
-  setup() {
+  data() {
     const authStore = useAuthStore();
-    const router = useRouter();
-
-    const handleLogout = () => {
-      authStore.logout();
-      router.push('/');
-    };
-
     return {
+      windowWidth: window.innerWidth,
       authStore,
-      handleLogout
     };
+  },
+  computed: {
+    hub() {
+      return this.windowWidth > 490 ? "SPECTRA HUB" : "HUB";
+    }
+  },
+  mounted() {
+    window.addEventListener('resize', this.handleResize);
+  },
+  beforeUnmount() {
+    window.removeEventListener('resize', this.handleResize);
+  },
+  methods: {
+    handleResize() {
+      this.windowWidth = window.innerWidth;
+    }
   }
 }
 </script>
@@ -32,7 +41,7 @@ export default {
     <div id="items">
       <router-link to="/hub">
         <div class="header-item">
-          <h3 class="header-nav">SPECTRA HUB</h3>
+          <h3 class="header-nav">{{ hub }}</h3>
         </div>
       </router-link>
     </div>

@@ -2,75 +2,93 @@
 export default {
   name: "ContentList",
   props: {
-    title: {
-      type: String,
-      default: 'Más populares'
-    },
     content: {
       type: Array,
-      default: [
-        {id: 1, title: 'Media 1', image: 'https://placehold.co/150x225'},
-        {id: 2, title: 'Media 2', image: 'https://placehold.co/150x225'},
-        {id: 3, title: 'Media 3', image: 'https://placehold.co/150x225'},
-        {id: 4, title: 'Media 4', image: 'https://placehold.co/150x225'},
-        {id: 5, title: 'Media 5', image: 'https://placehold.co/150x225'},
-        {id: 6, title: 'Media 6', image: 'https://placehold.co/150x225'},
-        {id: 7, title: 'Media 7', image: 'https://placehold.co/150x225'},
-        {id: 8, title: 'Media 8', image: 'https://placehold.co/150x225'},
-        {id: 9, title: 'Media 9', image: 'https://placehold.co/150x225'},
-        {id: 10, title: 'Media 10', image: 'https://placehold.co/150x225'},
-      ]
+      default: []
     }
   }
 }
 </script>
 
 <template>
-  <h2 id="title" class="light-neon-effect-text">{{ this.title }}</h2>
+  <div v-if="this.content.length === 0" id="content-container">
+    <h2 id="title">...</h2>
+  </div>
   <div class="horizontal-poster-list">
+
     <div
         class="poster-item"
+        v-if="this.content"
         v-for="media in this.content"
         :key="media.id"
     >
-      <img :src="media.image" :alt="media.title" class="poster"/>
-      <h4 class="subtitle">{{ media.title }}</h4>
+      <router-link :to="media.title ? '/movie/'+media.id : 'tv/'+media.id">
+        <img :src="media.poster ?? 'https://placehold.co/150x225'" :alt="media.title" class="poster"/>
+        <!--      <h1 class="tooltip">{{ media.title }}</h1>-->
+      </router-link>
+
     </div>
   </div>
 </template>
 
 <style scoped>
 
+#content-container {
+  display: flex;
+  justify-content: center;
+  overflow-x: visible;
+}
+
+.tooltip {
+  visibility: hidden;
+  opacity: 1%;
+  font-size: 1rem;
+  transition: opacity 0.25s;
+  color: #ffffff;
+  text-align: center;
+  border-radius: 2px;
+  min-width: 150px;
+  max-width: 300px;
+  max-height: 25px;
+  background: #5e5d5d;
+  position: absolute;
+  z-index: 10;
+  top: -10%;
+  transform: translateY(-50%);
+}
+
+
 template {
   margin: 5rem 0;
 }
 
-.subtitle {
-  font-family: "GTVCS", serif;
-  font-size: 1rem;
-}
-
-#title {
-  margin: 0 2rem;
-  font-size: 1.25rem;
-}
-
 .horizontal-poster-list {
   display: flex;
-  overflow-x: auto;
   padding: 16px;
   box-sizing: border-box;
   scroll-behavior: smooth;
-  margin: 0 0 3rem 0;
+  overflow-x: auto; /* Enable horizontal scrolling */
+  white-space: nowrap; /* Prevent items from wrapping to next line */
+  flex-wrap: nowrap; /* Ensure items stay in a single row */
+  width: 100%; /* Take full width of container */
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling on touch devices */
 }
 
 .poster-item {
+  position: relative;
+  display: inline-block;
   flex: 0 0 auto;
-  margin: 0 auto;
+  margin: 1rem;
+}
+
+.poster-item:hover .tooltip {
+  visibility: visible;
+  opacity: 100%;
+  transition: opacity 0.25s;
 }
 
 .poster-item img {
-  width: 100%;
+  width: 150px;
   height: auto;
   border-radius: 8px;
 }

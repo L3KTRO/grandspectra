@@ -1,11 +1,32 @@
 <script>
 export default {
-  name: "GrandSpectraBrand"
+  name: "GrandSpectraBrand",
+  data() {
+    return {
+      windowWidth: window.innerWidth
+    };
+  },
+  computed: {
+    title() {
+      return this.windowWidth > 810 ? "GRAND SPECTRA" : "GS";
+    }
+  },
+  mounted() {
+    window.addEventListener('resize', this.handleResize);
+  },
+  beforeUnmount() {
+    window.removeEventListener('resize', this.handleResize);
+  },
+  methods: {
+    handleResize() {
+      this.windowWidth = window.innerWidth;
+    }
+  }
 }
 </script>
 
 <template>
-  <router-link id="title" to="/">GRAND SPECTRA</router-link>
+  <router-link id="title" to="/">{{ title }}</router-link>
 </template>
 
 <style scoped>

@@ -12,7 +12,7 @@ export default {
 
 <template>
   <div v-if="this.content.length === 0" style="display: flex; justify-content: center;">
-    <h2 id="title">No existe</h2>
+    <h2 id="title">...</h2>
   </div>
   <div class="horizontal-poster-list">
 
