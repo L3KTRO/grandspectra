@@ -41,7 +41,7 @@ export default {
       return this.windowWidth < 960;
     },
     hiperMobile() {
-      return this.windowWidth < 450;
+      return this.windowWidth < 750;
     }
   },
   mounted() {
@@ -60,16 +60,40 @@ export default {
 
 <template>
   <div id="initial">
-    <div v-if="mobile" style="display: flex; justify-content: center; flex-direction: column; min-width: 250px">
+    <div v-if="mobile && !hiperMobile"
+         style="display: flex; justify-content: center; flex-direction: column; width: 250px">
       <img :src="data.poster ?? 'https://placehold.co/225x337'" alt="Media" id="poster"/>
-      <p id="overview" v-if="mobile">{{ data.overview }}</p>
+      <p id="overview">{{ data.overview }}</p>
     </div>
-    <div v-else-if="hiperMobile"
-         style="display: flex; justify-content: center; flex-direction: column; min-width: 250px">
+    <div v-if="hiperMobile"
+         style="display: flex; justify-content: center; flex-direction: column; width: 250px">
       <img :src="data.poster ?? 'https://placehold.co/225x337'" alt="Media" id="poster"/>
-      <p id="overview" v-if="mobile">{{ data.overview }}</p>
+      <div id="metadata">
+        <h1 id="title">{{ data.title }}</h1>
+        <div id="additional-metadata" :style="mobile ? 'flex-direction: column; gap: 1rem' : ''">
+          <h2>Directed by
+            <router-link :to="'/person/'+data.director.id">{{ data.director.name }}</router-link>
+          </h2>
+          <div class="metadata" :style="mobile ? 'flex-direction: column; gap: 1rem' : ''">
+            <h3 v-if="data.release">Release: {{ data.release }}</h3>
+            <h3 v-if="data.first_date">Air Date: {{ data.first_date }} to {{ data.last_date }}</h3>
+            <h3 v-if="data.genres.length !== 0">Genres: {{ data.genres.map(x => x.name).join(", ") }}</h3>
+            <h3 v-if="data.runtime">Runtime: {{ data.runtime }}m</h3>
+            <h3 v-if="data.tmdb_vote.average !== null && data.tmdb_vote.average.count !== null">
+              TMDB: {{ data.tmdb_vote.average }}/10 ({{ data.tmdb_vote.count }} votes)</h3>
+          </div>
+        </div>
+        <p v-if="!mobile" id="overview">{{ data.overview }}</p>
+        <div id="external-data" class="metadata">
+          <h3>More info in: </h3>
+          <a :href="data.first_date ? this.tmdbTv+data.id : this.tmdbMovie+data.id">TMDB</a>
+          <a :href="this.imdbEndpoint+data.imdb_id" v-if="data.imdb_id">IMDB</a>
+        </div>
+      </div>
+      <p id="overview">{{ data.overview }}</p>
+
     </div>
-    <img v-else :src="data.poster ?? 'https://placehold.co/225x337'" alt="Media" id="poster"/>
+    <img v-if="!mobile && !hiperMobile" :src="data.poster ?? 'https://placehold.co/225x337'" alt="Media" id="poster"/>
     <div id="metadata" v-if="!hiperMobile">
       <h1 id="title">{{ data.title }}</h1>
       <div id="additional-metadata" :style="mobile ? 'flex-direction: column; gap: 1rem' : ''">
@@ -97,6 +121,16 @@ export default {
 
 <style scoped>
 
+#initial {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+
+  * {
+    align-self: start;
+  }
+}
+
 #external-data {
   display: flex;
   flex-direction: row;
@@ -120,7 +154,7 @@ a {
   flex-direction: row;
   color: var(--text-contrast-mid);
   margin: 1rem 0;
-  width: 500px;
+  min-width: 300px;
 
   * {
     margin-right: 1rem;

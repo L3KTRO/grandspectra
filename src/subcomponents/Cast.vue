@@ -10,6 +10,12 @@ export default {
       default: []
     }
   },
+  data() {
+    return {
+      windowWidth: window.innerWidth
+
+    }
+  },
   methods: {
     sortPerson(a, b) {
       if (a.order === null && b.order === null) {
@@ -22,6 +28,9 @@ export default {
         return -1;
       }
       return a.order - b.order;
+    },
+    handleResize() {
+      this.windowWidth = window.innerWidth;
     }
   },
   computed: {
@@ -32,13 +41,26 @@ export default {
     crew() {
       return this.people.filter(person => person.occupation_id !== 10 && person.person && person.person.name)
           .sort(this.sortPerson)
+    },
+    mobile() {
+      return this.windowWidth < 875;
     }
+    ,
+    hiperMobile() {
+      return this.windowWidth < 750;
+    }
+  },
+  beforeUnmount() {
+    window.removeEventListener('resize', this.handleResize);
+  },
+  async mounted() {
+    window.addEventListener('resize', this.handleResize);
   }
 }
 </script>
 
 <template>
-  <div id="cast" v-if="this.people.length > 0">
+  <div id="cast" v-if="this.people.length > 0" :style="mobile ? 'flex-direction: column;' : 'flex-direction: row;'">
     <div class="people" v-if="this.cast.length > 0">
       <div class="title">
         <h1 class="light-neon-effect-text">Casting</h1>

@@ -34,9 +34,27 @@ export default {
           count: null
         }
       }),
+      windowWidth: window.innerWidth
     }
   },
-  async beforeMount() {
+  computed: {
+    mobile() {
+      return this.windowWidth < 875;
+    },
+    hiperMobile() {
+      return this.windowWidth < 600;
+    }
+  },
+  beforeUnmount() {
+    window.removeEventListener('resize', this.handleResize);
+  },
+  methods: {
+    handleResize() {
+      this.windowWidth = window.innerWidth;
+    }
+  },
+  async mounted() {
+    window.addEventListener('resize', this.handleResize);
     this.isLoading = true
     const response = await request("/movies/" + this.$route.params.id)
     this.isLoading = false
@@ -72,24 +90,28 @@ export default {
 </script>
 
 <template>
-  <div id="body" v-if="!isLoading">
+  <div class="body-content" v-if="!isLoading" :style="hiperMobile ? 'margin: 4rem 2rem;' : ''">
     <ContentMetadata :data="data"/>
-    <div id="final">
+    <div v-if="!mobile" class="content-part-final">
       <Cast :people="data.credits"/>
-      <ContentActions :content-id="contentId"/>
+      <ContentActions :contentId="contentId"/>
+    </div>
+    <div v-else class="content-part-final-mobile">
+      <ContentActions :contentId="contentId"/>
+      <Cast :people="data.credits"/>
     </div>
   </div>
-  <div v-else style="display: flex; flex-direction: column; align-items: center">
-    <h1 style="font-size: 3rem; margin: 5rem">Loading...</h1>
+  <div id="body-content" v-else>
+    <h1>Loading...</h1>
   </div>
 </template>
 
-<style scoped>
-#body {
-  margin: 1rem 10rem;
+<style>
+.body-content {
+  margin: 4rem 5rem;
 }
 
-#final {
+.content-part-final {
   display: flex;
   flex-direction: row;
   justify-content: space-around;

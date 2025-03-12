@@ -11,32 +11,12 @@ export default {
 <template>
   <div id="wrapper-box">
     <div id="box">
-      <h1 id="title">Join</h1>
+      <h1 id="auth-title">Join</h1>
       <AuthForm :isSignIn="false"/>
     </div>
   </div>
 </template>
 
-<style scoped>
-#wrapper-box {
-  height: 75vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
+<style>
 
-#box {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1.5rem 5rem;
-  background-color: rgb(51, 14, 14);
-}
-
-#title {
-  font-size: 3.5rem;
-  font-family: 'CharisSIL', "GTVCS", serif;
-}
 </style>

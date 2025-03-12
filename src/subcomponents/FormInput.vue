@@ -45,5 +45,6 @@ input {
   background-color: rgba(0, 0, 0, 0.1);
   margin: 0 0 2rem;
   padding: 0.5rem;
+  min-width: 360px;
 }
 </style>

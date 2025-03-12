@@ -11,13 +11,13 @@ export default {
 <template>
   <div id="wrapper-box">
     <div id="box">
-      <h1 id="title">Welcome back</h1>
+      <h1 id="auth-title">Welcome back</h1>
       <AuthForm :isSignIn="true"/>
     </div>
   </div>
 </template>
 
-<style scoped>
+<style>
 #wrapper-box {
   height: 75vh;
   display: flex;
@@ -27,15 +27,17 @@ export default {
 }
 
 #box {
+  min-width: 500px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   padding: 1.5rem 5rem;
   background-color: var(--contrast-1-3);
 }
 
-#title {
+#auth-title {
+  align-self: center;
   font-size: 3.5rem;
   font-family: 'CharisSIL', "GTVCS", serif;
 }

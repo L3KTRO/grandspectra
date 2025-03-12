@@ -34,10 +34,28 @@ export default {
           average: null,
           count: null
         }
-      })
+      }),
+      windowWidth: window.innerWidth
+    }
+  },
+  computed: {
+    mobile() {
+      return this.windowWidth < 875;
+    },
+    hiperMobile() {
+      return this.windowWidth < 750;
+    }
+  },
+  beforeUnmount() {
+    window.removeEventListener('resize', this.handleResize);
+  },
+  methods: {
+    handleResize() {
+      this.windowWidth = window.innerWidth;
     }
   },
   async mounted() {
+    window.addEventListener('resize', this.handleResize);
     this.isLoading = true
     const response = await request("/tv/" + this.$route.params.id)
     if (response.status !== 200) return router.push("/notfound")
@@ -75,26 +93,22 @@ export default {
 </script>
 
 <template>
-  <div id="body" v-if="!isLoading">
+  <div class="body-content" v-if="!isLoading">
     <ContentMetadata :data="data"/>
-    <div id="final">
+    <div v-if="!mobile" class="content-part-final">
+      <Cast :people="data.credits"/>
+      <ContentActions :contentId="contentId"/>
+    </div>
+    <div v-else class="content-part-final-mobile">
       <Cast :people="data.credits"/>
       <ContentActions :contentId="contentId"/>
     </div>
   </div>
-  <div id="body" v-else>
+  <div id="body-content" v-else>
     <h1>Loading...</h1>
   </div>
 </template>
 
-<style scoped>
-#body {
-  margin: 4rem 5rem;
-}
+<style>
 
-#final {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-}
 </style>

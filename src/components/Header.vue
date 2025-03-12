@@ -55,11 +55,6 @@ export default {
         </router-link>
       </template>
       <template v-else>
-        <router-link to="/signin">
-          <div class="header-item header-button button">
-            <h3 class="light-neon-effect-text">SIGN IN</h3>
-          </div>
-        </router-link>
         <router-link to="/signup">
           <div class="header-item header-button button">
             <h3 class="light-neon-effect-text">JOIN US</h3>
