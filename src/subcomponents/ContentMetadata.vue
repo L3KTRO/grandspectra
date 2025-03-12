@@ -66,9 +66,9 @@ export default {
       <p id="overview">{{ data.overview }}</p>
     </div>
     <div v-if="hiperMobile"
-         style="display: flex; justify-content: center; flex-direction: column; width: 250px">
+         style="display: flex; justify-content: center; flex-direction: column; width: 250px;">
       <img :src="data.poster ?? 'https://placehold.co/225x337'" alt="Media" id="poster"/>
-      <div id="metadata">
+      <div id="metadata" style="margin: 0">
         <h1 id="title">{{ data.title }}</h1>
         <div id="additional-metadata" :style="mobile ? 'flex-direction: column; gap: 1rem' : ''">
           <h2>Directed by

@@ -18,6 +18,7 @@ export default {
       lastPage: 0,
       isTv: false,
       isSearching: false,
+      windowWidth: window.innerWidth
     }
   },
   watch: {
@@ -81,6 +82,15 @@ export default {
       }
 
       return range;
+    },
+    mobile() {
+      return this.windowWidth < 875;
+    },
+    hiperMobile() {
+      return this.windowWidth < 520;
+    },
+    overExtended() {
+      return this.windowWidth < 1200;
     }
   },
 
@@ -137,18 +147,13 @@ export default {
   },
   async beforeMount() {
     await this.fetchContent()
-    /*
-       const response = await request("/genres?per_page=99")
-       if (response.status !== 200) return
-       this.genres = response.data.data
-     */
   }
 }
 </script>
 
 <template>
-  <div class="search-container">
-    <div class="search-bar">
+  <div class="search-container" :style="mobile ? 'width: 85%;' : ''">
+    <div class="search-bar" :style="hiperMobile ? 'flex-direction: column;' : ''">
       <div id="switch-content">
         <h2 class="switch-content-title" :class="isTv ? 'switch-content-title-selected' : ''">Movie</h2>
         <label class="switch">
@@ -203,16 +208,16 @@ export default {
   </div>
 
 
-  <div id="content-container">
+  <div id="content-container" :style="mobile ? 'margin: 0 5%;' : ''">
     <div class="content" v-if="!isSearching && this.content.length > 0" v-for="item in content"
          @click="redirectToContent(item.id)" :key="item.id">
       <div>
         <img class="content-poster" :src="item.poster ?? 'https://placehold.co/75x112'" alt="Oppenheimer">
-        <h1 class="content-title">{{ item.title ?? item.name }}</h1>
+        <h1 class="content-title" :style="overExtended ? 'font-size: 2rem;' : ''">{{ item.title ?? item.name }}</h1>
       </div>
       <div>
-        <h2>{{ item.vote_average }}/10</h2>
-        <h2 v-if="item.runtime">{{ item.runtime }} minutes</h2>
+        <h2 v-if="!hiperMobile">{{ item.vote_average }}/10</h2>
+        <h2 v-if="item.runtime && !mobile">{{ item.runtime }} minutes</h2>
         <h2 v-if="item.release_date || item.first_air_date">{{
             !isNaN(new Date(item.release_date).getFullYear()) ? new Date(item.release_date).getFullYear() : null
             ??
@@ -311,7 +316,7 @@ export default {
 #content-container {
   display: flex;
   flex-direction: column;
-  margin: 0 15rem;
+  margin: 0 15%;
 }
 
 .content {
@@ -322,6 +327,7 @@ export default {
   justify-content: space-between;
   padding: 2rem;
   margin: 1rem;
+  min-width: 325px;
 
   * {
     margin: 0 1rem;
@@ -361,8 +367,7 @@ export default {
 }
 
 .search-container {
-  width: 100%;
-  max-width: 1000px;
+  width: 65%;
   margin: 4rem auto;
   background-color: var(--background-contrast);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
