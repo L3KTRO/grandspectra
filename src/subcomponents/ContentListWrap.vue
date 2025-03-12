@@ -6,11 +6,6 @@ export default {
       type: Array,
       default: []
     }
-  },
-  data() {
-    return {
-      contentType: "movie"
-    }
   }
 }
 </script>
@@ -27,10 +22,10 @@ export default {
         v-for="media in this.content"
         :key="media.id"
     >
-      <a :href="'/'+contentType+'/'+media.id">
+      <router-link :to="media.title ? '/movie/'+media.id : 'tv/'+media.id">
         <img :src="media.poster ?? 'https://placehold.co/150x225'" :alt="media.title" class="poster"/>
         <!--      <h1 class="tooltip">{{ media.title }}</h1>-->
-      </a>
+      </router-link>
 
     </div>
   </div>

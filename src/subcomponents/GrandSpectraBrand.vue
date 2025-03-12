@@ -5,7 +5,7 @@ export default {
 </script>
 
 <template>
-  <a id="title" href="/">GRAND SPECTRA</a>
+  <router-link id="title" to="/">GRAND SPECTRA</router-link>
 </template>
 
 <style scoped>

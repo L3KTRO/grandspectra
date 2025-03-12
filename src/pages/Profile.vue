@@ -25,7 +25,6 @@ export default {
   watch: {},
   computed: {
     currentContent() {
-      console.log(this.data)
       return this.data[this.activeView]
     }
   },
@@ -36,15 +35,24 @@ export default {
     logout() {
       this.store.logout();
       this.$router.push("/signin");
+    },
+    refresh() {
+      if (this.isLoading) return;
+      this.fetch().then(() => {
+      });
+    },
+    async fetch() {
+      this.isLoading = true
+      const res = await request('/me')
+      if (res.status !== 200) return this.isLoading = false
+      this.data.rated = res.data.contents.ratings.map((item) => item.loaded)
+      this.data.watchlist = res.data.contents.watchlist.map((item) => item.loaded)
+      this.data.watched = res.data.contents.watched.map((item) => item.loaded)
+      this.isLoading = false
     }
   },
   async mounted() {
-    const res = await request('/me')
-    if (res.status !== 200) return this.isLoading = false
-    this.data.rated = res.data.contents.ratings.map((item) => item.loaded)
-    this.data.watchlist = res.data.contents.watchlist.map((item) => item.loaded)
-    this.data.watched = res.data.contents.watched.map((item) => item.loaded)
-    this.isLoading = false
+    await this.fetch()
   },
 }
 </script>
@@ -73,9 +81,13 @@ export default {
       </div>
     </div>
     <nav id="views-bar">
-      <div @click="setActiveView('watched')" :class="{ underline: activeView === 'watched' }">Watched</div>
-      <div @click="setActiveView('rated')" :class="{ underline: activeView === 'rated' }">Rated</div>
-      <div @click="setActiveView('watchlist')" :class="{ underline: activeView === 'watchlist' }">Watchlist</div>
+      <div style="margin-left: 1rem;" :class="isLoading ? 'refresh' : 'refresh-disabled'" @click="refresh">Refresh</div>
+      <div style="display: flex; flex-direction: row; gap: 1rem">
+        <div @click="setActiveView('watched')" :class="{ underline: activeView === 'watched' }">Watched</div>
+        <div @click="setActiveView('rated')" :class="{ underline: activeView === 'rated' }">Rated</div>
+        <div @click="setActiveView('watchlist')" :class="{ underline: activeView === 'watchlist' }">Watchlist</div>
+      </div>
+      <div style="color: var(--background-contrast-mid)">Refresh</div>
     </nav>
     <div v-if="isLoading" style="display: flex; justify-content: center;">
       <h2 id="title">Cargando...</h2>
@@ -87,6 +99,17 @@ export default {
 </template>
 
 <style scoped>
+
+.refresh {
+  color: var(--text-contrast);
+  transition: 0.5s;
+}
+
+.refresh-disabled {
+  color: var(--text-contrast-mid);
+  cursor: not-allowed;
+  transition: 0.5s;
+}
 
 #profile-left {
   min-width: 30vw;
@@ -132,7 +155,7 @@ export default {
 #views-bar {
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: space-between;
   gap: 1rem;
   align-items: center;
   margin: 3rem 1rem;

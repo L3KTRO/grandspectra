@@ -25,6 +25,7 @@ export default function useApi() {
 
     const request = async (endpoint, config = {}) => {
         try {
+            console.log(`${config.method || 'GET'}: ${endpoint}`)
             return await api({
                 method: config.method || 'GET',
                 url: endpoint,

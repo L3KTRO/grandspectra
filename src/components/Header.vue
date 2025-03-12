@@ -30,47 +30,32 @@ export default {
     </div>
 
     <div id="items">
-      <a href="/hub">
-        <div class="header-item">
-          <h3 class="header-nav">SEARCHER</h3>
-        </div>
-      </a>
-      <a href="/hub">
+      <router-link to="/hub">
         <div class="header-item">
           <h3 class="header-nav">SPECTRA HUB</h3>
         </div>
-      </a>
-      <a href="/hub">
-        <div class="header-item">
-          <h3 class="header-nav">LISTS</h3>
-        </div>
-      </a>
+      </router-link>
     </div>
 
     <div id="buttons">
-      <template v-if="authStore.user">
-        <a href="/signin">
-          <div class="header-item header-button button">
-            <h3 class="light-neon-effect-text">ADD LOG</h3>
-          </div>
-        </a>
-        <a href="/profile">
+      <template v-if="authStore.isAuthenticated">
+        <router-link to="/profile">
           <div class="header-item header-button button">
             <h3 class="light-neon-effect-text">PROFILE</h3>
           </div>
-        </a>
+        </router-link>
       </template>
       <template v-else>
-        <a href="/signin">
+        <router-link to="/signin">
           <div class="header-item header-button button">
             <h3 class="light-neon-effect-text">SIGN IN</h3>
           </div>
-        </a>
-        <a href="/signup">
+        </router-link>
+        <router-link to="/signup">
           <div class="header-item header-button button">
             <h3 class="light-neon-effect-text">JOIN US</h3>
           </div>
-        </a>
+        </router-link>
       </template>
     </div>
   </header>

@@ -1,17 +1,28 @@
-<script>
-import {ref} from "vue";
+<script>import useApi from "@/composables/api.js";
+
+const {request} = useApi()
 
 export default {
+  props: {
+    contentId: String
+  },
   name: "ContentActions",
   data() {
     return {
-      sliderValue: ref("0"),
-      disabledRate: ref(false)
+      propertyName: this.$route.name === 'movie' ? 'movie_id' : 'tv_id',
+      disabledRate: false,
+      originalRateId: null,
+      originalWatchedId: null,
+      originalWatchlistId: null,
+      rate: "0",
+      watched: false,
+      watchlisted: false,
+      isLoading: true,
     }
   },
   computed: {
     switchRate() {
-      return this.disabledRate || this.sliderValue === '0';
+      return this.disabledRate || this.rate === '0';
     },
     switchRemoveRate() {
       return !this.disabledRate;
@@ -20,36 +31,132 @@ export default {
   methods: {
     addRate() {
       if (this.switchRate) return;
+      this.watched = true;
+      this.watchlisted = false;
       this.disabledRate = true;
     },
 
     removeRate() {
       if (this.switchRemoveRate) return;
-      this.sliderValue = "0";
+      this.rate = "0";
       this.disabledRate = false;
     },
     moveRate() {
-      if (this.sliderValue !== "0")
+      if (this.rate !== "0")
         this.disabledRate = false;
+    },
+
+    toggleWatched() {
+      this.watched = !this.watched
+      this.watchlisted = false;
+    },
+
+    toggleWatchlist() {
+      this.watchlisted = !this.watchlisted
+    },
+
+    checker(item) {
+      return item[this.propertyName] === parseInt(this.$route.params.id)
+    },
+
+    async updateToDb() {
+      const contentType = this.propertyName === "movie_id" ? "movie" : "tv";
+
+      // Manejo de ratings
+      if (this.rate !== "0" && this.originalRateId === null) {
+        // No existía y hay datos nuevos: POST
+        await request(`/me/ratings?qualification=${parseInt(this.rate)}&${contentType}_id=${this.contentId}`, {
+          method: 'POST',
+        });
+      } else if (this.rate !== "0" && this.rate !== this.originalRateId) {
+        // Existía y hay datos nuevos: PUT
+        await request(`/me/ratings/${this.originalRateId}?qualification=${parseInt(this.rate)}&${contentType}_id=${this.contentId}`, {
+          method: 'PUT',
+        });
+      } else if (this.rate === "0" && this.originalRateId !== null) {
+        // Existía y se ha eliminado: DELETE
+        await request(`/me/ratings/${this.originalRateId}`, {
+          method: 'DELETE'
+        });
+      }
+
+      // Manejo de watched
+      if (this.watched && this.originalWatchedId === null) {
+        // No existía y ha sido marcado como visto: POST
+        await request(`/me/watched?${contentType}_id=${this.contentId}`, {
+          method: 'POST',
+        });
+      } else if (!this.watched && this.originalWatchedId !== null) {
+        // Existía y ha sido desmarcado: DELETE
+        await request(`/me/watched/${this.originalWatchedId}`, {
+          method: 'DELETE'
+        });
+      }
+
+      // Manejo de watchlist
+      if (this.watchlisted && this.originalWatchlistId === null) {
+        // No existía y ha sido agregado a watchlist: POST
+        await request(`/me/watchlist?${contentType}_id=${this.contentId}`, {
+          method: 'POST',
+        });
+      } else if (!this.watchlisted && this.originalWatchlistId !== null) {
+        // Existía y ha sido eliminado de watchlist: DELETE
+        await request(`/me/watchlist/${this.originalWatchlistId}`, {
+          method: 'DELETE'
+        });
+      }
     }
+  },
+
+  async beforeMount() {
+    this.isLoading = true
+    const res = await request('/me')
+    if (res.status !== 200) return;
+
+    res.data.contents.watched.forEach((watched) => {
+      if (this.checker(watched)) {
+        this.watched = true
+        this.originalWatchedId = watched.id
+      }
+    })
+
+    res.data.contents.watchlist.forEach((watchlist) => {
+      if (this.checker(watchlist)) {
+        this.watchlisted = true
+        this.originalWatchlistId = watchlist.id
+      }
+    })
+
+    res.data.contents.ratings.forEach((rate) => {
+      if (this.checker(rate)) {
+        this.rate = rate.qualification
+        this.disabledRate = true
+        this.originalRateId = rate.id
+      }
+    })
+
+    this.isLoading = false
+  },
+  async beforeUnmount() {
+    await this.updateToDb()
   }
 }
 </script>
 
 <template>
   <div id="actions">
-    <ul id="list">
-      <li>Mark as <span>watched</span></li>
-      <li>Add to <span>watchlist</span></li>
+    <ul id="list" v-if="!isLoading">
+      <li @click="toggleWatched">Mark as <span>{{ watched ? 'unwatched' : "watched" }}</span></li>
+      <li @click="toggleWatchlist">{{ watchlisted ? 'Remove from ' : "Add to " }}<span>watchlist</span></li>
       <li style="display: flex; flex-direction: column;">
-        <h3><span>{{ sliderValue }}</span></h3>
+        <h3><span>{{ rate }}</span></h3>
         <input
-            v-model="sliderValue"
+            v-model="rate"
             @change="moveRate"
             type="range"
             :min="1"
             :max="10"
-            :step="0.5"
+            :step="1"
             style="margin: 0 2rem"
         />
         <div style="display: flex; flex-direction: row; justify-content: center">
@@ -64,6 +171,7 @@ export default {
       </li>
       <li>Share</li>
     </ul>
+    <h2 v-else>Loading...</h2>
   </div>
 </template>
 

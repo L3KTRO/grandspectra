@@ -14,6 +14,8 @@ export default {
   components: {ContentMetadata, ContentActions, Cast, ContentList},
   data() {
     return {
+      isLoading: false,
+      contentId: this.$route.params.id,
       data: ref({
         id: null,
         poster: null,
@@ -35,7 +37,9 @@ export default {
     }
   },
   async beforeMount() {
+    this.isLoading = true
     const response = await request("/movies/" + this.$route.params.id)
+    this.isLoading = false
     if (response.status !== 200) return router.push("/notfound")
     const {
       id,
@@ -62,23 +66,27 @@ export default {
     const directors = this.data.credits.filter(a => a.occupation_id === 2)
     this.data.director = directors.length > 0 ? directors[0].person : "Unknown"
     this.data.genres = genres.slice(0, 8)
+
   }
 }
 </script>
 
 <template>
-  <div id="body">
+  <div id="body" v-if="!isLoading">
     <ContentMetadata :data="data"/>
     <div id="final">
       <Cast :people="data.credits"/>
-      <ContentActions/>
+      <ContentActions :content-id="contentId"/>
     </div>
+  </div>
+  <div v-else style="display: flex; flex-direction: column; align-items: center">
+    <h1 style="font-size: 3rem; margin: 5rem">Loading...</h1>
   </div>
 </template>
 
 <style scoped>
 #body {
-  margin: 4rem 10rem;
+  margin: 1rem 10rem;
 }
 
 #final {

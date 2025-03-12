@@ -58,7 +58,7 @@ export default {
       />
     </div>
   </div>
-  <div v-else>
+  <div v-else style="display: flex; justify-content: center; align-items: center; ">
     <h1 class="light-neon-effect-text">No cast or crew found</h1>
   </div>
 </template>

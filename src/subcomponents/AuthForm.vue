@@ -136,10 +136,10 @@ export default {
       </button>
       <h2>
         <span v-if="isSignIn">
-          You don't have an account? <a :href="signupLink">Create one</a>
+          You don't have an account? <router-link :to="signupLink">Create one</router-link>
         </span>
         <span v-else>
-          Already have an account? <a :href="signinLink">Sign in</a>
+          Already have an account? <router-link :to="signinLink">Sign in</router-link>
         </span>
       </h2>
     </div>

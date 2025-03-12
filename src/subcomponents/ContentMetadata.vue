@@ -26,6 +26,14 @@ export default {
         }
       }
     }
+  },
+  data() {
+    console.log(this.data)
+    return {
+      tmdbTv: "https://www.themoviedb.org/tv/",
+      tmdbMovie: "https://www.themoviedb.org/movie/",
+      imdbEndpoint: "https://www.imdb.com/title/tt",
+    }
   }
 }
 </script>
@@ -36,7 +44,9 @@ export default {
     <div id="metadata">
       <h1 id="title">{{ data.title }}</h1>
       <div id="additional-metadata">
-        <h2>Directed by <a :href="'/person/'+data.director.id">{{ data.director.name }}</a></h2>
+        <h2>Directed by
+          <router-link :to="'/person/'+data.director.id">{{ data.director.name }}</router-link>
+        </h2>
         <div class="metadata">
           <h3 v-if="data.release">Release: {{ data.release }}</h3>
           <h3 v-if="data.first_date">Air Date: {{ data.first_date }} to {{ data.last_date }}</h3>
@@ -49,8 +59,8 @@ export default {
       <p id="overview">{{ data.overview }}</p>
       <div id="external-data" class="metadata">
         <h3>More info in: </h3>
-        <a>TMDB</a>
-        <a>IMDB</a>
+        <a :href="data.first_date ? this.tmdbTv+data.id : this.tmdbMovie+data.id">TMDB</a>
+        <a :href="this.imdbEndpoint+data.imdb_id" v-if="data.imdb_id">IMDB</a>
       </div>
     </div>
   </div>
@@ -104,7 +114,6 @@ a {
   font-size: 1.15rem;
   margin: 1rem;
   min-height: 5rem;
-  max-height: 10rem;
 }
 
 #body > div {

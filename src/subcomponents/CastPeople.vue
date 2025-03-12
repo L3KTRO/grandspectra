@@ -14,8 +14,11 @@ export default {
   <div class="person">
     <img :src="person.person.still ?? 'https://placehold.co/150x225'" alt="person.person.name" class="poster"/>
     <div class="info">
-      <h2 class="person-name"><a :href="'/person/'+person.person.id">{{ person.person.name }}</a> <span>as</span>
-        {{ person.occupation.name }}</h2>
+      <h2 class="person-name">
+        <router-link :to="'/person/'+person.person.id">{{ person.person.name }}</router-link>
+        <span> as</span>
+        {{ person.occupation.name }}
+      </h2>
       <h2 v-if="person.character">Playing <span>{{ person.character }}</span></h2>
     </div>
   </div>

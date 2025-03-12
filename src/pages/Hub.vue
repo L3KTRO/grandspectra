@@ -12,7 +12,23 @@ export default {
       showFilters: false,
       selectedGenres: [],
       genres: ref([]),
-      isMovie: false
+      content: ref([]),
+      isTv: false,
+      isSearching: false
+    }
+  },
+  watch: {
+    searchQuery: {
+      handler: 'fetchContent',
+      immediate: false
+    },
+    selectedGenres: {
+      handler: 'fetchContent',
+      immediate: false
+    },
+    isTv: {
+      handler: 'fetchContent',
+      immediate: false
     }
   },
   methods: {
@@ -20,22 +36,30 @@ export default {
       this.showFilters = !this.showFilters;
     },
     async fetchContent() {
-      const entity = this.isMovie ? 'tv' : 'movies'
+      this.isSearching = true
+      const entity = this.isTv ? 'tv' : 'movies'
+      const titleParam = this.isTv ? 'name' : 'title'
       const response = await request(`/${entity}`, {
         params: {
-          genres: 28
+          [titleParam]: this.searchQuery,
         }
       })
 
-      console.log(response)
+      this.content = response.data.data
+      this.isSearching = false
+    },
+    redirectToContent(id) {
+      this.$router.push(`/${this.isTv ? 'tv' : 'movie'}/${id}`)
     }
   },
 
   async beforeMount() {
     await this.fetchContent()
-    const response = await request("/genres?per_page=99")
-    if (response.status !== 200) return
-    this.genres = response.data.data
+    /*
+       const response = await request("/genres?per_page=99")
+       if (response.status !== 200) return
+       this.genres = response.data.data
+     */
   }
 }
 </script>
@@ -44,15 +68,15 @@ export default {
   <div class="search-container">
     <div class="search-bar">
       <div id="switch-content">
-        <h2 class="switch-content-title" :class="isMovie ? 'switch-content-title-selected' : ''">Movie</h2>
+        <h2 class="switch-content-title" :class="isTv ? 'switch-content-title-selected' : ''">Movie</h2>
         <label class="switch">
-          <input type="checkbox" v-model="isMovie">
+          <input type="checkbox" v-model="isTv">
           <span class="slider round"></span>
         </label>
-        <h2 class="switch-content-title" :class="!isMovie ? 'switch-content-title-selected' : ''">TV</h2>
+        <h2 class="switch-content-title" :class="!isTv ? 'switch-content-title-selected' : ''">TV</h2>
       </div>
       <input type="text" class="search-input" v-model="searchQuery" placeholder="Buscar por título...">
-      <button @click="toggleFilters" class="filter-toggle">
+      <button @click="toggleFilters" class="filter-toggle" v-if="genres.length > 0">
         <h2 class="light-neon-effect-text">{{ showFilters ? 'Hide advanced filters' : 'Show advanced filters' }}</h2>
       </button>
     </div>
@@ -71,31 +95,42 @@ export default {
   </div>
 
   <div id="content-container">
-    <div class="content">
+    <div class="content" v-if="!isSearching && this.content.length > 0" v-for="item in content" @click="redirectToContent(item.id)" :key="item.id">
       <div>
-        <img class="content-poster" src="https://placehold.co/75x112" alt="Oppenheimer">
-        <h1 class="content-title">Oppenheimer</h1>
+        <img class="content-poster" :src="item.poster ?? 'https://placehold.co/75x112'" alt="Oppenheimer">
+        <h1 class="content-title">{{ item.title ?? item.name }}</h1>
       </div>
       <div>
-        <h2>8.2/10</h2>
-        <h2>181 minutes</h2>
-        <h2>2023</h2>
+        <h2>{{ item.vote_average }}/10</h2>
+        <h2 v-if="item.runtime">{{ item.runtime }} minutes</h2>
+        <h2 v-if="item.release_date || item.first_air_date">{{
+            !isNaN(new Date(item.release_date).getFullYear()) ? new Date(item.release_date).getFullYear() : null
+            ??
+            !isNaN(new Date(item.first_air_date).getFullYear()) ? new Date(item.first_air_date).getFullYear() : null
+          }}</h2>
       </div>
     </div>
-    <div class="content">
-      <div>
-        <img src="https://placehold.co/75x112" alt="Oppenheimer">
-        <h1 class="content-title">House Of Cards</h1>
-      </div>
-      <div>
-        <h2>8.2/10</h2>
-        <h2>1990</h2>
-      </div>
+    <div v-else-if="isSearching" class="container-info">
+      <h1>Searching...</h1>
+    </div>
+    <div v-else class="container-info">
+      <h1>No content found</h1>
     </div>
   </div>
 </template>
 
 <style scoped>
+
+.container-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  * {
+    font-size: 2rem;
+  }
+}
 
 .content-poster {
   width: 75px;
