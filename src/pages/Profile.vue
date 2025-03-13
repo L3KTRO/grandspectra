@@ -181,13 +181,13 @@ export default {
     <div v-else id="follow-users">
       <div class="follow-col">
         <div class="follow-title-content">
-          <h1 class="follow-title">Following</h1>
+          <h1 class="follow-title light-neon-effect-text">Following</h1>
         </div>
         <UserList :users="following"/>
       </div>
       <div class="follow-col">
         <div class="follow-title-content">
-          <h1 class="follow-title">Followers</h1>
+          <h1 class="follow-title light-neon-effect-text">Followers</h1>
         </div>
         <UserList :users="followers"/>
       </div>
@@ -213,6 +213,10 @@ export default {
   padding: 1rem;
   text-align: center;
   width: 100%;
+
+  h1 {
+    font-weight: bold;
+  }
 
   * {
     text-align: center;
@@ -289,6 +293,7 @@ export default {
   flex-direction: row;
   align-items: center;
   gap: 1rem;
+  padding: 0.5rem 1rem;
 }
 
 #views-bar {
@@ -318,5 +323,12 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+
+@media (max-width: 650px) {
+  #follow-users {
+    flex-direction: column;
+    gap: 1rem;
+  }
 }
 </style>
