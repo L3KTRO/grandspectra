@@ -1,0 +1,20 @@
+services:
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: grandspectra-frontend_solo
+    ports:
+      - "3000:3000"
+    environment:
+      VITE_API_URL: "http://localhost:8000"
+    pull_policy: always
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  dbdata:
+  laraveldata:
