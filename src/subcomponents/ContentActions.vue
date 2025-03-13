@@ -1,4 +1,4 @@
-<script>import useApi from "@/composables/api.js";
+<script>import useApi from "@/helpers/api.js";
 
 const {request} = useApi()
 

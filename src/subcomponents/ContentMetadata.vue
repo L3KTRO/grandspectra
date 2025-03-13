@@ -28,7 +28,6 @@ export default {
     }
   },
   data() {
-    console.log(this.data)
     return {
       tmdbTv: "https://www.themoviedb.org/tv/",
       tmdbMovie: "https://www.themoviedb.org/movie/",

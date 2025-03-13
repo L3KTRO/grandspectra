@@ -2,7 +2,7 @@
 import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
 import ContentList from "@/subcomponents/ContentList.vue";
-import useApi from "@/composables/api.js";
+import useApi from "@/helpers/api.js";
 
 const {request} = useApi();
 

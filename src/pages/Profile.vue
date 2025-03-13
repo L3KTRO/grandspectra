@@ -2,18 +2,25 @@
 import ContentList from "@/subcomponents/ContentList.vue";
 import ContentListWrap from "@/subcomponents/ContentListWrap.vue";
 import {useAuthStore} from "@/stores/auth.js";
-import useApi from "@/composables/api.js";
+import {useChangesStore} from '@/stores/global.js'
+import useApi from "@/helpers/api.js";
 import {ref} from "vue";
+import {storeToRefs} from "pinia";
 
 const {request} = useApi();
+
 
 export default {
   name: "Profile",
   components: {ContentListWrap, ContentList},
   data() {
+    const changesStore = useChangesStore()
+    const {meSync} = storeToRefs(changesStore)
     return {
       store: useAuthStore(),
+      unsubscribeChangesStore: null,
       activeView: 'watched',
+      sync: meSync,
       data: ref({
         watched: [],
         rated: [],
@@ -60,6 +67,11 @@ export default {
       this.data.watchlist = res.data.contents.watchlist.map((item) => item.loaded)
       this.data.watched = res.data.contents.watched.map((item) => item.loaded)
       this.isLoading = false
+    }
+  },
+  watch: {
+    sync() {
+      this.fetch().then()
     }
   },
   async mounted() {
@@ -133,11 +145,6 @@ export default {
 
 #logout {
   padding: 0.5rem 1rem;
-}
-
-.underline {
-  text-decoration: underline;
-  font-weight: bold;
 }
 
 .follow-data {

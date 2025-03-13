@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {useAuthStore} from '@/stores/auth'
+import {useChangesStore} from "@/stores/global.js";
 
 export default function useApi() {
 
@@ -23,18 +24,26 @@ export default function useApi() {
         }
     );
 
+
     const request = async (endpoint, config = {}) => {
         try {
             console.log(`${config.method || 'GET'}: ${endpoint}`)
-            return await api({
+            const res = await api({
                 method: config.method || 'GET',
                 url: endpoint,
                 data: config.body,
                 params: config.params,
                 headers: {
                     Authorization: `Bearer ${useAuthStore().token}`
-                }
-            });
+                },
+
+            })
+
+            if (config.method && config.method !== 'GET') {
+                useChangesStore().addChange();
+            }
+
+            return res;
         } catch (error) {
             return error
         }

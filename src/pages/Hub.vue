@@ -1,6 +1,6 @@
 <script>
 import {ref} from "vue";
-import useApi from "@/composables/api.js";
+import useApi from "@/helpers/api.js";
 
 const {request} = useApi();
 
@@ -8,11 +8,12 @@ export default {
   name: 'Hub',
   data() {
     return {
-      searchQuery: ref(''),
+      searchQuery: '',
+      debounceTimeout: null,
       showFilters: false,
       selectedGenres: [],
-      genres: ref([]),
-      content: ref([]),
+      genres: [],
+      content: [],
       page: 1,
       totalPages: 0,
       lastPage: 0,
@@ -22,9 +23,17 @@ export default {
     }
   },
   watch: {
-    searchQuery: {
-      handler: 'fetchContent',
-      immediate: false
+    searchQuery(newVal) {
+      if (this.debounceTimeout) {
+        clearTimeout(this.debounceTimeout);
+      }
+
+      // Establecer nuevo timeout
+      this.debounceTimeout = setTimeout(() => {
+        if (newVal.trim()) {
+          this.fetchContent();
+        }
+      }, 500);
     },
     selectedGenres: {
       handler: 'fetchContent',
@@ -34,7 +43,8 @@ export default {
       handler: 'fetchContent',
       immediate: false
     }
-  },
+  }
+  ,
   computed: {
     pageRange() {
       // Mostrar máximo 6 páginas adicionales a la actual
@@ -82,25 +92,31 @@ export default {
       }
 
       return range;
-    },
+    }
+    ,
     mobile() {
       return this.windowWidth < 875;
-    },
+    }
+    ,
     hiperMobile() {
       return this.windowWidth < 520;
-    },
+    }
+    ,
     overExtended() {
       return this.windowWidth < 1200;
     }
-  },
+  }
+  ,
 
   methods: {
     handleResize() {
       this.windowWidth = window.innerWidth;
-    },
+    }
+    ,
     toggleFilters() {
       this.showFilters = !this.showFilters;
-    },
+    }
+    ,
     async fetchContent() {
       this.isSearching = true
       const entity = this.isTv ? 'tv' : 'movies'
@@ -119,32 +135,39 @@ export default {
       this.totalPages = total
       this.lastPage = last_page
       this.page = current_page
-    },
+    }
+    ,
     redirectToContent(id) {
       this.$router.push(`/${this.isTv ? 'tv' : 'movie'}/${id}`)
-    },
+    }
+    ,
     prevPage() {
       if (this.page === 1 || this.isSearching) return
       this.page--
       this.fetchContent()
-    },
+    }
+    ,
     nextPage() {
       if (this.page === this.lastPage || this.isSearching) return
       this.page++
       this.fetchContent()
-    },
+    }
+    ,
     goToPage(page) {
       if (this.isSearching) return
       this.page = page
       this.fetchContent()
     }
-  },
+  }
+  ,
   mounted() {
     window.addEventListener('resize', this.handleResize);
-  },
+  }
+  ,
   beforeUnmount() {
     window.removeEventListener('resize', this.handleResize);
-  },
+  }
+  ,
   async beforeMount() {
     await this.fetchContent()
   }
@@ -152,7 +175,7 @@ export default {
 </script>
 
 <template>
-  <div class="search-container" :style="mobile ? 'width: 85%;' : ''">
+  <div class="search-container" :style="mobile ? 'width: 80%; margin: 4rem 10%;' : ''">
     <div class="search-bar" :style="hiperMobile ? 'flex-direction: column;' : ''">
       <div id="switch-content">
         <h2 class="switch-content-title" :class="isTv ? 'switch-content-title-selected' : ''">Movie</h2>
@@ -292,11 +315,6 @@ export default {
   color: var(--contrast-1-2);
 }
 
-.ellipsis {
-  margin: 0 5px;
-}
-
-
 .container-info {
   display: flex;
   flex-direction: column;
@@ -328,9 +346,11 @@ export default {
   padding: 2rem;
   margin: 1rem;
   min-width: 325px;
+  cursor: pointer;
 
   * {
     margin: 0 1rem;
+    cursor: pointer;
   }
 
   div {
@@ -375,6 +395,8 @@ export default {
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  min-width: 325px;
 
   * {
     font-family: "GTVCS", serif;

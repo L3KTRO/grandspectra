@@ -1,6 +1,6 @@
 <script>
 import router from "@/router.js";
-import useApi from "@/composables/api.js";
+import useApi from "@/helpers/api.js";
 import {ref} from "vue";
 import ContentListWrap from "@/subcomponents/ContentListWrap.vue";
 
