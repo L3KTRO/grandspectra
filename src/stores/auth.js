@@ -1,6 +1,17 @@
 // stores/auth.js
 import {defineStore} from 'pinia'
 
+import useApi from '@/helpers/api'
+
+const parseParams = (encoded) => {
+    console.log(encoded)
+    return encoded.split('&').reduce((acc, pair) => {
+        const [key, value] = pair.split('=');
+        acc[key] = value;
+        return acc;
+    }, {});
+}
+
 export const useAuthStore = defineStore('auth', {
     state: () => ({
         user: null,
@@ -17,7 +28,7 @@ export const useAuthStore = defineStore('auth', {
     actions: {
         async login(encoded) {
             try {
-                const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/login`, {
+                const response = await fetch(`api/auth/login`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded'
@@ -39,26 +50,25 @@ export const useAuthStore = defineStore('auth', {
             }
         },
 
-        async register(userData) {
+        async register(encoded) {
             try {
-                const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/register`, {
+                const response = await fetch(`api/auth/register`, {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/x-www-form-urlencoded'
                     },
-                    body: JSON.stringify(userData)
+                    body: encoded
                 });
 
                 if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.message || 'Error al registrar usuario');
+                    return await response.json();
                 }
 
-                // Auto-login después del registro
-                return this.login({
-                    email: userData.email,
-                    password: userData.password
-                });
+                const data = await response.json();
+                this.user = data.user;
+                this.token = data.access_token;
+
+                return data;
             } catch (error) {
                 throw new Error(error.message);
             }

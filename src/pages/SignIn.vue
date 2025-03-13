@@ -19,8 +19,8 @@ export default {
 
 <style>
 #wrapper-box {
-  height: 75vh;
   display: flex;
+  margin: 3rem 0;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -40,5 +40,23 @@ export default {
   align-self: center;
   font-size: 3.5rem;
   font-family: 'CharisSIL', "GTVCS", serif;
+}
+
+@media (max-width: 768px) {
+  #box {
+    min-width: 300px;
+    padding: 1.5rem 2rem;
+  }
+
+  #auth-title {
+    font-size: 2.5rem;
+  }
+}
+
+@media (max-width: 450px) {
+  #box {
+    width: 250px;
+    padding: 1.5rem 1rem;
+  }
 }
 </style>

@@ -203,11 +203,11 @@ export default {
       </div>
     </div>
 
-    <div class="paginator-disabled paginator">
+    <div class="paginator">
       <div class="paginator-button"
            @click="prevPage"
            :class="{ disabled: page === 1 }">
-        &lt; Previous
+        {{ hiperMobile ? '<' : 'Previous <' }}
       </div>
 
       <!-- Números de página -->
@@ -224,7 +224,7 @@ export default {
       <div class="paginator-button"
            @click="nextPage"
            :class="{ disabled: page === lastPage }">
-        Next &gt;
+        {{ hiperMobile ? '>' : 'Next >' }}
       </div>
     </div>
 
@@ -236,7 +236,7 @@ export default {
          @click="redirectToContent(item.id)" :key="item.id">
       <div>
         <img class="content-poster" :src="item.poster ?? 'https://placehold.co/75x112'" alt="Oppenheimer">
-        <h1 class="content-title" :style="overExtended ? 'font-size: 2rem;' : ''">{{ item.title ?? item.name }}</h1>
+        <h1 class="content-title">{{ item.title ?? item.name }}</h1>
       </div>
       <div>
         <h2 v-if="!hiperMobile">{{ item.vote_average }}/10</h2>
@@ -259,11 +259,7 @@ export default {
 
 <style scoped>
 
-.paginator-disabled {
-  * {
-    cursor: not-allowed;
-  }
-}
+
 
 .paginator {
   display: flex;
@@ -531,5 +527,17 @@ input:checked + .slider:before {
 
 .slider.round:before {
   border-radius: 50%;
+}
+
+@media (max-width: 1200px){
+  .content-title {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 520px) {
+  .content-title {
+    font-size: 1.2rem;
+  }
 }
 </style>

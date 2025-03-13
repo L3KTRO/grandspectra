@@ -120,7 +120,21 @@ export default {
 }
 
 .header-button {
+
   padding: 0.35rem 1.5rem;
   border-radius: 10px;
+}
+
+@media (max-width: 375px) {
+  .header-button {
+    max-height: 50px;
+    padding: 0.35rem 1rem;
+    margin: 0 0.5rem;
+    h3 {
+      white-space: nowrap;
+      display: inline;
+      font-size: 1.25rem;
+    }
+  }
 }
 </style>
