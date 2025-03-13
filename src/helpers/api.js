@@ -5,7 +5,7 @@ import {useChangesStore} from "@/stores/global.js";
 export default function useApi() {
 
     const api = axios.create({
-        baseURL: import.meta.env.VITE_API_URL,
+        baseURL: "https://gs-backend.lestro.top",
         headers: {
             'Content-Type': 'application/json',
             "Accept": "application/json"

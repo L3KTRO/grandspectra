@@ -28,7 +28,7 @@ export const useAuthStore = defineStore('auth', {
     actions: {
         async login(encoded) {
             try {
-                const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/login`, {
+                const response = await fetch(`https://gs-backend.lestro.top/auth/login`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded'
@@ -52,7 +52,7 @@ export const useAuthStore = defineStore('auth', {
 
         async register(encoded) {
             try {
-                const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/register`, {
+                const response = await fetch(`https://gs-backend.lestro.top/auth/register`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded'
