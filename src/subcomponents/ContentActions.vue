@@ -113,21 +113,21 @@ export default {
     const res = await request('/me')
     if (res.status !== 200) return;
 
-    res.data.contents.watched.forEach((watched) => {
+    res.data.watched.forEach((watched) => {
       if (this.checker(watched)) {
         this.watched = true
         this.originalWatchedId = watched.id
       }
     })
 
-    res.data.contents.watchlist.forEach((watchlist) => {
+    res.data.watchlist.forEach((watchlist) => {
       if (this.checker(watchlist)) {
         this.watchlisted = true
         this.originalWatchlistId = watchlist.id
       }
     })
 
-    res.data.contents.ratings.forEach((rate) => {
+    res.data.ratings.forEach((rate) => {
       if (this.checker(rate)) {
         this.rate = rate.qualification
         this.disabledRate = true

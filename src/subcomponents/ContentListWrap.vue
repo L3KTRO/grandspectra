@@ -88,4 +88,15 @@ template {
   font-size: 1rem;
   margin-top: 8px;
 }
+
+@media (max-width: 450px){
+  .horizontal-poster-list {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .poster-item img {
+    width: 200px;
+  }
+}
 </style>

@@ -48,7 +48,7 @@ export default {
 
     <div id="buttons">
       <template v-if="authStore.isAuthenticated">
-        <router-link to="/profile">
+        <router-link :to="'/'+authStore.user.username">
           <div class="header-item header-button button">
             <h3 class="light-neon-effect-text">PROFILE</h3>
           </div>
@@ -130,6 +130,7 @@ export default {
     max-height: 50px;
     padding: 0.35rem 1rem;
     margin: 0 0.5rem;
+
     h3 {
       white-space: nowrap;
       display: inline;

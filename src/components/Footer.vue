@@ -30,7 +30,6 @@ export default {
   padding: 2rem 0;
 }
 
-/* Marca */
 .footer-brand {
   flex: 1 1 250px;
   margin-bottom: 1.5rem;
@@ -38,6 +37,14 @@ export default {
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
+}
+
+@media (max-width: 475px) {
+  .footer-brand {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
 }
 
 .footer-column h3 {
