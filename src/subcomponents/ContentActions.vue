@@ -18,6 +18,7 @@ export default {
       watched: false,
       watchlisted: false,
       isLoading: true,
+      loggedIn: false,
     }
   },
   computed: {
@@ -111,7 +112,9 @@ export default {
   async beforeMount() {
     this.isLoading = true
     const res = await request('/me')
+    if (res.status === 401) return this.loggedIn = false
     if (res.status !== 200) return;
+    this.loggedIn = true
 
     res.data.watched.forEach((watched) => {
       if (this.checker(watched)) {
@@ -145,7 +148,7 @@ export default {
 
 <template>
   <div id="actions">
-    <ul id="list" v-if="!isLoading">
+    <ul id="list" v-if="!isLoading && loggedIn">
       <li @click="toggleWatched">Mark as <span>{{ watched ? 'unwatched' : "watched" }}</span></li>
       <li @click="toggleWatchlist">{{ watchlisted ? 'Remove from ' : "Add to " }}<span>watchlist</span></li>
       <li style="display: flex; flex-direction: column;">
@@ -169,13 +172,26 @@ export default {
           </div>
         </div>
       </li>
-      <li>Share</li>
     </ul>
-    <h2 v-else>Loading...</h2>
+    <ul id="list" v-else>
+      <li v-if="isLoading && loggedIn">Loading...</li>
+      <li v-else>Add to watchlist or rate it!
+        <router-link to="/signup">
+          <div class="button light-neon-effect-text" id="join">Join Us</div>
+        </router-link>
+      </li>
+    </ul>
   </div>
 </template>
 
 <style scoped>
+
+#join {
+  font-family: 'CharisSIL', "GTVCS", serif;
+  text-transform: uppercase;
+  margin: auto;
+  width: 150px;
+}
 
 .disabled-button {
   background-color: var(--background-contrast-mid);

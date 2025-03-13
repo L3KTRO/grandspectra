@@ -260,7 +260,6 @@ export default {
 <style scoped>
 
 
-
 .paginator {
   display: flex;
   flex-direction: row;
@@ -529,7 +528,7 @@ input:checked + .slider:before {
   border-radius: 50%;
 }
 
-@media (max-width: 1200px){
+@media (max-width: 1200px) {
   .content-title {
     font-size: 2rem;
   }

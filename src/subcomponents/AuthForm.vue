@@ -151,10 +151,10 @@ export default {
       urlencoded.append("email", this.formData.email);
       urlencoded.append("password", this.formData.password);
 
-      await this.authStore.login(urlencoded);
+      const res = await this.authStore.login(urlencoded);
 
       // Redirigir al usuario a la página principal
-      this.$router.push('/profile');
+      this.$router.push('/'+res.user.username);
     },
     async register() {
       const urlencoded = new URLSearchParams();
@@ -164,8 +164,6 @@ export default {
       urlencoded.append("password_confirmation", this.formData.confirmPassword);
 
       const res = await this.authStore.register(urlencoded);
-
-      console.log(res)
 
       if (res["errors"]) {
         if (res["errors"]["email"]) {
@@ -263,6 +261,7 @@ export default {
   display: flex;
   flex-direction: column;
   min-width: 100%;
+
   * {
     min-width: 100%;
   }

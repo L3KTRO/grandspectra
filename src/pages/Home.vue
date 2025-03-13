@@ -63,11 +63,11 @@ export default {
   <div id="trending">
     <div>
       <h1 class="trend-title light-neon-effect-text">Popular movies</h1>
-      <ContentList title="Popular movies" :content="this.popularMovies"/>
+      <ContentList :content="this.popularMovies"/>
     </div>
     <div>
       <h1 class="trend-title light-neon-effect-text">Popular series</h1>
-      <ContentList title="Popular tv shows" :content="this.popularShows"/>
+      <ContentList :content="this.popularShows"/>
     </div>
   </div>
 
