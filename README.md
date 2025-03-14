@@ -5,9 +5,13 @@
 ---
 
 [Grand Spectra (Frontend)](https://gs.lestro.top/)
+> **Nota**: Si ves un error de CORS en la consola, proviene del CDN de TMDB y no afecta al funcionamiento ni a la visibilidad de la página.
+> Pasa unicamente cuando pasas el ratón pon encima de una imagen de TMDB. En sus propios foros identifican esto como "normal" y no hay solución.
+> Como digo, no afecta en NADA al funcionamiento de la página, es solo un error de consola que no afecta al usuario final.
+> 
+[Grand Spectra (Backend)](https://gs-backend.lestro.top/)
 
 ---
-[Grand Spectra (Backend) (https://gs-backend.lestro.top/)](https://gs-backend.lestro.top/)
 
 ## 🚀 ¿Qué es Grand Spectra?
 
