@@ -93,7 +93,6 @@ export default {
   width: 100%;
 }
 
-
 #cast {
   display: flex;
   flex-direction: row;

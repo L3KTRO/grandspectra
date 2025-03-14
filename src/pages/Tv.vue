@@ -93,15 +93,15 @@ export default {
 </script>
 
 <template>
-  <div class="body-content" v-if="!isLoading">
+  <div class="body-content" v-if="!isLoading" :style="hiperMobile ? 'margin: 4rem 2rem;' : ''">
     <ContentMetadata :data="data"/>
     <div v-if="!mobile" class="content-part-final">
       <Cast :people="data.credits"/>
       <ContentActions :contentId="contentId"/>
     </div>
     <div v-else class="content-part-final-mobile">
-      <Cast :people="data.credits"/>
       <ContentActions :contentId="contentId"/>
+      <Cast :people="data.credits"/>
     </div>
   </div>
   <div id="body-content" v-else>

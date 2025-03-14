@@ -123,10 +123,16 @@ export default {
 #initial {
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: start;
 
   * {
     align-self: start;
+  }
+}
+
+@media (max-width: 750px) {
+  #initial {
+    justify-content: center;
   }
 }
 

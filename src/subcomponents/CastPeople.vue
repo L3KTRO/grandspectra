@@ -19,7 +19,7 @@ export default {
         <span> as</span>
         {{ person.occupation.name }}
       </h2>
-      <h2 v-if="person.character">Playing <span>{{ person.character }}</span></h2>
+      <h2 v-if="person.character" class="person-port">Portraying <span>{{ person.character }}</span></h2>
     </div>
   </div>
 </template>
@@ -52,6 +52,16 @@ export default {
 
   span {
     font-style: italic
+  }
+}
+
+@media (max-width: 750px) {
+  .person-name {
+    font-size: 1.2rem;
+  }
+
+  .person-port {
+    font-size: 0.8rem;
   }
 }
 </style>

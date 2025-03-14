@@ -45,6 +45,9 @@ export default {
       return this.windowWidth < 600;
     }
   },
+  beforeMount() {
+    window.addEventListener('resize', this.handleResize);
+  },
   beforeUnmount() {
     window.removeEventListener('resize', this.handleResize);
   },
@@ -54,7 +57,6 @@ export default {
     }
   },
   async mounted() {
-    window.addEventListener('resize', this.handleResize);
     this.isLoading = true
     const response = await request("/movies/" + this.$route.params.id)
     this.isLoading = false
@@ -115,5 +117,16 @@ export default {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+}
+
+.content-part-final-mobile {
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 750px) {
+  .body-content {
+    margin: 4rem 2rem;
+  }
 }
 </style>
