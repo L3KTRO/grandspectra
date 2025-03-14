@@ -46,12 +46,6 @@ compartir tus opiniones con la comunidad.
 - **Backend/API**: Laravel 12 + Clonación en local de toda la TMDB para mayor velocidad 🚀
 - **Diseño responsive**: Adaptado perfectamente a todos los dispositivos 📱💻🖥️.
 
----
-
-## 📸 Capturas del proyecto
-
-_(Aquí puedes incluir capturas atractivas de las pantallas principales como la página inicial, Spectra Hub, perfil de
-usuario, etc.)_
 
 ---
 
