@@ -7,13 +7,7 @@ COPY . .
 RUN npm run build
 
 # Etapa de producción con servidor Node.js
-FROM node:18-alpine
-WORKDIR /app
-RUN npm install -g serve
-COPY --from=builder /app/dist ./dist
-
+FROM nginx:alpine as production
+COPY --from=builder /app/dist/ /usr/share/nginx/html
 COPY env.sh /docker-entrypoint.d/env.sh
 RUN chmod +x /docker-entrypoint.d/env.sh
-
-EXPOSE 3000
-CMD ["serve", "-s", "dist", "-l", "3000"]

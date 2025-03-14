@@ -1,5 +1,8 @@
 // stores/auth.js
 import {defineStore} from 'pinia'
+import useApi from "@/helpers/api.js";
+
+const {request} = useApi();
 
 export const useAuthStore = defineStore('auth', {
     state: () => ({
@@ -17,7 +20,7 @@ export const useAuthStore = defineStore('auth', {
     actions: {
         async login(encoded) {
             try {
-                const response = await fetch(`/api/auth/login`, {
+                const response = await request(`/auth/login`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded'
@@ -25,9 +28,9 @@ export const useAuthStore = defineStore('auth', {
                     body: encoded
                 });
 
-                const data = await response.json();
+                const {data, status} = response;
 
-                if (!response.ok) return data;
+                if (status !== 200) return data;
 
                 // Actualizar estado del store
                 this.user = data.user;
@@ -41,7 +44,7 @@ export const useAuthStore = defineStore('auth', {
 
         async register(encoded) {
             try {
-                const response = await fetch(`/api/auth/register`, {
+                const response = await request(`/auth/register`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded'
@@ -49,11 +52,10 @@ export const useAuthStore = defineStore('auth', {
                     body: encoded
                 });
 
-                if (!response.ok) {
-                    return await response.json();
-                }
+                const {data, status} = response;
 
-                const data = await response.json();
+                if (status !== 201) return data;
+
                 this.user = data.user;
                 this.token = data.access_token;
 

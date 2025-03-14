@@ -6,9 +6,9 @@ services:
       dockerfile: Dockerfile
     container_name: grandspectra-frontend_solo
     ports:
-      - "3339:3000"
+      - "3339:80"
     environment:
-      VITE_API_URL: "http://localhost:8000"
+      EXTERNAL_API_URL: "http://localhost:8000"
     pull_policy: always
 
 networks:
