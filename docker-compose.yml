@@ -1,0 +1,20 @@
+services:
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: grandspectra-frontend
+    ports:
+      - "3339:80"
+    environment:
+      EXTERNAL_API_URL: "https://gs-backend.lestro.top"
+    pull_policy: always
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  dbdata:
+  laraveldata:
