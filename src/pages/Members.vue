@@ -41,7 +41,7 @@ export default {
 
 <template>
   <div style="margin: 5rem">
-    <h2>Últimos miembros registrados</h2>
+    <h2 style="font-weight: bold">Latest registered members</h2>
     <ul v-if="users.length">
       <li v-for="user in users" :key="user.id">
         <router-link :to="`/${user.username}`">
