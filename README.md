@@ -4,6 +4,11 @@
 
 ---
 
+[Grand Spectra (Frontend)](https://gs.lestro.top/)
+
+---
+[Grand Spectra (Backend) (https://gs-backend.lestro.top/)](https://gs-backend.lestro.top/)
+
 ## 🚀 ¿Qué es Grand Spectra?
 
 **Grand Spectra** es una plataforma web construida con **Vue.js**, diseñada especialmente para los apasionados del cine
