@@ -153,6 +153,8 @@ export default {
 
       const res = await this.authStore.login(urlencoded);
 
+      if (!res.user)return this.error = "Invalid email or password";
+
       // Redirigir al usuario a la página principal
       this.$router.push('/'+res.user.username);
     },
@@ -183,7 +185,7 @@ export default {
           this.validations.confirmPassword.valid = false;
         }
       } else {
-        this.$router.push('/profile');
+        this.$router.push('/'+res.user.username);
       }
     }
   }

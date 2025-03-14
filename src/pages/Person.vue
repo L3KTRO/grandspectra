@@ -15,12 +15,31 @@ export default {
         still: null,
         name: null,
         credits: []
-      })
+      }),
+      windowWidth: window.innerWidth
+    }
+  },
+  computed: {
+    mobile() {
+      return this.windowWidth < 1100;
+    },
+    hiperMobile() {
+      return this.windowWidth < 650;
+    }
+  },
+  mounted() {
+    window.addEventListener('resize', this.handleResize);
+  },
+  beforeUnmount() {
+    window.removeEventListener('resize', this.handleResize);
+  },
+  methods: {
+    handleResize() {
+      this.windowWidth = window.innerWidth;
     }
   },
   async beforeMount() {
     const response = await request("/people/" + this.$route.params.id)
-    console.log(response)
     if (response.status !== 200) return router.push("/notfound")
     const {still, name, biography, credits} = response.data
 
@@ -42,14 +61,20 @@ export default {
 </script>
 
 <template>
-  <div id="body">
+  <div id="body" :style="hiperMobile ? 'flex-direction: column;' : ''">
     <div id="person">
       <img id="still" :src="data.still" alt="person"/>
+      <div v-if="mobile">
+        <h1 id="name">{{ data.name }}</h1>
+      </div>
       <p id="biography">{{ data.biography }}</p>
     </div>
     <div id="contents">
-      <h2 id="starring">FILMS STARRING</h2>
-      <h1 id="name">{{ data.name }}</h1>
+      <div v-if="!mobile">
+        <h2 id="starring">FILMS STARRING</h2>
+        <h1 id="name">{{ data.name }}</h1>
+      </div>
+      <h2 id="starring" v-if="mobile">FILMS STARRING</h2>
       <ContentListWrap :content="data.credits"/>
     </div>
   </div>
@@ -60,19 +85,18 @@ export default {
 #body {
   display: flex;
   flex-direction: row;
-  margin: 4rem 15rem;
+  margin: 4rem 5%;
 }
 
 #person {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 25%;
-  padding: 0 2rem;
+  flex-grow: 1;
 }
 
 #biography {
-  margin: 0.75rem;
+  margin: 0.75rem 2rem;
 }
 
 #name {
@@ -91,8 +115,8 @@ export default {
 }
 
 #contents {
+  flex-grow: 2;
   margin: 1rem;
-  width: 75%;
 }
 
 </style>

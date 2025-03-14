@@ -15,7 +15,6 @@ export default {
     <h2 id="title">...</h2>
   </div>
   <div class="horizontal-poster-list">
-
     <div
         class="poster-item"
         v-if="this.content"
@@ -62,6 +61,7 @@ template {
   padding: 16px;
   box-sizing: border-box;
   scroll-behavior: smooth;
+  justify-content: center;
 }
 
 .poster-item {

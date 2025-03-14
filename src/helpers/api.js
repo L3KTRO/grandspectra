@@ -5,7 +5,7 @@ import {useChangesStore} from "@/stores/global.js";
 export default function useApi() {
 
     const api = axios.create({
-        baseURL: "https://gs-backend.lestro.top",
+        baseURL: import.meta.env.VITE_API_URL,
         headers: {
             'Content-Type': 'application/json',
             "Accept": "application/json"
@@ -26,8 +26,6 @@ export default function useApi() {
 
 
     const request = async (endpoint, config = {}) => {
-        console.log("path: " + import.meta.env.VITE_API_URL)
-
         try {
             console.log(`${config.method || 'GET'}: ${endpoint}`)
             const res = await api({
@@ -37,8 +35,7 @@ export default function useApi() {
                 params: config.params,
                 headers: {
                     Authorization: `Bearer ${useAuthStore().token}`
-                },
-
+                }
             })
 
             if (config.method && config.method !== 'GET') {

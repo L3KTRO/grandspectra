@@ -4,9 +4,7 @@ import ContentListWrap from "@/subcomponents/ContentListWrap.vue";
 import {useAuthStore} from "@/stores/auth.js";
 import {useChangesStore} from '@/stores/global.js'
 import useApi from "@/helpers/api.js";
-import {ref} from "vue";
 import {storeToRefs} from "pinia";
-import router from "@/router.js";
 import UserList from "@/subcomponents/UserList.vue";
 
 const {request} = useApi();
@@ -117,11 +115,16 @@ export default {
     await this.fetch();
   },
   async beforeUnmount() {
-    console.log("beforeUnmount");
     window.removeEventListener('resize', this.handleResize);
     await this.updateToDb()
   },
   async beforeRouteUpdate() {
+    await this.updateToDb()
+  },
+  async beforeRouteLeave() {
+    await this.updateToDb()
+  },
+  async destroyed() {
     await this.updateToDb()
   }
 }

@@ -10,6 +10,7 @@ import {useAuthStore} from "@/stores/auth.js";
 import Tv from "@/pages/Tv.vue";
 import Person from "@/pages/Person.vue";
 import Hub from "@/pages/Hub.vue";
+import Members from "@/pages/Members.vue";
 
 const routes = [
     {
@@ -35,6 +36,11 @@ const routes = [
                 path: '/tv/:id',
                 name: 'tv',
                 component: Tv
+            },
+            {
+                path: "/members",
+                name: "members",
+                component: Members
             },
             {
                 path: "signin",

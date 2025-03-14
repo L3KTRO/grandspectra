@@ -15,7 +15,10 @@ export default {
   },
   computed: {
     hub() {
-      return this.windowWidth > 490 ? "SPECTRA HUB" : "HUB";
+      return this.windowWidth > 700 ? "SPECTRA HUB" : "HUB";
+    },
+    members(){
+      return this.windowWidth > 700 ? "SPECTATORS" : this.windowWidth > 650 ? "SPECTATORS" : "SPCTR";
     }
   },
   mounted() {
@@ -44,13 +47,19 @@ export default {
           <h3 class="header-nav">{{ hub }}</h3>
         </div>
       </router-link>
+
+      <router-link to="/members">
+        <div class="header-item">
+          <h3 class="header-nav">{{ members }}</h3>
+        </div>
+      </router-link>
     </div>
 
     <div id="buttons">
       <template v-if="authStore.isAuthenticated">
         <router-link :to="'/'+authStore.user.username">
           <div class="header-item header-button button">
-            <h3 class="light-neon-effect-text">PROFILE</h3>
+            <h3 class="light-neon-effect-text" id="profile">PROFILE</h3>
           </div>
         </router-link>
       </template>
@@ -120,15 +129,19 @@ export default {
 }
 
 .header-button {
-
   padding: 0.35rem 1.5rem;
   border-radius: 10px;
 }
 
-@media (max-width: 375px) {
+@media (max-width: 500px) {
+
+  .header-item {
+    margin: 0 0.25rem;
+  }
+
   .header-button {
     max-height: 50px;
-    padding: 0.35rem 1rem;
+    padding: 0.15rem 1rem 0.30rem;
     margin: 0 0.5rem;
 
     h3 {

@@ -1,17 +1,6 @@
 // stores/auth.js
 import {defineStore} from 'pinia'
 
-import useApi from '@/helpers/api'
-
-const parseParams = (encoded) => {
-    console.log(encoded)
-    return encoded.split('&').reduce((acc, pair) => {
-        const [key, value] = pair.split('=');
-        acc[key] = value;
-        return acc;
-    }, {});
-}
-
 export const useAuthStore = defineStore('auth', {
     state: () => ({
         user: null,
@@ -36,9 +25,9 @@ export const useAuthStore = defineStore('auth', {
                     body: encoded
                 });
 
-                if (!response.ok) throw new Error('Credenciales incorrectas');
-
                 const data = await response.json();
+
+                if (!response.ok) return data;
 
                 // Actualizar estado del store
                 this.user = data.user;

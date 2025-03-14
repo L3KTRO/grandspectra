@@ -8,7 +8,7 @@ export default {
   },
   computed: {
     title() {
-      return this.windowWidth > 810 ? "GRAND SPECTRA" : "GS";
+      return this.windowWidth > 1000 ? "GRAND SPECTRA" : "GS";
     }
   },
   mounted() {
@@ -42,6 +42,13 @@ export default {
   font-weight: bold;
   transition: 0.5s ease-in-out;
   text-shadow: 0 0 15px rgba(251, 43, 43, 0.75);
+}
+
+@media (max-width: 400px) {
+  #title {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
 }
 
 #title:hover {
