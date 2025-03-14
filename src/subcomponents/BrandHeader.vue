@@ -1,4 +1,5 @@
 <script>
+// Unicamente usado para mostrar el nombre del sitio
 export default {
   name: "BrandHeader",
   props: {
@@ -8,6 +9,7 @@ export default {
     }
   }
 }
+
 </script>
 
 <template>

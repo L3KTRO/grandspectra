@@ -1,6 +1,8 @@
 <script>
 import CastPeople from "@/subcomponents/CastPeople.vue";
 
+// Usado para mostrar el casting de una pelicula, divido entre casting y equipo
+
 export default {
   name: "Cast",
   components: {CastPeople, CastPerson: CastPeople},
@@ -17,7 +19,7 @@ export default {
     }
   },
   methods: {
-    sortPerson(a, b) {
+    sortPerson(a, b) { // Ordena por orden de aparicion en la pelicula, si no tiene orden, por popularidad
       if (a.order === null && b.order === null) {
         return parseInt(b.person.popularity) - parseInt(a.person.popularity);
       }
@@ -34,11 +36,11 @@ export default {
     }
   },
   computed: {
-    cast() {
+    cast() { // Filtra por casting
       return this.people.filter(person => person.occupation_id === 10 && person.person && person.person.name)
           .sort(this.sortPerson)
     },
-    crew() {
+    crew() { // Filtra por equipo
       return this.people.filter(person => person.occupation_id !== 10 && person.person && person.person.name)
           .sort(this.sortPerson)
     },

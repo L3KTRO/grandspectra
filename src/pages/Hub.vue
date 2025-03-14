@@ -1,8 +1,13 @@
 <script>
-import {ref} from "vue";
 import useApi from "@/helpers/api.js";
 
 const {request} = useApi();
+
+/*
+* DISCLAIM: He deshabilitado los filtros por la lentitud que tiene la base de datos al usar los filtros, hace
+* parecer que la aplicación ha roto cuando lo que hace es esperar más de 20-25 segundos a la request
+* Puedes comprobar que está maquetado abajo pero comentado
+*/
 
 export default {
   name: 'Hub',
@@ -23,7 +28,7 @@ export default {
     }
   },
   watch: {
-    searchQuery(newVal) {
+    searchQuery(newVal) { // Controlador de busqueda para cuando dejamos de escribir por 0.5 segundos
       if (this.debounceTimeout) {
         clearTimeout(this.debounceTimeout);
       }
@@ -94,30 +99,30 @@ export default {
       return range;
     }
     ,
-    mobile() {
+    mobile() {  // Responsive
       return this.windowWidth < 875;
     }
     ,
-    hiperMobile() {
+    hiperMobile() { // Responsive
       return this.windowWidth < 520;
     }
     ,
-    overExtended() {
+    overExtended() { // Responsive
       return this.windowWidth < 1200;
     }
   }
   ,
 
   methods: {
-    handleResize() {
+    handleResize() { // Responsive
       this.windowWidth = window.innerWidth;
     }
     ,
-    toggleFilters() {
+    toggleFilters() { // Muestra u oculta los filtros
       this.showFilters = !this.showFilters;
     }
     ,
-    async fetchContent() {
+    async fetchContent() { // Busca contenido
       this.isSearching = true
       const entity = this.isTv ? 'tv' : 'movies'
       const titleParam = this.isTv ? 'name' : 'title'
@@ -137,7 +142,7 @@ export default {
       this.page = current_page
     }
     ,
-    redirectToContent(id) {
+    redirectToContent(id) { // Redirige a la página de contenido
       this.$router.push(`/${this.isTv ? 'tv' : 'movie'}/${id}`)
     }
     ,

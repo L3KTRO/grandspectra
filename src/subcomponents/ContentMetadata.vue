@@ -1,4 +1,7 @@
 <script>
+
+// Mostrar la metadata de un contenido
+
 export default {
   name: "ContentMetadata",
   props: {
@@ -29,6 +32,7 @@ export default {
   },
   data() {
     return {
+      // URLs de las paginas de TMDB y IMDB para redirigir
       tmdbTv: "https://www.themoviedb.org/tv/",
       tmdbMovie: "https://www.themoviedb.org/movie/",
       imdbEndpoint: "https://www.imdb.com/title/tt",

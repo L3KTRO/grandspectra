@@ -1,4 +1,7 @@
 <script>
+
+// Usado para mostrar en columna las personas de un casting o equipo
+
 export default {
   name: "CastPeople",
   props: {

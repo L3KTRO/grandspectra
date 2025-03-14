@@ -22,41 +22,41 @@ export default {
     }
   },
   computed: {
-    switchRate() {
+    switchRate() { // Si el usuario ya ha valorado la película, no puede volver a hacerlo
       return this.disabledRate || this.rate === '0';
     },
-    switchRemoveRate() {
+    switchRemoveRate() { // Si el usuario no ha valorado la película, no puede eliminar la valoración
       return !this.disabledRate;
     }
   },
   methods: {
-    addRate() {
+    addRate() { // Añadir valoración
       if (this.switchRate) return;
-      this.watched = true;
-      this.watchlisted = false;
-      this.disabledRate = true;
+      this.watched = true; // Si se valora, se marca como visto automáticamente
+      this.watchlisted = false; // Si se valora, se elimina de la watchlist automáticamente
+      this.disabledRate = true; // No se puede volver a valorar
     },
 
-    removeRate() {
-      if (this.switchRemoveRate) return;
-      this.rate = "0";
-      this.disabledRate = false;
+    removeRate() { // Eliminar valoración
+      if (this.switchRemoveRate) return; // Si no se ha valorado, no se puede eliminar
+      this.rate = "0"; // Se elimina la valoración
+      this.disabledRate = false; // Se puede volver a valorar
     },
-    moveRate() {
+    moveRate() { // Slider de la valoración
       if (this.rate !== "0")
         this.disabledRate = false;
     },
 
-    toggleWatched() {
+    toggleWatched() { // Marcar como visto
       this.watched = !this.watched
-      this.watchlisted = false;
+      this.watchlisted = false; // Si se marca como visto, se elimina de la watchlist automáticamente
     },
 
-    toggleWatchlist() {
+    toggleWatchlist() { // Añadir a la watchlist
       this.watchlisted = !this.watchlisted
     },
 
-    checker(item) {
+    checker(item) { // Para cuando obtenemos todos los ratings, watchlist y watched, comprobamos si el contenido está en ellos
       return item[this.propertyName] === parseInt(this.$route.params.id)
     },
 
@@ -112,25 +112,25 @@ export default {
   async beforeMount() {
     this.isLoading = true
     const res = await request('/me')
-    if (res.status === 401) return this.loggedIn = false
-    if (res.status !== 200) return;
-    this.loggedIn = true
+    if (res.status === 401) return this.loggedIn = false // No está logueado
+    if (res.status !== 200) return; // Error
+    this.loggedIn = true // Está logueado
 
-    res.data.watched.forEach((watched) => {
+    res.data.watched.forEach((watched) => { // Comprobamos si está marcado como visto
       if (this.checker(watched)) {
         this.watched = true
         this.originalWatchedId = watched.id
       }
     })
 
-    res.data.watchlist.forEach((watchlist) => {
+    res.data.watchlist.forEach((watchlist) => { // Comprobamos si está en la watchlist
       if (this.checker(watchlist)) {
         this.watchlisted = true
         this.originalWatchlistId = watchlist.id
       }
     })
 
-    res.data.ratings.forEach((rate) => {
+    res.data.ratings.forEach((rate) => { // Comprobamos si está valorado
       if (this.checker(rate)) {
         this.rate = rate.qualification
         this.disabledRate = true

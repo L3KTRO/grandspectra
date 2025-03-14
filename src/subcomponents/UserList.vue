@@ -1,4 +1,7 @@
 <script>
+
+// Lista de miembros
+
 export default {
   name: "UserList",
   props: {

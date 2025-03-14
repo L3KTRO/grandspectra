@@ -41,8 +41,8 @@ export default {
     };
   },
   computed: {
-    ...mapStores(useAuthStore),
-    isFormValid() {
+    ...mapStores(useAuthStore), // Mapear el store de autenticación
+    isFormValid() { // Comprobar si el formulario es válido
       if (this.isSignIn) {
         return this.validations.email.valid && this.validations.password.valid;
       }
@@ -126,7 +126,7 @@ export default {
       }
     },
     async handleSubmit() {
-      // Validar todo el formulario antes de enviar
+      // Validar el formulario completo antes de enviar
       this.validateForm();
 
       if (!this.isFormValid) {
@@ -158,7 +158,7 @@ export default {
 
       if (!res.user) return this.error = "Invalid email or password";
 
-      // Redirigir al usuario a la página principal
+      // Redirigir al usuario a su perfil
       this.$router.push('/' + res.user.username);
     },
     async register() {
@@ -170,6 +170,7 @@ export default {
 
       const res = await this.authStore.register(urlencoded);
 
+      // Si hubiera errores en la respuesta, mostrarlos
       if (res["errors"]) {
         if (res["errors"]["email"]) {
           this.validations.email.valid = false;

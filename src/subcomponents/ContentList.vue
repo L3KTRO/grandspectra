@@ -1,4 +1,7 @@
 <script>
+
+// Mostrar una lista de contenido
+
 export default {
   name: "ContentList",
   props: {

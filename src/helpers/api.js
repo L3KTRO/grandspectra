@@ -2,8 +2,14 @@ import axios from 'axios';
 import {useAuthStore} from '@/stores/auth'
 import {useChangesStore} from "@/stores/global.js";
 
+/**
+ * Helper para realizar peticiones a la API
+ * @returns {{request: ((function(*, {}=): Promise<axios.AxiosResponse<any>|*|undefined>)|*)}}
+ */
+
 export default function useApi() {
 
+    // Crear instancia de axios
     const api = axios.create({
         baseURL: import.meta.env.VITE_API_URL,
         headers: {
@@ -25,8 +31,10 @@ export default function useApi() {
     );
 
 
+    // Función para realizar peticiones
     const request = async (endpoint, config = {}) => {
         try {
+            // Traza de la petición
             console.log(`${config.method || 'GET'}: ${endpoint}`)
             const res = await api({
                 method: config.method || 'GET',
@@ -38,8 +46,8 @@ export default function useApi() {
                     ...config.headers
                 }
             })
-            console.log(`URI: ${res.request.responseURL}`)
 
+            // Si la petición es diferente a GET, se agrega un cambio al store global, entra al store para averguar más
             if (config.method && config.method !== 'GET') {
                 useChangesStore().addChange();
             }

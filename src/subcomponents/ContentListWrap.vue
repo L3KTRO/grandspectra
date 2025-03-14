@@ -1,4 +1,7 @@
 <script>
+
+// Mostrar una lista de contenido con wrap
+
 export default {
   name: "ContentListWrap",
   props: {

@@ -76,11 +76,18 @@ const routes = [
 ]
 
 
+/**
+ * Router para la aplicación
+ * @type {Router}
+ */
 const router = createRouter({
     history: createWebHistory(),
     routes
 })
 
+/**
+ * Middleware para la autenticación
+ */
 router.beforeEach(async (to) => {
     const authStore = useAuthStore()
 

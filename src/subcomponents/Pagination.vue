@@ -1,4 +1,7 @@
 <script>
+
+// Paginación para la lista de miembros (pendiente de reutilizar)
+
 export default {
   props: {
     currentPage: {

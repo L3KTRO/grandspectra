@@ -17,22 +17,23 @@ export default {
     }
   },
   computed: {
-    mobile() {
+    mobile() { // Responsive
       return this.windowWidth < 750;
     }
   },
-  mounted() {
+  mounted() { // Responsive
     window.addEventListener('resize', this.handleResize);
   },
-  beforeUnmount() {
+  beforeUnmount() { // Responsive
     window.removeEventListener('resize', this.handleResize);
   },
   methods: {
-    handleResize() {
+    handleResize() { // Responsive
       this.windowWidth = window.innerWidth;
     }
   },
   async beforeMount() {
+    // Obtenemos las películas y series más populares
     const res = await request("/movies?sort_by=popularity&sort_dir=desc")
     this.popularMovies = res.data.data
     const res2 = await request("/tv?sort_by=popularity&sort_dir=desc")

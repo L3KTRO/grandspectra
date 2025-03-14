@@ -6,12 +6,14 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "generate-docs": "jsdoc -c jsdoc.json"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.0.5",
     "axios": "^1.8.2",
     "dotenv": "^16.4.7",
+    "jsdoc": "^4.0.4",
     "pinia": "^3.0.1",
     "pinia-plugin-persistedstate": "^4.2.0",
     "tailwindcss": "^4.0.5",

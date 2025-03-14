@@ -15,6 +15,7 @@ export default {
   name: "Profile",
   components: {UserList, ContentListWrap, ContentList},
   data() {
+    // Visita el store para más info sobre él
     const changesStore = useChangesStore()
     const {meSync} = storeToRefs(changesStore)
 
@@ -38,28 +39,28 @@ export default {
     }
   },
   computed: {
-    currentContent() {
+    currentContent() { // Devuelve el contenido actual
       return this.data[this.activeView]
     },
-    mobile() {
+    mobile() { // Responsive
       return this.windowWidth < 970;
     },
-    hiperMobile() {
+    hiperMobile() { // Responsive
       return this.windowWidth < 450;
     },
-    self() {
+    self() { // Comprueba si el usuario es el mismo que el que está logueado
       return this.store.user && this.$route.params.username === this.store.user.username
     },
-    isCurrentlyFollowing() {
+    isCurrentlyFollowing() { // Comprueba si el usuario logueado está siguiendo al que estamos viendo
       if (this.self) return null;
       return this.followers.map((user) => user.id).includes(this.store.user.id)
     }
   },
   methods: {
-    handleResize() {
+    handleResize() { // Responsive
       this.windowWidth = window.innerWidth;
     },
-    setActiveView(view) {
+    setActiveView(view) { // Cambia la vista activa
       this.activeView = view
     },
     logout() {
@@ -100,13 +101,13 @@ export default {
     },
   },
   watch: {
+    // Detecta cambios en el store de sincronización para actualizar la vista para posibles desincronizaciones
     sync() {
       if (!this.self) return;
-      console.log("fetching")
       this.fetch().then(() => {
       })
     },
-    $route() {
+    $route() { // Detecta cambios en la ruta para actualizar la vista
       this.fetch().then(() => {
       })
     }
