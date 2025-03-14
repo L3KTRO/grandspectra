@@ -6,6 +6,7 @@ import {useChangesStore} from '@/stores/global.js'
 import useApi from "@/helpers/api.js";
 import {storeToRefs} from "pinia";
 import UserList from "@/subcomponents/UserList.vue";
+import router from "@/router.js";
 
 const {request} = useApi();
 
@@ -76,7 +77,7 @@ export default {
       this.isLoading = true
       const path = this.self ? "/me" : "/users/" + this.$route.params.username
       const res = await request(path)
-      if (res.status !== 200) return this.isLoading = false
+      if (res.status !== 200) return router.push("/notfound")
       this.username = res.data.username
       this.email = res.data.email
       this.data.rated = res.data.ratings.map(this.mapper)
@@ -293,6 +294,7 @@ export default {
 
 #follows {
   display: flex;
+  cursor: pointer;
   flex-direction: row;
   align-items: center;
   gap: 1rem;

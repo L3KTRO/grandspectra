@@ -61,7 +61,7 @@ template {
   padding: 16px;
   box-sizing: border-box;
   scroll-behavior: smooth;
-  justify-content: center;
+  justify-content: start;
 }
 
 .poster-item {

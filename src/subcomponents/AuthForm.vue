@@ -77,6 +77,9 @@ export default {
         } else if (this.formData.username.length < 3) {
           this.validations.username.error = "Username must be at least 3 characters";
           this.validations.username.valid = false;
+        } else if (this.formData.username.length > 16) {
+          this.validations.username.error = "Username must be at most 16 characters";
+          this.validations.username.valid = false;
         } else {
           this.validations.username.error = "";
           this.validations.username.valid = true;
@@ -153,10 +156,10 @@ export default {
 
       const res = await this.authStore.login(urlencoded);
 
-      if (!res.user)return this.error = "Invalid email or password";
+      if (!res.user) return this.error = "Invalid email or password";
 
       // Redirigir al usuario a la página principal
-      this.$router.push('/'+res.user.username);
+      this.$router.push('/' + res.user.username);
     },
     async register() {
       const urlencoded = new URLSearchParams();
@@ -185,7 +188,7 @@ export default {
           this.validations.confirmPassword.valid = false;
         }
       } else {
-        this.$router.push('/'+res.user.username);
+        this.$router.push('/' + res.user.username);
       }
     }
   }

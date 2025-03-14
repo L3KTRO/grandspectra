@@ -66,7 +66,7 @@ const routes = [
                 component: Hub,
             },
             {
-                path: '/:pathMatch(.*)*',
+                path: '/notfound',
                 name: 'NotFound',
                 component: NotFound
             }
