@@ -5,7 +5,7 @@ import {useChangesStore} from "@/stores/global.js";
 export default function useApi() {
 
     const api = axios.create({
-        baseURL: import.meta.env.VITE_API_URL,
+        baseURL: "/api",
         headers: {
             'Content-Type': 'application/json',
             "Accept": "application/json"
@@ -37,6 +37,7 @@ export default function useApi() {
                     Authorization: `Bearer ${useAuthStore().token}`
                 }
             })
+            console.log(`URI: ${res.request.responseURL}`)
 
             if (config.method && config.method !== 'GET') {
                 useChangesStore().addChange();

@@ -10,9 +10,6 @@ import EnvironmentPlugin from 'vite-plugin-environment';
 export default defineConfig(({mode}) => {
         const env = loadEnv(mode, process.cwd(), '');
         return {
-            define: {
-                'import.meta.env': JSON.stringify(env),
-            },
             plugins: [vue(), vueDevTools(), tailwindcss(), EnvironmentPlugin('all', {prefix: 'VITE_'})],
             resolve: {
                 alias: {
