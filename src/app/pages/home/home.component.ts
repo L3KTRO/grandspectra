@@ -31,7 +31,7 @@ export class HomeComponent {
     },
     {
       title: 'Don\'t know what to watch? Check Spectra Hub',
-      description: 'Our database has more than 1 million movies and more than 150,000 tv shows <br><span style="font-style: italic">More filters soon.</span>'
+      description: 'Our database has more than 1 million movies and more than 150,000 tv shows <br>More filters soon.'
     },
     {
       title: 'Share with your friends',

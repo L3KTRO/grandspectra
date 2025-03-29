@@ -10,7 +10,7 @@
   @for (feature of features; track feature.title) {
     <div class="feature-container">
       <h2>{{ feature.title }}</h2>
-      <p [innerHTML]="feature.description"></p>
+      <p style="font-weight: normal" [innerHTML]="feature.description"></p>
     </div>
   }
 </div>

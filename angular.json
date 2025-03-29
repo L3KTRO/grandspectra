@@ -30,7 +30,7 @@
                 "glob": "**/*",
                 "input": "public"
               },
-              "public/assets"
+              "src/assets"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [
