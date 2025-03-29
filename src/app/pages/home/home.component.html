@@ -1,0 +1,23 @@
+<!-- home.component.html -->
+<div id="slogan">
+  <p id="quote" class="light-neon-effect-text" [style.padding]="mobile() ? '6rem 0 0' : ''">
+    Keep track of your favorite movies and TV shows, <br>
+    rate them and share with your friends.
+  </p>
+</div>
+
+<div id="features" [style]="mobile() ? 'flex-direction: column; gap: 2rem' : ''">
+  @for (feature of features; track feature.title) {
+    <div class="feature-container">
+      <h2>{{ feature.title }}</h2>
+      <p [innerHTML]="feature.description"></p>
+    </div>
+  }
+</div>
+
+<div id="trending">
+  <div>
+    <app-contentlist [title]="'Popular movies'" [content]="movies.asReadonly().value()"/>
+    <app-contentlist [title]="'Popular series'" [content]="tv.asReadonly().value()"/>
+  </div>
+</div>

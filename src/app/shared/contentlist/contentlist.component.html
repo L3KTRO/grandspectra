@@ -1,0 +1,18 @@
+<div id="container">
+  <h1 *ngIf="title" class="trend-title light-neon-effect-text">{{ title }}</h1>
+  <div id="contents">
+    @if (content) {
+      <div *ngFor="let item of content">
+        <div class="item">
+          <img class="poster" ngSrc="{{ intrinsic(item.poster) }}" alt="{{ item.title || item.name }}"
+               width="{{sizes.width}}" height="{{sizes.height}}"/>
+          <h2 class="title" *ngIf="showContentTitle">{{ item.title || item.name }}</h2>
+        </div>
+      </div>
+    } @else {
+      <div *ngFor="let _ of Array(10)">
+        <p-skeleton class="item" width="{{sizes.width}}px" height="{{sizes.height}}px"/>
+      </div>
+    }
+  </div>
+</div>

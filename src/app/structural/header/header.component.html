@@ -1,0 +1,28 @@
+<!-- header.component.html -->
+<header id="header">
+  <div class="header-item">
+    <app-grand-spectra-brand/>
+  </div>
+
+  <div id="items">
+    <a routerLink="/hub">
+      <div class="header-item">
+        <h3 class="header-nav">{{ hub() }}</h3>
+      </div>
+    </a>
+
+    <a routerLink="/members">
+      <div class="header-item">
+        <h3 class="header-nav">{{ members() }}</h3>
+      </div>
+    </a>
+  </div>
+
+  <div id="buttons">
+    <a routerLink="/signup">
+      <div class="header-item header-button button">
+        <h3 class="light-neon-effect-text">JOIN US</h3>
+      </div>
+    </a>
+  </div>
+</header>
