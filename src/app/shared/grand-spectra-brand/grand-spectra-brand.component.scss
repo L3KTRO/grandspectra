@@ -15,10 +15,6 @@
     transition: 0.5s ease-in-out;
     text-shadow: 0 0 15px rgba(251, 43, 43, 0.75);
     text-decoration: none;
-
-    &:hover {
-      text-shadow: 0 0 25px rgba(251, 43, 43, 1);
-    }
   }
 
   @media (max-width: 400px) {
