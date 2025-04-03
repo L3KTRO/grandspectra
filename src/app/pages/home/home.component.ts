@@ -1,10 +1,10 @@
 // home.component.ts
-import {Component, computed, HostListener, inject, OnInit, resource, ResourceRef, Signal, signal} from '@angular/core';
+import {Component, computed, HostListener, inject, resource, ResourceRef, Signal, signal} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {HttpClient} from '@angular/common/http';
 import {Movie} from '../../models/Movie';
-import {BackendService} from '../../backend.service';
-import {ContentlistComponent} from '../../shared/contentlist/contentlist.component'; // Asegúrate de tener la interfaz Movie
+import {ContentlistComponent} from '../../shared/contentlist/contentlist.component';
+import {BackendService} from '../../services/backend/backend.service';
+import {Tv} from '../../models/Tv'; // Asegúrate de tener la interfaz Movie
 
 @Component({
   selector: 'app-home',
@@ -20,7 +20,7 @@ export class HomeComponent {
   movies: ResourceRef<Movie[]> = resource({
     loader: async () => (await this.backend.getPopularMovies()).data.data,
   });
-  tv: ResourceRef<Movie[]> = resource({
+  tv: ResourceRef<Tv[]> = resource({
     loader: async () => (await this.backend.getPopularTv()).data.data,
   });
 

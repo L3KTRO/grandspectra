@@ -1,0 +1,179 @@
+@use '../../../styles' as styles;
+
+#hub {
+  display: flex;
+  flex-direction: column;
+  margin: 1rem 5%;
+}
+
+#switch-content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.content-type {
+  margin: 0.75rem;
+  font-size: 1.25rem;
+  transition: 0.3s ease;
+  color: styles.$text-contrast;
+}
+
+.content-selected {
+  color: styles.$text;
+}
+
+#contents {
+  gap: 1rem;
+}
+
+#table {
+  width: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+  border-collapse: collapse;
+}
+
+.row {
+  background-color: styles.$background-contrast-mid;
+  max-height: 70px;
+  border-bottom: 1px solid styles.$text-contrast;
+  border-radius: 10px;
+}
+
+.cell {
+  text-align: center;
+  font-size: 1.2rem;
+  padding: 0.5rem 1rem;
+}
+
+.empty-cell {
+}
+
+.cell-svg {
+  padding-bottom: 0;
+  justify-content: center;
+  width: 10%;
+}
+
+.cell-poster {
+  width: 12%;
+}
+
+.content-poster {
+  text-align: center;
+  align-self: center;
+  display: flex;
+  justify-content: center;
+}
+
+.content-title {
+  text-align: start;
+  width: 580px;
+  max-width: 580px;
+  padding: 0 0.5rem;
+  font-size: 1.4rem;
+  font-family: 'CharisSIL', "GTVCS", serif;
+}
+
+.content-misc {
+  font-weight: lighter;
+  font-size: 1.1rem;
+  
+}
+
+#head-row {
+  margin-bottom: 1rem;
+  border-bottom: 1px solid styles.$text;
+}
+
+.content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 1rem;
+  background-color: styles.$background-contrast-mid;
+  padding: 1rem;
+  border-radius: 10px;
+}
+
+#searcher {
+  display: flex;
+  margin: 2.5rem 10%;
+  flex-direction: row;
+  align-items: center;
+}
+
+#input {
+  width: 100%;
+  margin: 0 1rem;
+  padding: 1rem;
+  border-radius: 10px;
+  color: styles.$text;
+  border: 1px solid styles.$text-contrast;
+}
+
+#input:focus {
+  border: 1px solid styles.$text-contrast-mid;
+}
+
+// Slider checkbox styles
+
+input[type="checkbox"] {
+  margin-right: 6px;
+  cursor: pointer;
+}
+
+label {
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: styles.$text-contrast-mid;
+  transition: .5s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: .4s;
+}
+
+input:checked + .slider:before {
+  transform: translateX(25px);
+}
+
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}

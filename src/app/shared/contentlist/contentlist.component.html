@@ -4,9 +4,9 @@
     @if (content) {
       <div *ngFor="let item of content">
         <div class="item">
-          <img class="poster" ngSrc="{{ intrinsic(item.poster) }}" alt="{{ item.title || item.name }}"
+          <img class="poster" ngSrc="{{ intrinsic(item.poster) }}" alt="{{ getTitle(item) }}"
                width="{{sizes.width}}" height="{{sizes.height}}"/>
-          <h2 class="title" *ngIf="showContentTitle">{{ item.title || item.name }}</h2>
+          <h2 class="title" [style.width.px]="sizes.width">{{ getTitle(item) }}</h2>
         </div>
       </div>
     } @else {
