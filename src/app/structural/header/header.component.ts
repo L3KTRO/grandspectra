@@ -1,5 +1,5 @@
 // header.component.ts
-import {Component, computed, effect, HostListener, inject, OnDestroy, OnInit, Signal, signal} from '@angular/core';
+import {Component, computed, HostListener, OnDestroy, OnInit, signal} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {RouterModule} from '@angular/router';
 import {GrandSpectraBrandComponent} from '../../shared/grand-spectra-brand/grand-spectra-brand.component';
@@ -29,12 +29,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.windowWidth.set(window.innerWidth);
   }
 
-  authStore() {
-    return {
-      isAuthenticated() {
-        return false
-      }
-    }
+
+  toggleDarkMode() {
+    const element = document.querySelector('html');
+    element?.classList.toggle('dark-mode');
   }
 
   ngOnInit() {

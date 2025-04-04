@@ -89,3 +89,31 @@ a {
     text-shadow: 0 0 15px $contrast-1;
   }
 }
+
+select {
+  /* Eliminar apariencia nativa en todos los navegadores */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  select::-ms-expand {
+    display: none;
+  }
+
+  width: auto;
+
+  background-image: url("data:image/svg+xml;utf8,<svg fill='%23FFEFD4' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+  background-repeat: no-repeat;
+  background-position-x: 100%;
+  background-position-y: 8px;
+  background-color: $background-contrast;
+  border: 1px solid $text-contrast;
+  font-family: inherit;
+  padding: 0.5rem 1.5em 0.5em 1em;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: normal;
+  color: $text;
+  line-height: inherit;
+  outline: none;
+}

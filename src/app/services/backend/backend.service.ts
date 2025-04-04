@@ -3,7 +3,7 @@ import axios, {AxiosRequestConfig} from 'axios';
 
 @Injectable({providedIn: 'root'})
 export class BackendService {
-  baseUrl = 'http://localhost:8000';
+  baseUrl = 'https://gs-backend.lestro.top';
 
   api = axios.create({
     baseURL: this.baseUrl,

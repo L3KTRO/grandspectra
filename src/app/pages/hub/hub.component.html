@@ -1,4 +1,4 @@
-<main id="hub">
+<div id="hub">
   <div id="searcher">
     <div id="switch-content">
       <h2 class="content-type" [ngClass]="{'content-selected': !isTv() }">Movies</h2>
@@ -10,12 +10,24 @@
     </div>
     <input id="input" type="text" pInputText>
   </div>
+  <div id="filters">
+    <div id="movies">
+
+    </div>
+    <div id="orderby">
+      <select #orderby (change)="onSelected()">
+        @for (order of orderers; track order.label) {
+          <option value="{{order.value}}">{{ order.label }}</option>
+        }
+      </select>
+    </div>
+  </div>
   <div id="contents">
     <table id="table">
       <thead>
       <tr id="head-row">
         <th class="cell cell-poster">Poster</th>
-        <th class="cell">Title</th>
+        <th class="cell" style="text-align: start">Title</th>
         <th class="cell cell-svg">
           <svg fill="#FFEFD4" height="30px" width="30px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
                viewBox="0 0 512 512" xml:space="preserve" stroke="#FFEFD4"><g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -42,6 +54,17 @@
                 stroke="#FFEFD4" stroke-width="0.744" stroke-linecap="round" stroke-linejoin="round"></path>
             </g>
           </svg>
+          @if (isTv()) {
+            <svg width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+              <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+              <g id="SVGRepo_iconCarrier">
+                <path
+                  d="M3 9H21M9 15L11 17L15 13M7 3V5M17 3V5M6.2 21H17.8C18.9201 21 19.4802 21 19.908 20.782C20.2843 20.5903 20.5903 20.2843 20.782 19.908C21 19.4802 21 18.9201 21 17.8V8.2C21 7.07989 21 6.51984 20.782 6.09202C20.5903 5.71569 20.2843 5.40973 19.908 5.21799C19.4802 5 18.9201 5 17.8 5H6.2C5.0799 5 4.51984 5 4.09202 5.21799C3.71569 5.40973 3.40973 5.71569 3.21799 6.09202C3 6.51984 3 7.07989 3 8.2V17.8C3 18.9201 3 19.4802 3.21799 19.908C3.40973 20.2843 3.71569 20.5903 4.09202 20.782C4.51984 21 5.07989 21 6.2 21Z"
+                  stroke="#FFEFD4" stroke-width="0.744" stroke-linecap="round" stroke-linejoin="round"></path>
+              </g>
+            </svg>
+          }
         </th>
         <th class="cell cell-svg">
           <svg width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
@@ -59,11 +82,15 @@
         </th>
       </tr>
       </thead>
+      <tbody *ngIf="!isTv()">
       <tr class="row" *ngFor="let content of movies.asReadonly().value()">
         <td class="cell-poster cell">
           <img [ngSrc]="poster(content.poster)" alt="{{ content.title }}" width="52.5" height="70">
         </td>
-        <td class="content-title cell">{{ content.title }}</td>
+        <td class="content-title cell">{{
+            content.title
+          }}
+        </td>
         <td class="content-misc cell">{{ content.vote_average }}</td>
         <td class="content-misc cell"
             [ngClass]="{'empty-cell': !content.release_date }">{{
@@ -75,7 +102,30 @@
             !content.runtime || parseInt(content.runtime) <= 0 ? '' : content.runtime + 'm'
           }}
         </td>
+      </tr>
+      </tbody>
+      <tbody *ngIf="isTv()">
+      <tr class="row" *ngFor="let content of tv.asReadonly().value()">
+        <td class="cell-poster cell">
+          <img [ngSrc]="poster(content.poster)" alt="{{ content.name }}" width="52.5" height="70">
+        </td>
+        <td class="content-title cell">{{ content.name }}</td>
+        <td class="content-misc cell">{{ content.vote_average }}</td>
+        <td class="content-misc cell"
+            [ngClass]="{'empty-cell': !content.first_air_date }">{{
+            content.first_air_date ? getYearDate(content.first_air_date) : ''
+          }}
+          {{
+            content.last_air_date ? '/  ' + getYearDate(content.last_air_date) : ''
+          }}
+        </td>
+        <td class="content-misc cell"
+            [ngClass]="{'empty-cell': !content.episode_run_time || parseInt(content.episode_run_time) <= 0 }">{{
+            !content.episode_run_time || parseInt(content.episode_run_time) <= 0 ? '' : content.episode_run_time + 'm'
+          }}
+        </td>
+      </tr>
+      </tbody>
     </table>
-
   </div>
-</main>
+</div>

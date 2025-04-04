@@ -1,8 +1,8 @@
 // hub.component.ts
-import {Component, inject, resource, ResourceRef, signal} from '@angular/core';
+import {Component, ElementRef, inject, resource, ResourceRef, signal, ViewChild} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {InputText} from 'primeng/inputtext';
-import {NgClass, NgForOf, NgOptimizedImage} from '@angular/common';
+import {NgClass, NgForOf, NgIf, NgOptimizedImage} from '@angular/common';
 import {BackendService} from '../../services/backend/backend.service';
 import {Movie} from '../../models/Movie';
 import {Tv} from '../../models/Tv';
@@ -15,35 +15,49 @@ import {Tv} from '../../models/Tv';
     InputText,
     NgClass,
     NgForOf,
-    NgOptimizedImage
+    NgOptimizedImage,
+    NgIf,
+
   ],
   styleUrls: ['./hub.component.scss']
 })
+
 export class HubComponent {
+  @ViewChild('orderby') orderby!: ElementRef;
   backend = inject(BackendService);
-  isTv = signal(false)
+  orderers: { label: string, value: string }[] = [
+    {label: 'Trending', value: 'popularity'},
+    {label: 'Most rating', value: 'vote_average'},
+    {label: 'Most votes', value: 'vote_count'}
+  ];
+  orderer = signal("popularity");
+  isTv = signal(false);
 
   tv: ResourceRef<Tv[]> = resource({
-    request: () => ({}),
-    loader: async () => (
+    request: () => ({by: this.orderer()}),
+    loader: async ({request}) => (
       await this.backend.request("/tv", {
         params: {
-          sort_by: 'popularity',
+          sort_by: request.by,
           sort_dir: 'desc',
         }
       })).data.data,
   });
 
   movies: ResourceRef<Movie[]> = resource({
-    request: () => ({}),
-    loader: async () => (
+    request: () => ({by: this.orderer()}),
+    loader: async ({request}) => (
       await this.backend.request("/movies", {
         params: {
-          sort_by: 'popularity',
+          sort_by: request.by,
           sort_dir: 'desc',
         }
       })).data.data,
   });
+
+  onSelected(): void {
+    this.orderer.set(this.orderby.nativeElement.value);
+  }
 
   getYearDate(date: Date) {
     return new Date(date).getFullYear();
