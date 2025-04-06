@@ -14,5 +14,5 @@ import {FooterComponent} from './structural/footer/footer.component';
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'grandspectra';
+  title = 'Grand Spectra';
 }

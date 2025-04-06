@@ -1,11 +1,22 @@
 // hub.component.ts
-import {Component, ElementRef, inject, resource, ResourceRef, signal, ViewChild} from '@angular/core';
+import {
+  Component,
+  effect,
+  ElementRef,
+  inject,
+  resource,
+  ResourceLoaderParams,
+  ResourceRef,
+  signal,
+  ViewChild
+} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {InputText} from 'primeng/inputtext';
 import {NgClass, NgForOf, NgIf, NgOptimizedImage} from '@angular/common';
 import {BackendService} from '../../services/backend/backend.service';
 import {Movie} from '../../models/Movie';
 import {Tv} from '../../models/Tv';
+import {LoadingComponent} from '../../shared/loading/loading.component';
 
 @Component({
   selector: 'app-hub',
@@ -17,7 +28,7 @@ import {Tv} from '../../models/Tv';
     NgForOf,
     NgOptimizedImage,
     NgIf,
-
+    LoadingComponent,
   ],
   styleUrls: ['./hub.component.scss']
 })
@@ -32,27 +43,55 @@ export class HubComponent {
   ];
   orderer = signal("popularity");
   isTv = signal(false);
+  writingTitleName = signal<string | null>(null);
+  securedTitleName = signal<string | null>(null);
 
   tv: ResourceRef<Tv[]> = resource({
-    request: () => ({by: this.orderer()}),
-    loader: async ({request}) => (
-      await this.backend.request("/tv", {
+    request: () => ({
+      by: this.orderer(),
+      trigger: this.isTv(),
+      native: {
+        name: this.securedTitleName()
+      }
+    }),
+    loader: async ({request}) => {
+      return (await this.backend.request("/tv", {
         params: {
           sort_by: request.by,
           sort_dir: 'desc',
+          ...request.native
         }
-      })).data.data,
+      })).data.data
+    }
   });
 
   movies: ResourceRef<Movie[]> = resource({
-    request: () => ({by: this.orderer()}),
-    loader: async ({request}) => (
-      await this.backend.request("/movies", {
+    request: () => ({
+      by: this.orderer(),
+      trigger: this.isTv(),
+      native: {
+        title: this.securedTitleName()
+      }
+    }),
+    loader: async ({request}) => {
+      return (await this.backend.request("/movies", {
         params: {
           sort_by: request.by,
           sort_dir: 'desc',
+          ...request.native
         }
-      })).data.data,
+      })).data.data
+    }
+  });
+
+  private debounceEffect = effect((onCleanup) => {
+    const value = this.writingTitleName();
+    const timeoutId = setTimeout(() => {
+      this.securedTitleName.set(value);
+    }, 700);
+
+    // Limpieza del timeout si el valor cambia antes de 1s
+    onCleanup(() => clearTimeout(timeoutId));
   });
 
   onSelected(): void {

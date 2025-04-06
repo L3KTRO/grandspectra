@@ -8,11 +8,14 @@
       </label>
       <h2 class="content-type" [ngClass]="{'content-selected': isTv() }">Series</h2>
     </div>
-    <input id="input" type="text" pInputText>
+    <input id="input" [(ngModel)]="writingTitleName" type="text" pInputText>
   </div>
   <div id="filters">
-    <div id="movies">
-
+    <div id="movies" class="filter">
+      <h1>Movie filters</h1>
+    </div>
+    <div id="series" class="filter">
+      <h1>Movie filters</h1>
     </div>
     <div id="orderby">
       <select #orderby (change)="onSelected()">
@@ -82,7 +85,7 @@
         </th>
       </tr>
       </thead>
-      <tbody *ngIf="!isTv()">
+      <tbody *ngIf="!isTv() && movies.status() === 4">
       <tr class="row" *ngFor="let content of movies.asReadonly().value()">
         <td class="cell-poster cell">
           <img [ngSrc]="poster(content.poster)" alt="{{ content.title }}" width="52.5" height="70">
@@ -91,7 +94,7 @@
             content.title
           }}
         </td>
-        <td class="content-misc cell">{{ content.vote_average }}</td>
+        <td class="content-misc cell">{{ content.vote_average }}({{ content.vote_count }})</td>
         <td class="content-misc cell"
             [ngClass]="{'empty-cell': !content.release_date }">{{
             content.release_date ? getYearDate(content.release_date) : ''
@@ -104,7 +107,7 @@
         </td>
       </tr>
       </tbody>
-      <tbody *ngIf="isTv()">
+      <tbody *ngIf="isTv() && tv.status() === 4">
       <tr class="row" *ngFor="let content of tv.asReadonly().value()">
         <td class="cell-poster cell">
           <img [ngSrc]="poster(content.poster)" alt="{{ content.name }}" width="52.5" height="70">
@@ -127,5 +130,6 @@
       </tr>
       </tbody>
     </table>
+    <app-loading *ngIf="(isTv() && tv.status() !== 4) || (!isTv() && movies.status() !== 4)"/>
   </div>
 </div>
