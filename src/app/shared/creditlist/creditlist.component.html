@@ -1,0 +1,26 @@
+<div id="container">
+  <h1 *ngIf="title" class="trend-title light-neon-effect-text">{{ title }}</h1>
+  <div id="contents">
+    @if (content) {
+      <div *ngFor="let item of content">
+        <div class="item">
+          <img class="poster" ngSrc="{{ intrinsic(item.person.still) }}" alt="{{ item.person.name }}"
+               width="{{sizes.width}}" height="{{sizes.height}}"/>
+          <h2 class="title" [style.width.px]="sizes.width-5">{{ item.person.name }}
+            @if (item.character) {
+              as <span class="character">{{ item.character }}</span>
+            } @else if (item.occupation) {
+              as <span class="occupation">{{ item.occupation.name }}</span>
+            }
+          </h2>
+
+
+        </div>
+      </div>
+    } @else {
+      <div *ngFor="let _ of Array(10)">
+        <p-skeleton class="item" width="{{sizes.width}}px" height="{{sizes.height}}px"/>
+      </div>
+    }
+  </div>
+</div>

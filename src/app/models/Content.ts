@@ -1,5 +1,6 @@
 import {Tv} from './Tv';
 import {Movie} from './Movie';
+import Credit from './Credit';
 
 export interface Content {
   id: number;
@@ -17,6 +18,7 @@ export interface Content {
   created_at: Date | null;
   updated_at: Date | null;
   trailer: string | null;
+  credits: Credit[];
 }
 
 export type ContentType<T extends boolean> = T extends true ? Tv : Movie;

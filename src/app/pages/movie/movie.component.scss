@@ -1,0 +1,125 @@
+@use "../../../styles" as styles;
+
+#content-container {
+  display: flex;
+  flex-direction: column;
+  margin: 2rem;
+}
+
+#details {
+  margin: 2rem 8rem;
+
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+
+  div {
+    margin: 0.5rem 1rem;
+    display: flex;
+    flex-direction: column;
+
+    div {
+      display: flex;
+      width: 100%;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+}
+
+#title {
+  font-family: 'CharisSIL', "GTVCS", serif;
+  font-size: 3rem;
+}
+
+#director {
+  font-family: "GTVCS", serif;
+  font-size: 1rem;
+
+  span {
+    font-weight: bold;
+    font-family: 'CharisSIL', "GTVCS", serif;
+    font-style: italic;
+    text-decoration: underline;
+  }
+}
+
+#metadata {
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  color: styles.$text-contrast-mid;
+  gap: 2rem;
+}
+
+#director {
+  color: styles.$text
+}
+
+#tmdb-rating {
+  display: flex;
+  justify-content: start;
+
+  h3 {
+    font-family: "GTVCS", serif;
+    font-weight: normal;
+    margin-left: 0.75rem;
+  }
+}
+
+#buttons {
+  background-color: styles.$background-contrast;
+  padding: 0.25rem;
+  margin: 0;
+  width: fit-content;
+
+  div {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: inherit;
+    margin: 0;
+  }
+}
+
+#actions {
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  max-width: 500px;
+}
+
+#rating {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  justify-content: start;
+  background-color: styles.$background-contrast;
+  padding: 0.5rem;
+  width: fit-content;
+  align-items: baseline;
+
+  h2 {
+    font-family: "GTVCS", serif;
+    font-weight: normal;
+    margin-top: 0.1rem;
+  }
+}
+
+#overview {
+  font-family: "CharisSIL", serif;
+  font-size: 1rem;
+  margin: 1rem;
+}
+
+#people {
+  font-family: "CharisSIL", serif;
+  display: flex;
+  flex-direction: column;
+}
+
+

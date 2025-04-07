@@ -2,20 +2,33 @@
   <div id="searcher">
     <div id="switch-content">
       <h2 class="content-type" [ngClass]="{'content-selected': !isTv() }">Movies</h2>
-      <label class="switch">
-        <input type="checkbox" [(ngModel)]="isTv">
-        <span class="slider round"></span>
-      </label>
+      <app-checkslider [checked]="isTv"/>
       <h2 class="content-type" [ngClass]="{'content-selected': isTv() }">Series</h2>
     </div>
     <input id="input" [(ngModel)]="writingTitleName" type="text" pInputText>
   </div>
   <div id="filters">
-    <div id="movies" class="filter">
-      <h1>Movie filters</h1>
-    </div>
-    <div id="series" class="filter">
-      <h1>Movie filters</h1>
+    <div id="filters-container">
+      <h2 id="">Show advanced filters</h2>
+      <div id="expander" style="display: none">
+        <div class="filter" id="common">
+          <div>
+            <h3>Release Year</h3>
+            <input type="text" id="year" pInputText>
+          </div>
+          <div>
+            <h3>Genres</h3>
+            @for (genre of genres; track genre.id) {
+              <div class="checkbox">
+                <input type="checkbox" id="{{genre.id}}">
+                <label for="{{genre.id}}">{{ genre.name }}</label>
+              </div>
+            }
+          </div>
+        </div>
+        <div class="filter" id="movies"></div>
+        <div class="filter" id="series"></div>
+      </div>
     </div>
     <div id="orderby">
       <select #orderby (change)="onSelected()">
@@ -86,9 +99,9 @@
       </tr>
       </thead>
       <tbody *ngIf="!isTv() && movies.status() === 4">
-      <tr class="row" *ngFor="let content of movies.asReadonly().value()">
+      <tr class="row" *ngFor="let content of movies.asReadonly().value()" (click)="navigate('movie/' + content.id)">
         <td class="cell-poster cell">
-          <img [ngSrc]="poster(content.poster)" alt="{{ content.title }}" width="52.5" height="70">
+          <img [ngSrc]="poster(content.poster)" alt="{{ content.title }}" width="50" height="75">
         </td>
         <td class="content-title cell">{{
             content.title

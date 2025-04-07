@@ -3,7 +3,7 @@ import axios, {AxiosRequestConfig} from 'axios';
 
 @Injectable({providedIn: 'root'})
 export class BackendService {
-  baseUrl = 'http://192.168.0.39:9000';
+  baseUrl = 'https://gs-backend.lestro.top';
 
   api = axios.create({
     baseURL: this.baseUrl,
@@ -12,6 +12,10 @@ export class BackendService {
       'Accept': 'application/json',
     },
   })
+
+  getGenres() {
+    return this.api.get(this.baseUrl + '/genres');
+  }
 
   getPopularMovies() {
     return this.api.get(this.baseUrl + '/movies?sort_by=popularity&sort_dir=desc');

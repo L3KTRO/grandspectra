@@ -21,6 +21,7 @@ $shadow-darker: rgba(251, 43, 43, 0.2);
 @mixin light-neon-effect-text {
   text-shadow: 0 0 15px $contrast-1;
   font-weight: bold;
+  transition: 0.2s ease-in-out;
 }
 
 @mixin light-neon-effect-box {
@@ -59,6 +60,7 @@ html, body {
 
 .light-neon-effect-box {
   @include light-neon-effect-box;
+
 }
 
 div {
@@ -116,4 +118,22 @@ select {
   color: $text;
   line-height: inherit;
   outline: none;
+}
+
+:host ::ng-deep {
+  .p-skeleton {
+    background-color: #252020;
+
+    &::after {
+      background: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(251, 43, 43, 0.2), rgba(255, 255, 255, 0));
+    }
+  }
+
+  .title-skeleton {
+    height: 3rem !important;
+  }
+
+  .poster-skeleton {
+    border-radius: 8px;
+  }
 }

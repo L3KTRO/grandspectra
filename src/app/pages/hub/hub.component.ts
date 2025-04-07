@@ -1,15 +1,5 @@
 // hub.component.ts
-import {
-  Component,
-  effect,
-  ElementRef,
-  inject,
-  resource,
-  ResourceLoaderParams,
-  ResourceRef,
-  signal,
-  ViewChild
-} from '@angular/core';
+import {Component, effect, ElementRef, inject, resource, ResourceRef, signal, ViewChild} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {InputText} from 'primeng/inputtext';
 import {NgClass, NgForOf, NgIf, NgOptimizedImage} from '@angular/common';
@@ -17,6 +7,8 @@ import {BackendService} from '../../services/backend/backend.service';
 import {Movie} from '../../models/Movie';
 import {Tv} from '../../models/Tv';
 import {LoadingComponent} from '../../shared/loading/loading.component';
+import {ChecksliderComponent} from '../../shared/checkslider/checkslider.component';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-hub',
@@ -29,12 +21,15 @@ import {LoadingComponent} from '../../shared/loading/loading.component';
     NgOptimizedImage,
     NgIf,
     LoadingComponent,
+    ChecksliderComponent,
+
   ],
   styleUrls: ['./hub.component.scss']
 })
 
 export class HubComponent {
   @ViewChild('orderby') orderby!: ElementRef;
+  router = inject(Router);
   backend = inject(BackendService);
   orderers: { label: string, value: string }[] = [
     {label: 'Trending', value: 'popularity'},
@@ -45,6 +40,13 @@ export class HubComponent {
   isTv = signal(false);
   writingTitleName = signal<string | null>(null);
   securedTitleName = signal<string | null>(null);
+  genres: { id: number, name: string }[] = []
+
+  constructor() {
+    this.backend.getGenres().then((response) => {
+      this.genres = response.data.data;
+    })
+  }
 
   tv: ResourceRef<Tv[]> = resource({
     request: () => ({
@@ -55,6 +57,7 @@ export class HubComponent {
       }
     }),
     loader: async ({request}) => {
+      console.log(this.genres)
       return (await this.backend.request("/tv", {
         params: {
           sort_by: request.by,
@@ -93,6 +96,10 @@ export class HubComponent {
     // Limpieza del timeout si el valor cambia antes de 1s
     onCleanup(() => clearTimeout(timeoutId));
   });
+
+  navigate(path: string) {
+    this.router.navigate([path])
+  }
 
   onSelected(): void {
     this.orderer.set(this.orderby.nativeElement.value);
