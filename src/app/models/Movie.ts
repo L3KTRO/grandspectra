@@ -1,4 +1,6 @@
 import {Content} from './Content';
+import {Genre} from './Genre';
+import {Company} from './Company';
 
 export interface Movie extends Content {
   title: string;
@@ -9,5 +11,7 @@ export interface Movie extends Content {
   release_date: Date | null;
   revenue: string | null;
   runtime: string | null;
-  tagline: string | null;
+  genres: Genre[];
+  companies: Company[];
+  recommendations: Movie[];
 }

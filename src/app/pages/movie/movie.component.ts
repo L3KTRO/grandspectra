@@ -1,11 +1,12 @@
 import {Component, computed, inject, Input, resource, ResourceRef, signal} from '@angular/core';
 import {Movie} from '../../models/Movie';
 import {BackendService} from '../../services/backend/backend.service';
-import {NgClass, NgIf, NgOptimizedImage} from '@angular/common';
+import {DecimalPipe, NgClass, NgIf, NgOptimizedImage} from '@angular/common';
 import {Rating} from 'primeng/rating';
 import {FormsModule} from '@angular/forms';
 import {CreditlistComponent} from '../../shared/creditlist/creditlist.component';
 import {OccupationEnum} from '../../models/Occupation';
+import {ContentlistComponent} from '../../shared/contentlist/contentlist.component';
 
 @Component({
   selector: 'app-movie',
@@ -15,7 +16,9 @@ import {OccupationEnum} from '../../models/Occupation';
     Rating,
     FormsModule,
     CreditlistComponent,
-    NgClass
+    NgClass,
+    DecimalPipe,
+    ContentlistComponent
   ],
   templateUrl: './movie.component.html',
   styleUrl: './movie.component.scss'
@@ -62,7 +65,7 @@ export class MovieComponent {
     // "w500"
     // "w780"
     // "original"
-    return path.replace('original', `w500`);
+    return path.replace("original", "w780");
   }
 
   year() {
@@ -78,7 +81,20 @@ export class MovieComponent {
     return this.readonly().credits.filter(c => c.occupation_id !== OccupationEnum.Actor.valueOf());
   }
 
+  genres() {
+    return this.readonly().genres.map(g => g.name).join(", ");
+  }
+
+  companies() {
+    return this.readonly().companies?.map(g => g.name).join(", ");
+  }
+
   director() {
+    console.log(this.readonly().recommendations)
     return this.crew().filter(c => c.occupation_id === 2).sort((a, b) => b.person.popularity - a.person.popularity)[0];
+  }
+
+  recommendations() {
+    return this.readonly().recommendations.map(r => r)
   }
 }

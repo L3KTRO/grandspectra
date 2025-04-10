@@ -2,7 +2,7 @@
 import {Component, effect, ElementRef, inject, resource, ResourceRef, signal, ViewChild} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {InputText} from 'primeng/inputtext';
-import {NgClass, NgForOf, NgIf, NgOptimizedImage} from '@angular/common';
+import {NgClass, NgIf, NgOptimizedImage} from '@angular/common';
 import {BackendService} from '../../services/backend/backend.service';
 import {Movie} from '../../models/Movie';
 import {Tv} from '../../models/Tv';
@@ -17,7 +17,6 @@ import {Router} from '@angular/router';
     FormsModule,
     InputText,
     NgClass,
-    NgForOf,
     NgOptimizedImage,
     NgIf,
     LoadingComponent,
@@ -113,6 +112,44 @@ export class HubComponent {
     if (!path) return "https://placehold.co/75x100"
     return path.replace('original', `w154`);
   }
+
+  getContentList() {
+    if (!this.isTv() && this.movies.status() === 4) {
+      return this.movies.asReadonly().value().map(movie => ({
+        id: movie.id,
+        type: 'movie',
+        title: movie.title,
+        poster: movie.poster,
+        voteAverage: movie.vote_average,
+        voteCount: movie.vote_count,
+        hasDate: !!movie.release_date,
+        dateText: movie.release_date ? this.getYearDate(movie.release_date) : '',
+        hasDuration: !!(movie.runtime && parseInt(movie.runtime) > 0),
+        durationText: !movie.runtime || parseInt(movie.runtime) <= 0 ? '' : movie.runtime + 'm',
+        imageWidth: 50,
+        imageHeight: 75
+      }));
+    } else if (this.isTv() && this.tv.status() === 4) {
+      return this.tv.asReadonly().value().map(show => ({
+        id: show.id,
+        type: 'tv',
+        title: show.name,
+        poster: show.poster,
+        voteAverage: show.vote_average,
+        voteCount: show.vote_count,
+        hasDate: !!show.first_air_date,
+        dateText: (show.first_air_date ? this.getYearDate(show.first_air_date) : '') +
+          (show.last_air_date ? ' /  ' + this.getYearDate(show.last_air_date) : ''),
+        hasDuration: !!(show.episode_run_time && parseInt(show.episode_run_time) > 0),
+        durationText: !show.episode_run_time || parseInt(show.episode_run_time) <= 0 ? '' :
+          show.episode_run_time + 'm',
+        imageWidth: 52.5,
+        imageHeight: 70
+      }));
+    }
+    return [];
+  }
+
 
   protected readonly parseInt = parseInt;
 }

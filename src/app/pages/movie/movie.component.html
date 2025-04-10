@@ -1,20 +1,21 @@
-<div id="content-container">
-  <div class="container" id="details">
-    <div>
-      <img
-        *ngIf="movie.status() === 4"
-        [ngSrc]="poster(movie.asReadonly().value().poster)"
-        id="poster"
-        width="300"
-        height="450"
-        alt="Movie Poster"/>
+<div id="content-container" *ngIf="readonly()">
+  <div class="container" id="meta">
+    <div id="background-poster" [style.background-image]="'url('+poster(movie.asReadonly().value().poster)+')'">
+      <img id="poster" ngSrc="{{ poster(movie.asReadonly().value().poster) }}" alt="poster" height="450" width="300">
     </div>
     <div>
       <h1 id="title">{{ readonly().title }}</h1>
       <div id="metadata">
-        <h2 id="director">Directed by <span>{{ director().person.name }}</span></h2>
+        <h2 id="director" *ngIf="director()">Directed by <span>{{ director().person.name }}</span></h2>
         <h3 *ngIf="readonly().release_date">{{ year() }}</h3>
         <h3 *ngIf="readonly().runtime">{{ readonly().runtime }}m</h3>
+      </div>
+      <div id="tmdb-rating">
+        <img ngSrc="../../../assets/tmdb.svg" alt="tmdb" height="25" width="40">
+        <h3>{{ readonly().vote_average }}({{ readonly().vote_count }})</h3>
+      </div>
+      <div>
+        <p id="overview">{{ readonly().overview }}</p>
       </div>
       <div id="actions">
         <div id="buttons">
@@ -94,14 +95,7 @@
           <h2>{{ rating() ?? 0 }}/10</h2>
         </div>
       </div>
-      <div id="tmdb-rating">
-        <img ngSrc="../../../assets/tmdb.svg" alt="tmdb" height="25" width="40">
-        <h3>{{ readonly().vote_average }}({{ readonly().vote_count }})</h3>
-      </div>
 
-      <div>
-        <p id="overview">{{ readonly().overview }}</p>
-      </div>
     </div>
   </div>
   <div class="container" id="people">
@@ -111,5 +105,29 @@
       <span (click)="isCast.set(false)" [ngClass]="!isCast() ? 'light-neon-effect-text' : ''">Crew</span>
     </h2>
     <app-creditlist [content]="isCast() ? cast() : crew()"/>
+  </div>
+
+  <div class="container" id="details">
+    <h2>
+      <span class="light-neon-effect-text">Details</span>
+    </h2>
+    <div class="subcontainer">
+      <h3>Genres</h3>
+      <p>{{ genres() }}</p>
+    </div>
+    <div class="subcontainer" *ngIf="companies()">
+      <h3>Companies</h3>
+      <p>{{ companies() }}</p>
+    </div>
+    <div class="subcontainer">
+      <h3>Budget - Revenue</h3>
+      <p>{{ readonly().budget | number:'1.0-0':'en' }} - {{ readonly().revenue | number:'1.0-0':'en' }}</p>
+    </div>
+  </div>
+  <div class="container" id="recommendations">
+    <h2>
+      <span class="light-neon-effect-text">Recommendations</span>
+    </h2>
+    <app-contentlist [content]="this.readonly().recommendations"/>
   </div>
 </div>
