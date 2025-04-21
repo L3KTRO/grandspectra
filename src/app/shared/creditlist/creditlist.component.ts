@@ -2,7 +2,6 @@ import {Component, Input} from '@angular/core';
 import {NgForOf, NgIf, NgOptimizedImage} from '@angular/common';
 import {Skeleton} from 'primeng/skeleton';
 import Credit from '../../models/Credit';
-import {OccupationEnum} from '../../models/Occupation';
 
 @Component({
   selector: 'app-creditlist',
@@ -28,6 +27,24 @@ export class CreditlistComponent {
     return poster.replace('original', `w300`);
   }
 
+  groupCreditsByPerson() {
+    const grouped = new Map<number, { person: Credit['person']; roles: string[]; character: boolean }>();
+
+    this.content.forEach((credit) => {
+      const personId = credit.person.id;
+      if (!grouped.has(personId)) {
+        grouped.set(personId, {person: credit.person, roles: [], character: false});
+      }
+      const roles = grouped.get(personId)!.roles;
+      if (credit.character) {
+        roles.push(`${credit.character}`);
+      } else if (credit.occupation) {
+        roles.push(`${credit.occupation.name}`);
+      }
+    });
+
+    return Array.from(grouped.values());
+  }
+
   protected readonly Array = Array;
-  protected readonly OccupationEnum = OccupationEnum;
 }

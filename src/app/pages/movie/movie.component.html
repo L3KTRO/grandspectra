@@ -5,18 +5,16 @@
     </div>
     <div>
       <h1 id="title">{{ readonly().title }}</h1>
+      <h2 id="tagline">{{ readonly().tagline }}</h2>
       <div id="metadata">
-        <h2 id="director" *ngIf="director()">Directed by <span>{{ director().person.name }}</span></h2>
+        <div id="tmdb-rating">
+          <img ngSrc="../../../assets/tmdb.svg" alt="tmdb" height="25" width="40">
+          <h3>{{ readonly().vote_average }}({{ readonly().vote_count }})</h3>
+        </div>
         <h3 *ngIf="readonly().release_date">{{ year() }}</h3>
         <h3 *ngIf="readonly().runtime">{{ readonly().runtime }}m</h3>
       </div>
-      <div id="tmdb-rating">
-        <img ngSrc="../../../assets/tmdb.svg" alt="tmdb" height="25" width="40">
-        <h3>{{ readonly().vote_average }}({{ readonly().vote_count }})</h3>
-      </div>
-      <div>
-        <p id="overview">{{ readonly().overview }}</p>
-      </div>
+
       <div id="actions">
         <div id="buttons">
           <div (click)="toggleWatched()">
@@ -91,13 +89,116 @@
           </div>
         </div>
         <div id="rating">
-          <p-rating [(ngModel)]="rating" stars="10"/>
+
+          <svg width="40px" height="40px" viewBox="-0.64 -0.64 17.28 17.28" fill="none"
+               xmlns="http://www.w3.org/2000/svg" stroke="#FFEFD4">
+            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+            <g id="SVGRepo_iconCarrier">
+              <path
+                d="M9.00001 0H7.00001L5.51292 4.57681L0.700554 4.57682L0.0825195 6.47893L3.97581 9.30756L2.48873 13.8843L4.10677 15.0599L8.00002 12.2313L11.8933 15.0599L13.5113 13.8843L12.0242 9.30754L15.9175 6.47892L15.2994 4.57681L10.4871 4.57681L9.00001 0Z"
+                fill="#FFEFD4"></path>
+            </g>
+          </svg>
+          <svg width="40px" height="40px" viewBox="-0.64 -0.64 17.28 17.28" fill="none"
+               xmlns="http://www.w3.org/2000/svg" stroke="#FFEFD4">
+            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+            <g id="SVGRepo_iconCarrier">
+              <path
+                d="M9.00001 0H7.00001L5.51292 4.57681L0.700554 4.57682L0.0825195 6.47893L3.97581 9.30756L2.48873 13.8843L4.10677 15.0599L8.00002 12.2313L11.8933 15.0599L13.5113 13.8843L12.0242 9.30754L15.9175 6.47892L15.2994 4.57681L10.4871 4.57681L9.00001 0Z"
+                fill="#FFEFD4"></path>
+            </g>
+          </svg>
+          <svg width="40px" height="40px" viewBox="-0.64 -0.64 17.28 17.28" fill="none"
+               xmlns="http://www.w3.org/2000/svg" stroke="#FFEFD4">
+            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+            <g id="SVGRepo_iconCarrier">
+              <path
+                d="M9.00001 0H7.00001L5.51292 4.57681L0.700554 4.57682L0.0825195 6.47893L3.97581 9.30756L2.48873 13.8843L4.10677 15.0599L8.00002 12.2313L11.8933 15.0599L13.5113 13.8843L12.0242 9.30754L15.9175 6.47892L15.2994 4.57681L10.4871 4.57681L9.00001 0Z"
+                fill="#FFEFD4"></path>
+            </g>
+          </svg>
+          <svg width="40px" height="40px" viewBox="0 0 16.00 16.00" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#FFEFD4" transform="matrix(1, 0, 0, 1, 0, 0)rotate(0)" stroke-width="0.00016"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke="#FFEFD4CCCCCC" stroke-width="0.064"></g><g id="SVGRepo_iconCarrier"> <path d="M0.700554 4.57682L0.0825195 6.47893L3.97581 9.30756L2.48873 13.8843L4.10677 15.0599L8.00002 12.2313L8.00001 0H7.00001L5.51292 4.57681L0.700554 4.57682Z" fill="#FFEFD4"></path> </g></svg>
+          <svg width="40px" height="40px" viewBox="-0.64 -0.64 17.28 17.28" fill="none"
+               xmlns="http://www.w3.org/2000/svg" stroke="#FFEFD4">
+            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+            <g id="SVGRepo_iconCarrier">
+              <path
+                d="M9.00001 0H7.00001L5.51292 4.57681L0.700554 4.57682L0.0825195 6.47893L3.97581 9.30756L2.48873 13.8843L4.10677 15.0599L8.00002 12.2313L11.8933 15.0599L13.5113 13.8843L12.0242 9.30754L15.9175 6.47892L15.2994 4.57681L10.4871 4.57681L9.00001 0Z"
+                fill="#"></path>
+            </g>
+          </svg>
           <h2>{{ rating() ?? 0 }}/10</h2>
         </div>
       </div>
 
+
+      <div>
+        <p id="overview">{{ readonly().overview }}</p>
+      </div>
+      <div id="external-links">
+        <a *ngIf="readonly().imdb_id" href="https://www.imdb.com/title/tt{{ readonly().imdb_id }}" target="_blank">
+          IMDb
+          <svg viewBox="0 0 24 24" height="20px" width="20px" fill="none" xmlns="http://www.w3.org/2000/svg"
+               stroke="#FFEFD4">
+            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+            <g id="SVGRepo_iconCarrier">
+              <g id="Interface / External_Link">
+                <path id="Vector"
+                      d="M10.0002 5H8.2002C7.08009 5 6.51962 5 6.0918 5.21799C5.71547 5.40973 5.40973 5.71547 5.21799 6.0918C5 6.51962 5 7.08009 5 8.2002V15.8002C5 16.9203 5 17.4801 5.21799 17.9079C5.40973 18.2842 5.71547 18.5905 6.0918 18.7822C6.5192 19 7.07899 19 8.19691 19H15.8031C16.921 19 17.48 19 17.9074 18.7822C18.2837 18.5905 18.5905 18.2839 18.7822 17.9076C19 17.4802 19 16.921 19 15.8031V14M20 9V4M20 4H15M20 4L13 11"
+                      stroke="#FFEFD4" stroke-width="0.528" stroke-linecap="round" stroke-linejoin="round"></path>
+              </g>
+            </g>
+          </svg>
+        </a>
+        <a *ngIf="readonly().id" href="https://www.themoviedb.org/movie/{{ readonly().id }}" target="_blank">
+          TMDb
+          <svg viewBox="0 0 24 24" height="20px" width="20px" fill="none" xmlns="http://www.w3.org/2000/svg"
+               stroke="#FFEFD4">
+            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+            <g id="SVGRepo_iconCarrier">
+              <g id="Interface / External_Link">
+                <path id="Vector"
+                      d="M10.0002 5H8.2002C7.08009 5 6.51962 5 6.0918 5.21799C5.71547 5.40973 5.40973 5.71547 5.21799 6.0918C5 6.51962 5 7.08009 5 8.2002V15.8002C5 16.9203 5 17.4801 5.21799 17.9079C5.40973 18.2842 5.71547 18.5905 6.0918 18.7822C6.5192 19 7.07899 19 8.19691 19H15.8031C16.921 19 17.48 19 17.9074 18.7822C18.2837 18.5905 18.5905 18.2839 18.7822 17.9076C19 17.4802 19 16.921 19 15.8031V14M20 9V4M20 4H15M20 4L13 11"
+                      stroke="#FFEFD4" stroke-width="0.528" stroke-linecap="round" stroke-linejoin="round"></path>
+              </g>
+            </g>
+          </svg>
+        </a>
+      </div>
     </div>
   </div>
+
+  <div class="container" id="details">
+    <table id="table">
+      <tr>
+        <th>Directed by</th>
+        <td>{{ director().person.name }}</td>
+      </tr>
+      <tr>
+        <th>Genres</th>
+        <td>{{ genres() }}</td>
+      </tr>
+      <tr *ngIf="companies()">
+        <th>Companies</th>
+        <td>{{ companies() }}</td>
+      </tr>
+      <tr>
+        <th>Budget</th>
+        <td>{{ readonly().budget | number:'1.0-0':'en' }}</td>
+      </tr>
+      <tr>
+        <th>Revenue</th>
+        <td>{{ readonly().revenue | number:'1.0-0':'en' }}</td>
+      </tr>
+    </table>
+  </div>
+
   <div class="container" id="people">
     <h2>
       <span (click)="isCast.set(true)" [ngClass]="isCast() ? 'light-neon-effect-text' : ''">Cast</span>
@@ -107,24 +208,7 @@
     <app-creditlist [content]="isCast() ? cast() : crew()"/>
   </div>
 
-  <div class="container" id="details">
-    <h2>
-      <span class="light-neon-effect-text">Details</span>
-    </h2>
-    <div class="subcontainer">
-      <h3>Genres</h3>
-      <p>{{ genres() }}</p>
-    </div>
-    <div class="subcontainer" *ngIf="companies()">
-      <h3>Companies</h3>
-      <p>{{ companies() }}</p>
-    </div>
-    <div class="subcontainer">
-      <h3>Budget - Revenue</h3>
-      <p>{{ readonly().budget | number:'1.0-0':'en' }} - {{ readonly().revenue | number:'1.0-0':'en' }}</p>
-    </div>
-  </div>
-  <div class="container" id="recommendations">
+  <div class="container" id="recommendations" *ngIf="this.readonly().recommendations.length > 0">
     <h2>
       <span class="light-neon-effect-text">Recommendations</span>
     </h2>

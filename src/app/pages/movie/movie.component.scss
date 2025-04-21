@@ -10,7 +10,6 @@
   margin: 2rem 3rem 2rem 6rem;
 
   div {
-    margin: 0.5rem 1rem;
     display: flex;
     flex-direction: column;
 
@@ -25,6 +24,8 @@
 
 #poster {
   z-index: 5;
+  border-radius: 8px;
+  border: 1px solid styles.$text-contrast;
 }
 
 .container {
@@ -46,6 +47,16 @@
   font-size: 3rem;
 }
 
+#tagline {
+  font-size: 1rem;
+  font-family: "GTVCS", serif;
+  font-weight: 500;
+  font-style: italic;
+  color: styles.$text-contrast-light;
+  text-transform: uppercase;
+  margin: 0 0.5rem 0.5rem;
+}
+
 #director {
   font-family: "GTVCS", serif;
   font-size: 1rem;
@@ -62,8 +73,9 @@
   display: flex;
   flex-direction: row;
   justify-content: start;
+  font-size: 0.85rem;
   color: styles.$text-contrast-mid;
-  gap: 2rem;
+  gap: 1.5rem;
 }
 
 #director {
@@ -73,6 +85,8 @@
 #tmdb-rating {
   display: flex;
   justify-content: start;
+  width: fit-content;
+  margin-right: 0.1rem;
 
   h3 {
     font-family: "GTVCS", serif;
@@ -99,9 +113,11 @@
 
 #actions {
   display: flex;
+  margin: 2rem 0;
   flex-direction: row;
   justify-content: start;
   max-width: 500px;
+  gap: 2rem;
 }
 
 #rating {
@@ -122,9 +138,11 @@
 }
 
 #overview {
-  font-family: "CharisSIL", serif;
+  font-family: "GTVCS", serif;
+  font-weight: 400;
   font-size: 1rem;
-  margin: 1rem;
+  margin: 0.5rem;
+  color: styles.$text;
 }
 
 #people {
@@ -134,9 +152,30 @@
 }
 
 #details {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  margin: 0 2rem;
+}
+
+#table {
+  margin: 1rem;
+  width: 100%;
+  border-collapse: collapse;
+  color: styles.$text-contrast-light;
+
+  tr {
+    border-bottom: 1px solid styles.$text-contrast;
+  }
+
+  tr:last-child {
+    border-bottom: none;
+  }
+
+  th {
+    text-align: left;
+  }
+
+  td {
+    text-align: right;
+  }
 }
 
 .subcontainer {
@@ -155,6 +194,8 @@
   width: 300px;
   height: 450px;
   background-position: center;
+  margin-right: 3rem;
+
 }
 
 #background-poster::after {
@@ -164,5 +205,18 @@
   width: 100%;
   height: 100%;
   filter: drop-shadow(0px 0px) blur(20px) saturate(200%);
+}
+
+#external-links {
+  margin: 0.5rem;
+  gap: 1rem;
+
+  a {
+    padding: 0.1rem 0.3rem;
+    border: 1px solid styles.$text-contrast;
+    color: styles.$text;
+    text-decoration: none;
+    display: flex;
+  }
 }
 

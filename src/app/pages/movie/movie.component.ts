@@ -90,7 +90,6 @@ export class MovieComponent {
   }
 
   director() {
-    console.log(this.readonly().recommendations)
     return this.crew().filter(c => c.occupation_id === 2).sort((a, b) => b.person.popularity - a.person.popularity)[0];
   }
 

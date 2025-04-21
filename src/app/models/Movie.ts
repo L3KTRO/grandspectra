@@ -5,6 +5,7 @@ import {Company} from './Company';
 export interface Movie extends Content {
   title: string;
   title_sort: string;
+  tagline: string | null;
   original_title: string | null;
   adult: boolean | null;
   budget: string | null;
