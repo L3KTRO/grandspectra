@@ -1,5 +1,5 @@
 // movie.component.ts
-import {Component, computed, resource, ResourceRef} from '@angular/core';
+import {ChangeDetectionStrategy, Component, computed, resource, ResourceRef} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {MediaContentBaseComponent} from '../../media-content-base.directive';
 import {Movie} from '../../models/Movie';
@@ -11,10 +11,11 @@ import {NgIf} from '@angular/common';
   imports: [
     FormsModule,
     MediaContentDisplayComponent,
-    MediaContentDisplayComponent,
     NgIf
   ],
   templateUrl: './movie.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
+
 })
 export class MovieComponent extends MediaContentBaseComponent {
   override readonly = computed(() => this.mediaContent.asReadonly().value());

@@ -1,3 +1,5 @@
+import Credit from './Credit';
+
 interface Person {
   id: number;
   name: string;
@@ -14,6 +16,7 @@ interface Person {
   deathday: string | null;
   gender: string | null;
   homepage: string | null;
+  credits: Credit[];
 }
 
 export default Person;

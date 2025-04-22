@@ -1,7 +1,8 @@
-import {ChangeDetectionStrategy, Component, ElementRef, Input, ViewChild} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {NgForOf, NgIf, NgOptimizedImage} from '@angular/common';
 import {Skeleton} from 'primeng/skeleton';
 import Credit from '../../models/Credit';
+import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-creditlist',
@@ -9,7 +10,8 @@ import Credit from '../../models/Credit';
     NgIf,
     NgForOf,
     Skeleton,
-    NgOptimizedImage
+    NgOptimizedImage,
+    RouterLink
   ],
   templateUrl: './creditlist.component.html',
   styleUrl: './creditlist.component.scss',
@@ -23,6 +25,7 @@ export class CreditlistComponent {
   } = {width: 150, height: 225};
 
   intrinsic(poster: string | null) {
+    console.log("load")
     if (!poster) return `https://placehold.co/${this.sizes.width}x${this.sizes.height}`
     return poster.replace('original', `w300`);
   }

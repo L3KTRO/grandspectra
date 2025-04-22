@@ -1,0 +1,10 @@
+<div id="body">
+  <div id="person">
+    <img id="still" ngSrc="{{readonly().still}}" alt="person" width="280" height="420"/>
+    <p id="biography">{{ readonly().biography }}</p>
+  </div>
+  <div id="contents">
+    <h2 id="starring">FILMS STARRING</h2>
+    <app-contentlist [content]="content(readonly().credits)" [wrap]="true"></app-contentlist>
+  </div>
+</div>

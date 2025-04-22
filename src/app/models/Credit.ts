@@ -1,5 +1,7 @@
 import Person from './Person';
 import {Occupation} from './Occupation';
+import {Tv} from './Tv';
+import {Movie} from './Movie';
 
 interface Credit {
   id: number;
@@ -10,6 +12,8 @@ interface Credit {
   occupation_id: number | null;
   order: number | null;
   character: string | null;
+  tv: Tv | null;
+  movie: Movie | null;
 }
 
 export default Credit;

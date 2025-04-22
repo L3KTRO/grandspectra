@@ -17,7 +17,11 @@
 
 <div id="trending">
   <div>
-    <app-contentlist [title]="'Popular movies'" [content]="movies.asReadonly().value()"/>
-    <app-contentlist [title]="'Popular series'" [content]="tv.asReadonly().value()"/>
+    <div>
+      <app-contentlist [title]="'Popular movies'" [content]="movies.asReadonly().value()"/>
+    </div>
+    <div>
+      <app-contentlist [title]="'Popular series'" [content]="tv.asReadonly().value()"/>
+    </div>
   </div>
 </div>

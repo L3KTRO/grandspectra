@@ -78,6 +78,11 @@ a {
   text-decoration: underline;
   margin: 0;
   cursor: pointer;
+  color: $text-contrast-light;
+}
+
+a:hover {
+  color: $text-contrast-mid;
 }
 
 .button {

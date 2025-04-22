@@ -3,7 +3,7 @@
   <div id="contents">
     @if (content) {
       <div *ngFor="let item of groupCreditsByPerson();">
-        <div class="item" [@.disabled]="true">
+        <div class="item" [@.disabled]="true" routerLink="/person/{{ item.person.id }}">
           <img class="poster" ngSrc="{{ intrinsic(item.person.still) }}" alt="{{ item.person.name }}"
                width="{{sizes.width}}" height="{{sizes.height}}"/>
           <h2 class="title" [style.width.px]="sizes.width-5">{{ item.person.name }}

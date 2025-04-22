@@ -7,6 +7,10 @@
 #trending {
   display: flex;
   flex-direction: column;
+
+  div {
+    margin: 0 1rem;
+  }
 }
 
 #quote {

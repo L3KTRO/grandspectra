@@ -5,6 +5,7 @@ import {MovieComponent} from './pages/movie/movie.component';
 import {TvComponent} from './pages/tv/tv.component';
 import {ProfileComponent} from './pages/profile/profile.component';
 import {SignComponent} from './pages/sign/sign.component';
+import {PersonComponent} from './pages/person/person.component';
 
 export const routes: Routes = [
   {
@@ -18,6 +19,9 @@ export const routes: Routes = [
   },
   {
     path: "tv/:id", component: TvComponent
+  },
+  {
+    path: "person/:id", component: PersonComponent
   },
   {
     path: "profile", component: ProfileComponent
