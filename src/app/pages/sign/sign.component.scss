@@ -1,0 +1,282 @@
+@use "../../../styles" as styles;
+
+// Variables
+$background-color: #121212;
+$form-background: #1e1e1e;
+$text-color: #ffffff;
+$primary-color: #e50914;
+$secondary-color: #333333;
+$input-background: #2a2a2a;
+$input-border: #3a3a3a;
+
+.login-container {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#gradient {
+  position: relative;
+  display: inline-block;
+}
+
+#gradient:after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: inline-block;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0) 0%, styles.$background 100%); /* W3C */
+  box-shadow: inset 0 25px 20px -20px rgba(251, 43, 43, 0.3);
+  opacity: 1;
+}
+
+#image {
+  position: relative;
+}
+
+.login-header {
+  width: 100%;
+  height: 200px;
+  position: relative;
+  margin-bottom: 30px;
+
+  .login-header-image {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    opacity: 0.7;
+    border-radius: 8px;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 100px;
+      background: linear-gradient(to top, styles.$background, transparent);
+    }
+  }
+}
+
+// Contenedor del formulario
+.login-form-container {
+  margin: 3rem 0;
+  width: 100%;
+  max-width: 400px;
+  background-color: styles.$background-contrast;
+  border-radius: 8px;
+  padding: 30px;
+
+  .login-avatar {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+
+    img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+  }
+
+  .login-title {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 30px;
+  }
+}
+
+// Estilos del formulario
+.login-form {
+  .form-group {
+    margin-bottom: 20px;
+    position: relative;
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 14px;
+      color: styles.$text;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px 15px;
+      background-color: $input-background;
+      border: 1px solid $input-border;
+      border-radius: 4px;
+      color: $text-color;
+      font-size: 16px;
+      transition: border-color 0.3s;
+
+      &:focus {
+        outline: none;
+        border-color: styles.$shadow-darker;
+      }
+    }
+
+    .password-toggle {
+      position: absolute;
+      right: 15px;
+      top: 40px;
+      cursor: pointer;
+      color: darken(styles.$text, 30%);
+
+      &:hover {
+        color: $text-color;
+      }
+    }
+  }
+
+  .form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+
+    .remember-me {
+      display: flex;
+      align-items: center;
+
+      input {
+        margin-right: 8px;
+      }
+
+      label {
+        font-size: 14px;
+        color: darken(styles.$text, 2%);
+      }
+    }
+
+    .forgot-password {
+      font-size: 14px;
+      color: darken(styles.$text, 2%);
+      text-decoration: none;
+
+      &:hover {
+        color: styles.$text-contrast-light;
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .login-button {
+    width: 100%;
+    padding: 12px;
+    background-color: styles.$contrast-1;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s;
+
+    &:hover {
+      background-color: darken(styles.$contrast-1-2, 0%);
+    }
+  }
+
+  .social-login {
+    margin-top: 25px;
+    text-align: center;
+    position: relative;
+
+    .divider {
+      display: inline-block;
+      position: relative;
+      font-size: 14px;
+      color: darken($text-color, 30%);
+      margin: 15px 0;
+
+      &::before,
+      &::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        width: 100px;
+        height: 1px;
+        background-color: $input-border;
+      }
+
+      &::before {
+        right: 100%;
+        margin-right: 15px;
+      }
+
+      &::after {
+        left: 100%;
+        margin-left: 15px;
+      }
+    }
+
+    .google-login {
+      width: 100%;
+      padding: 12px;
+      background-color: transparent;
+      color: $text-color;
+      border: 1px solid $input-border;
+      border-radius: 4px;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.05);
+      }
+
+      i {
+        font-size: 18px;
+      }
+    }
+  }
+}
+
+.signup-link {
+  text-align: center;
+  margin-top: 25px;
+  font-size: 14px;
+  color: darken($text-color, 20%);
+
+  a {
+    color: styles.$contrast-1;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+// Estilos responsivos
+@media (max-width: 480px) {
+  .login-container {
+    padding: 0 15px;
+  }
+
+  .login-header {
+    height: 150px;
+  }
+
+  .login-form-container {
+    padding: 20px;
+  }
+
+  .form-options {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+}

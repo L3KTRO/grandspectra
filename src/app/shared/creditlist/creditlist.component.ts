@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {ChangeDetectionStrategy, Component, ElementRef, Input, ViewChild} from '@angular/core';
 import {NgForOf, NgIf, NgOptimizedImage} from '@angular/common';
 import {Skeleton} from 'primeng/skeleton';
 import Credit from '../../models/Credit';
@@ -12,7 +12,7 @@ import Credit from '../../models/Credit';
     NgOptimizedImage
   ],
   templateUrl: './creditlist.component.html',
-  styleUrl: './creditlist.component.scss'
+  styleUrl: './creditlist.component.scss',
 })
 export class CreditlistComponent {
   @Input({required: true}) content: Credit[] = [];

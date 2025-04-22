@@ -16,4 +16,5 @@ export interface Tv extends Content {
   last_air_date: Date | null;
   next_episode_to_air: Date | null;
   origin_country: string | null;
+  recommendations: Tv[];
 }

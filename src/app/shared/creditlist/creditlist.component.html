@@ -2,14 +2,13 @@
   <h1 *ngIf="title" class="trend-title light-neon-effect-text">{{ title }}</h1>
   <div id="contents">
     @if (content) {
-      <div *ngFor="let item of groupCreditsByPerson()">
-        <div class="item">
+      <div *ngFor="let item of groupCreditsByPerson();">
+        <div class="item" [@.disabled]="true">
           <img class="poster" ngSrc="{{ intrinsic(item.person.still) }}" alt="{{ item.person.name }}"
                width="{{sizes.width}}" height="{{sizes.height}}"/>
           <h2 class="title" [style.width.px]="sizes.width-5">{{ item.person.name }}
             as <span class="occupation">{{ item.roles.join(", ") }}</span>
           </h2>
-
         </div>
       </div>
     } @else {

@@ -3,6 +3,8 @@ import {HomeComponent} from "./pages/home/home.component";
 import {HubComponent} from './pages/hub/hub.component';
 import {MovieComponent} from './pages/movie/movie.component';
 import {TvComponent} from './pages/tv/tv.component';
+import {ProfileComponent} from './pages/profile/profile.component';
+import {SignComponent} from './pages/sign/sign.component';
 
 export const routes: Routes = [
   {
@@ -16,5 +18,11 @@ export const routes: Routes = [
   },
   {
     path: "tv/:id", component: TvComponent
+  },
+  {
+    path: "profile", component: ProfileComponent
+  },
+  {
+    path: "login", component: SignComponent
   }
 ];
