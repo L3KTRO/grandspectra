@@ -1,5 +1,5 @@
 // media-content-display.component.ts
-import {ChangeDetectionStrategy, Component, Input, WritableSignal} from '@angular/core';
+import {Component, Input, WritableSignal} from '@angular/core';
 import {DecimalPipe, NgClass, NgIf, NgOptimizedImage} from '@angular/common';
 import {CreditlistComponent} from '../creditlist/creditlist.component';
 import {ContentlistComponent} from '../contentlist/contentlist.component';
@@ -21,7 +21,6 @@ import {RouterLink} from "@angular/router";
     ],
     templateUrl: './media-content-display.component.html',
     styleUrl: './media-content-display.component.scss',
-    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MediaContentDisplayComponent {
     @Input() id!: number;

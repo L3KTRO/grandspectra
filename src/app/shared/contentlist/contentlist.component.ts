@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
 import {NgForOf, NgIf, NgOptimizedImage} from '@angular/common';
 import {Skeleton} from 'primeng/skeleton';
 import {Tv} from '../../models/Tv';
@@ -15,7 +15,9 @@ import {RouterLink} from '@angular/router';
     RouterLink
   ],
   templateUrl: './contentlist.component.html',
-  styleUrl: './contentlist.component.scss'
+  styleUrl: './contentlist.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
+
 })
 export class ContentlistComponent {
   @Input({required: true}) content: (Movie | Tv)[] = [];

@@ -14,7 +14,6 @@ import {NgIf} from '@angular/common';
     NgIf
   ],
   templateUrl: './movie.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
 
 })
 export class MovieComponent extends MediaContentBaseComponent {
