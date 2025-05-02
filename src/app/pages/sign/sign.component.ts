@@ -1,30 +1,34 @@
 // sign.component.ts
 import {Component, signal} from '@angular/core';
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
-import {NgOptimizedImage} from '@angular/common';
+import {NgIf, NgOptimizedImage} from '@angular/common';
+import {AuthService} from '../../services/auth/auth.service';
+import {BackendService} from '../../services/backend/backend.service';
 
 @Component({
   selector: 'app-sign',
   standalone: true,
-  imports: [ReactiveFormsModule, NgOptimizedImage],
+  imports: [ReactiveFormsModule, FormsModule, NgOptimizedImage, NgIf],
   templateUrl: './sign.component.html',
   styleUrls: ['./sign.component.scss']
 })
 export class SignComponent {
   signForm: FormGroup;
+  email = signal('');
+  password = signal('');
   showPassword = signal(false);
   isLoading = signal(false);
   signError = signal('');
 
   constructor(
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private backend: BackendService,
   ) {
     this.signForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required],
-      rememberMe: [false]
+      email: ["", [Validators.required, Validators.email]],
+      password: ["", Validators.required]
     });
   }
 
@@ -37,25 +41,16 @@ export class SignComponent {
       this.isLoading.set(true);
       this.signError.set('');
 
-      // Aquí iría la lógica de autenticación
-      // Por ejemplo, un servicio de autenticación que devuelva una promesa
+      this.backend.login(this.signForm.value).then(result => {
+        if (result) {
+          this.router.navigate(['/profile']);
+        } else {
+          this.signError.set('Invalid credentials');
+        }
+      })
 
-      setTimeout(() => {
-        // Simulando una respuesta del servidor
-        this.isLoading.set(false);
-        this.router.navigate(['/home']);
-      }, 1500);
     } else {
       this.signForm.markAllAsTouched();
     }
-  }
-
-  signWithGoogle() {
-    this.isLoading.set(true);
-    // Implementar lógica de autenticación con Google
-    setTimeout(() => {
-      this.isLoading.set(false);
-      this.router.navigate(['/home']);
-    }, 1500);
   }
 }

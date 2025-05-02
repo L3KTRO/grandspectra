@@ -89,12 +89,11 @@ a:hover {
   color: $contrast-1-2;
   background-color: $text;
   cursor: pointer;
+  width: fit-content;
 
   * {
+    @include light-neon-effect-text;
     font-family: 'CharisSIL', "GTVCS", serif;
-    font-weight: bold;
-    text-transform: uppercase;
-    text-shadow: 0 0 15px $contrast-1;
   }
 }
 

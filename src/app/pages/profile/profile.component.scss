@@ -57,6 +57,10 @@
     }
 
     .profile-username {
+      display: flex;
+      flex-direction: row;
+      align-items: baseline;
+      gap: 1rem;
       font-size: 24px;
       font-weight: 600;
       margin-right: 40px;

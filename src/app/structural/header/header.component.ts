@@ -1,8 +1,9 @@
 // header.component.ts
-import {Component, computed, HostListener, OnDestroy, OnInit, signal} from '@angular/core';
+import {Component, computed, HostListener, inject, OnDestroy, OnInit, signal} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {RouterModule} from '@angular/router';
 import {GrandSpectraBrandComponent} from '../../shared/grand-spectra-brand/grand-spectra-brand.component';
+import {BackendService} from '../../services/backend/backend.service';
 
 @Component({
   selector: 'app-header',
@@ -12,6 +13,8 @@ import {GrandSpectraBrandComponent} from '../../shared/grand-spectra-brand/grand
   styleUrl: './header.component.scss'
 })
 export class HeaderComponent implements OnInit, OnDestroy {
+  backendService = inject(BackendService);
+  ifLoggedIn = computed(() => this.backendService.isLoggedIn());
   windowWidth = signal(window.innerWidth);
 
   // Propiedades computadas
@@ -28,7 +31,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   onResize() {
     this.windowWidth.set(window.innerWidth);
   }
-
 
   toggleDarkMode() {
     const element = document.querySelector('html');

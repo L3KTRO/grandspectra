@@ -23,7 +23,7 @@
   <div id="buttons">
     <a routerLink="/profile">
       <div class="header-item header-button button">
-        <h3 class="light-neon-effect-text">JOIN US</h3>
+        <h3 class="light-neon-effect-text">{{ ifLoggedIn() ? "PROFILE" : "JOIN US" }}</h3>
       </div>
     </a>
   </div>

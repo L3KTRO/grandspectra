@@ -6,6 +6,7 @@ import {TvComponent} from './pages/tv/tv.component';
 import {ProfileComponent} from './pages/profile/profile.component';
 import {SignComponent} from './pages/sign/sign.component';
 import {PersonComponent} from './pages/person/person.component';
+import {authGuard} from './auth/auth.guard';
 
 export const routes: Routes = [
   {
@@ -24,7 +25,7 @@ export const routes: Routes = [
     path: "person/:id", component: PersonComponent
   },
   {
-    path: "profile", component: ProfileComponent
+    path: "profile", component: ProfileComponent, canActivate: [authGuard]
   },
   {
     path: "login", component: SignComponent
