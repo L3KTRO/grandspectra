@@ -1,6 +1,6 @@
 <div class="login-container">
   <div id="gradient">
-    <img ngSrc="assets/bcs.png" width="431" height="700" id="image">
+    <img ngSrc="assets/bcs.png" width="474" height="700" id="image">
   </div>
   <div class="login-form-container">
     <h2 class="login-title">Sign In</h2>
@@ -31,7 +31,7 @@
           placeholder="Password"
           [class.is-invalid]="signForm.get('password')?.invalid && signForm.get('password')?.touched"
         />
-        <h5 (click)="togglePasswordVisibility()">{{ showPassword() ? "Hide" : "Show" }} password</h5>
+        <h5 (click)="togglePasswordVisibility()" id="password-hider">{{ showPassword() ? "Hide" : "Show" }} password</h5>
         <div *ngIf="signForm.get('password')?.invalid && signForm.get('password')?.touched" class="error">
           <small>Password required</small>
         </div>

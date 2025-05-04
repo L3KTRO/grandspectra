@@ -6,12 +6,14 @@ import {ContentlistComponent} from '../../shared/contentlist/contentlist.compone
 import Credit from '../../models/Credit';
 import {Movie} from '../../models/Movie';
 import {Tv} from '../../models/Tv';
+import {ContentlistWrapComponent} from '../../shared/contentlistwrap/contentlistwrap.component';
 
 @Component({
   selector: 'app-person',
   imports: [
     NgOptimizedImage,
-    ContentlistComponent
+    ContentlistComponent,
+    ContentlistWrapComponent
   ],
   templateUrl: './person.component.html',
   styleUrl: './person.component.scss'

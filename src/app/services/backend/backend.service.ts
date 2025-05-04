@@ -1,8 +1,9 @@
 import {computed, Injectable, signal} from '@angular/core';
-import axios, {AxiosRequestConfig} from 'axios';
+import axios, {AxiosRequestConfig, AxiosResponse} from 'axios';
 import {Observable, tap} from 'rxjs';
 import {environment} from '../../../environments/environment';
 import {Auth} from '../../models/Auth';
+import {User} from '../../models/User';
 
 @Injectable({providedIn: 'root'})
 export class BackendService {
@@ -28,13 +29,16 @@ export class BackendService {
     return this.api.get(this.baseUrl + '/tv?sort_by=popularity&sort_dir=desc');
   }
 
-  request(endpoint: string, options: AxiosRequestConfig<any> = {}) {
-    const url = `${this.baseUrl}${endpoint}`;
+  getMe() {
+    return this.api.get(this.baseUrl + '/me', {
+      headers: {
+        'Authorization': `Bearer ${sessionStorage.getItem(this.TOKEN_KEY)}`,
+      },
+    })
+  }
 
-    const data = this.api.get(url, options);
-
-    console.log(data);
-    return data;
+  request(endpoint: string, options: AxiosRequestConfig = {}) {
+    return this.api.get(`${this.baseUrl}${endpoint}`, options);
   }
 
   // AUTH
@@ -59,10 +63,6 @@ export class BackendService {
 
   isLoggedIn(): boolean {
     return !!sessionStorage.getItem(this.TOKEN_KEY);
-  }
-
-  getToken(): string | null {
-    return sessionStorage.getItem(this.TOKEN_KEY);
   }
 
 }

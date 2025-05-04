@@ -12,12 +12,12 @@
   box-sizing: border-box;
   scroll-behavior: smooth;
   flex-direction: row;
-  justify-content: start;
+  justify-content: flex-start;
   gap: 2rem;
   margin: 0.5rem;
   overflow-x: auto; /* Enable horizontal scrolling */
   white-space: nowrap; /* Prevent items from wrapping to next line */
-  flex-wrap: nowrap; /* Ensure items stay in a single row */
+  flex-wrap: wrap;
   width: 100%; /* Take full width of container */
   -webkit-overflow-scrolling: touch; /* Smooth scrolling on touch devices */
 }
@@ -31,7 +31,6 @@
   position: relative;
   display: inline-block;
   flex: 0 0 auto;
-  margin: 0.25rem auto;
   width: fit-content;
 }
 
@@ -56,18 +55,6 @@
   left: 50%;
   transform: translate(-50%, -50%);
   transition: opacity 0.3s ease;
-  font-family: "GTVCS", serif;
-
-  .occupation {
-    font-family: "GTVCS", serif;
-  }
-
-  span {
-    font-family: 'CharisSIL', "GTVCS", serif;
-    font-style: italic;
-    font-weight: bold;
-    font-size: 1.25rem;
-  }
 }
 
 .item:hover {
@@ -82,4 +69,3 @@
     opacity: 1;
   }
 }
-
