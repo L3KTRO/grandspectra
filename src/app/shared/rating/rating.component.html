@@ -1,0 +1,23 @@
+<div class="rating-container">
+  <div class="rating-value">{{ currentRating }}</div>
+  <div class="slider-container">
+    <input
+      type="range"
+      min="0"
+      max="10"
+      step="0.5"
+      [value]="currentRating"
+      (input)="onRatingChange($event)"
+      (change)="onRatingChangeUp($event)"
+      class="rating-slider">
+  </div>
+
+  <div class="rating-actions">
+    <button
+      (click)="deleteRating()"
+      class="btn delete-btn button"
+      [disabled]="disablingDelete()">
+      Eliminar
+    </button>
+  </div>
+</div>

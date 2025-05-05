@@ -25,7 +25,6 @@ export class CreditlistComponent {
   } = {width: 150, height: 225};
 
   intrinsic(poster: string | null) {
-    console.log("load")
     if (!poster) return `https://placehold.co/${this.sizes.width}x${this.sizes.height}`
     return poster.replace('original', `w300`);
   }

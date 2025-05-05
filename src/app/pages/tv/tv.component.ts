@@ -28,16 +28,17 @@ export class TvComponent extends MediaContentBaseComponent {
     return '/tv/';
   }
 
-  year(): string | null {
+  override year = computed(() => {
+    console.log("year override")
     if (!this.readonly().first_air_date) return null;
     return new Date(this.readonly().first_air_date!).getFullYear().toString();
-  }
+  })
 
-  override director() {
+  override director = computed(() => {
     return this.crew().filter(c => c.occupation_id === 1)
         .sort((a, b) => b.person.popularity - a.person.popularity)[0]
       ??
       this.crew().filter(c => c.occupation_id === 2)
         .sort((a, b) => b.person.popularity - a.person.popularity)[0];
-  }
+  });
 }

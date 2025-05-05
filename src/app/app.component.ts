@@ -12,7 +12,6 @@ import {FooterComponent} from './structural/footer/footer.component';
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent {
   title = 'Grand Spectra';

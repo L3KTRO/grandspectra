@@ -17,7 +17,6 @@ import {RouterLink} from '@angular/router';
   templateUrl: './contentlist.component.html',
   styleUrl: './contentlist.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
-
 })
 export class ContentlistComponent {
   @Input({required: true}) content: (Movie | Tv)[] = [];

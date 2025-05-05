@@ -90,6 +90,9 @@ a:hover {
   background-color: $text;
   cursor: pointer;
   width: fit-content;
+  border: none;
+  border-radius: 4px;
+  font-family: 'CharisSIL', "GTVCS", serif;
 
   * {
     @include light-neon-effect-text;

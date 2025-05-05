@@ -16,7 +16,6 @@ import {RouterLink} from '@angular/router';
   ],
   templateUrl: './contentlistwrap.component.html',
   styleUrl: './contentlistwrap.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
 
 })
 export class ContentlistWrapComponent {
