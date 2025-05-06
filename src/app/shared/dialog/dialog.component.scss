@@ -1,0 +1,23 @@
+@use "../../../styles" as styles;
+
+.dialog {
+  margin: auto;
+  background-color: styles.$background-contrast;
+  color: styles.$text;
+  border-color: styles.$text-contrast;
+  border-radius: 8px;
+  padding: 2rem;
+  min-width: 300px;
+  overflow: hidden;
+}
+
+#page-mask {
+  background: rgba(0, 0, 0, 0.75);
+  filter: blur(1000px);
+  z-index: 10;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}

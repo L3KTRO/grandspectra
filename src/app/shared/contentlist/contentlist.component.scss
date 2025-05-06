@@ -12,7 +12,7 @@
   box-sizing: border-box;
   scroll-behavior: smooth;
   flex-direction: row;
-  justify-content: start;
+  justify-content: flex-start;
   gap: 2rem;
   margin: 0.5rem;
   overflow-x: auto; /* Enable horizontal scrolling */
@@ -31,7 +31,7 @@
   position: relative;
   display: inline-block;
   flex: 0 0 auto;
-  margin: 0.25rem auto;
+  margin: 0.25rem 0;
   width: fit-content;
 }
 

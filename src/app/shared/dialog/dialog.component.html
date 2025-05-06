@@ -1,0 +1,6 @@
+<div id="page-mask" *ngIf="dialogRef.nativeElement.open"></div>
+
+<dialog #dialog (close)="closed.emit()" class="dialog">
+  <h2 *ngIf="dialogTitle">{{ dialogTitle }}</h2>
+  <ng-content></ng-content>
+</dialog>

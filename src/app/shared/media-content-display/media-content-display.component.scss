@@ -90,8 +90,12 @@
 
   h3 {
     font-family: "GTVCS", serif;
-    font-weight: normal;
+    font-weight: bold;
     margin-left: 0.75rem;
+
+    span {
+      font-weight: normal;
+    }
   }
 }
 
@@ -218,5 +222,60 @@
     text-decoration: none;
     display: flex;
   }
+}
+
+.dialog {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: flex-start;
+
+  .list {
+    display: flex;
+    padding: 0.3rem 0;
+    width: 100%;
+    flex-grow: 1;
+    cursor: pointer;
+    border: none;
+
+    * {
+      margin-left: 0.5rem;
+      margin-bottom: 1rem;
+      cursor: pointer;
+    }
+  }
+
+  .selected {
+    background-color: styles.$background;
+    border-radius: 0;
+  }
+
+}
+
+#review {
+  display: flex;
+  background-color: styles.$background-contrast-mid;
+  color: styles.$text-contrast-light;
+  font-family: "GTVCS", serif;
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 0.5rem;
+  height: 4rem;
+}
+
+.save {
+  width: fit-content;
+  display: flex;
+  align-self: flex-end;
+  font-family: "GTVCS", serif;
+  background-color: styles.$third;
+  color: styles.$text;
+  padding: 0.3rem 0.9rem;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
 }
 

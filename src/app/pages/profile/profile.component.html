@@ -1,10 +1,6 @@
 <div class="profile-container">
   <!-- Cabecera del perfil -->
   <div class="profile-header">
-    <div class="profile-header-image">
-      <!-- Imagen de fondo con escena de película -->
-    </div>
-
     <div class="profile-info">
       <div class="profile-avatar">
         <img ngSrc="assets/user.svg" alt="Avatar de usuario" height="400" width="400">
@@ -17,72 +13,39 @@
 
       <div class="profile-stats">
         <div class="stat-item">
-          <span class="stat-number">1,234</span>
+          <span class="stat-number">{{ moviesLength() }}</span>
           <span class="stat-label">films</span>
         </div>
         <div class="stat-item">
-          <span class="stat-number">1,234</span>
+          <span class="stat-number">{{ tvLength() }}</span>
           <span class="stat-label">tv shows</span>
         </div>
         <div class="stat-item">
-          <span class="stat-number">1,234</span>
+          <span class="stat-number">{{ me().followers.length }}</span>
           <span class="stat-label">followers</span>
         </div>
         <div class="stat-item">
-          <span class="stat-number">1,234</span>
+          <span class="stat-number">{{ me().following.length }}</span>
           <span class="stat-label">following</span>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Sección de contenido reciente -->
   <div class="content-section">
-    <h2 class="section-title">Recent watched</h2>
-    <div class="media-grid">
-      <div class="media-item">
-        <img src="https://placehold.co/75x100.jpg" alt="Película reciente">
-      </div>
-      <div class="media-item">
-        <img src="https://placehold.co/75x100.jpg" alt="Película reciente">
-      </div>
-      <div class="media-item">
-        <img src="https://placehold.co/75x100.jpg" alt="Película reciente">
-      </div>
-      <div class="media-item">
-        <img src="https://placehold.co/75x100.jpg" alt="Película reciente">
-      </div>
-      <div class="media-item">
-        <img src="https://placehold.co/75x100.jpg" alt="Película reciente">
-      </div>
-      <div class="media-item">
-        <img src="https://placehold.co/75x100.jpg" alt="Película reciente">
-      </div>
-    </div>
+    <h2 class="section-title">Recent ratings</h2>
+    <app-contentlist [content]="ratings()"/>
   </div>
 
-  <!-- Sección de reseñas recientes -->
   <div class="content-section">
-    <h2 class="section-title">Recent reviewed</h2>
-    <div class="media-grid">
-      <div class="media-item">
-        <img src="https://placehold.co/75x100.jpg" alt="Película reseñada">
-      </div>
-      <div class="media-item">
-        <img src="https://placehold.co/75x100.jpg" alt="Película reseñada">
-      </div>
-      <div class="media-item">
-        <img src="https://placehold.co/75x100.jpg" alt="Película reseñada">
-      </div>
-      <div class="media-item">
-        <img src="https://placehold.co/75x100.jpg" alt="Película reseñada">
-      </div>
-      <div class="media-item">
-        <img src="https://placehold.co/75x100.jpg" alt="Película reseñada">
-      </div>
-      <div class="media-item">
-        <img src="https://placehold.co/75x100.jpg" alt="Película reseñada">
-      </div>
-    </div>
+    <h2 class="section-title">Watchlist</h2>
+    <app-contentlist [content]="watchlist()"/>
   </div>
+
+  <div class="content-section">
+    <h2 class="section-title">Recent watched</h2>
+    <app-contentlist [content]="watched()"/>
+  </div>
+
+
 </div>

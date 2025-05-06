@@ -8,35 +8,9 @@
 
 // Cabecera del perfil
 .profile-header {
-  position: relative;
-  height: 400px;
-  margin-bottom: 40px;
-
-  .profile-header-image {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-size: cover;
-    background-position: center;
-    opacity: 0.7;
-
-    &::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 150px;
-      background: linear-gradient(to top, styles.$background, transparent);
-    }
-  }
+  margin: 4rem 0;
 
   .profile-info {
-    position: absolute;
-    bottom: 20px;
-    left: 20px;
     display: flex;
     align-items: center;
     width: 100%;

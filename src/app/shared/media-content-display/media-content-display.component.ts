@@ -6,13 +6,13 @@ import {
     inject,
     Input,
     OnDestroy,
-    OnInit,
     resource,
     ResourceRef,
     signal,
+    ViewChild,
     WritableSignal
 } from '@angular/core';
-import {DecimalPipe, NgClass, NgIf, NgOptimizedImage} from '@angular/common';
+import {DecimalPipe, NgClass, NgForOf, NgIf, NgOptimizedImage} from '@angular/common';
 import {CreditlistComponent} from '../creditlist/creditlist.component';
 import {ContentlistComponent} from '../contentlist/contentlist.component';
 import Credit from '../../models/Credit';
@@ -23,6 +23,8 @@ import {RatingComponent} from '../rating/rating.component';
 import {BackendService} from "../../services/backend/backend.service";
 import {Me} from "../../models/Me";
 import {UserAndContent} from "../../models/UserAndContent";
+import {RatingsandreviewComponent} from "../../ratingsandreview/ratingsandreview.component";
+import {DialogComponent} from "../dialog/dialog.component";
 
 @Component({
     selector: 'app-media-content-display',
@@ -35,6 +37,9 @@ import {UserAndContent} from "../../models/UserAndContent";
         ContentlistComponent,
         RouterLink,
         RatingComponent,
+        RatingsandreviewComponent,
+        DialogComponent,
+        NgForOf,
     ],
     templateUrl: './media-content-display.component.html',
     styleUrl: './media-content-display.component.scss',
@@ -62,7 +67,6 @@ export class MediaContentDisplayComponent implements OnDestroy {
     @Input() companies!: string;
     @Input() getPoster: (path: string | null) => string = () => '';
 
-
     router = inject(Router)
     backend = inject(BackendService)
     originalRating: UserAndContent | null = null;
@@ -71,6 +75,7 @@ export class MediaContentDisplayComponent implements OnDestroy {
     rating = signal(this.originalRating?.qualification || 0);
     watched = signal(this.originalWatched !== null);
     watchlist = signal(this.originalWatchlist !== null);
+    addHover = signal(false);
     data: ResourceRef<Me> = resource({
         request: () => ({}),
         loader: async () => {
@@ -93,11 +98,6 @@ export class MediaContentDisplayComponent implements OnDestroy {
     isCast: WritableSignal<boolean> = signal(true);
     isMovie = this.router.url.includes('/movie');
     readonly = computed(() => this.data.asReadonly().value());
-
-
-    toggler(value: boolean) {
-        return !value;
-    }
 
     async updateInfo() {
         const contentType = this.isMovie ? "movie" : "tv";
@@ -144,6 +144,33 @@ export class MediaContentDisplayComponent implements OnDestroy {
                 method: 'DELETE'
             });
         }
+    }
+
+    toggler(value: boolean) {
+        return !value;
+    }
+
+    @ViewChild('review') reviewDialog!: DialogComponent;
+    @ViewChild("addToList") listDialog!: DialogComponent;
+
+    lists: WritableSignal<(number)[]> = signal([])
+
+    toggle(item: number) {
+        this.lists.update(res => {
+            if (res.includes(item)) {
+                return res.filter(i => i !== item);
+            } else {
+                return [...res, item];
+            }
+        })
+    }
+
+    openReviewDialog() {
+        this.reviewDialog.open();
+    }
+
+    openListDialog() {
+        this.listDialog.open();
     }
 
     ngOnDestroy(): void {
