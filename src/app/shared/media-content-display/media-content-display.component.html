@@ -18,7 +18,7 @@
   <div class="dialog">
     <div class="content">
       <label [className]="lists().includes(list.id) ? 'list selected' : 'list'" (click)="toggle(list.id)"
-             *ngFor="let list of [{id: 1, name: 'My List'}, {id: 2, name: 'Watch Later'}, {id: 3, name: 'Favorites'}, {id: 4, name: 'Top 10'}, {id: 5, name: 'Best Movies'}, {id: 6, name: 'Best Series'}, {id: 7, name: 'Best Documentaries'}, {id: 8, name: 'Best Anime'}, {id: 9, name: 'Best Shows'}, {id: 10, name: 'Best Movies of the Year'}]">
+             *ngFor="let list of [{id: 1, name: 'My List'}, {id: 2, name: 'Watch Later'}, {id: 3, name: 'Favorites'}, {id: 4, name: 'Top 10'}, {id: 5, name: 'Best Movies'}, {id: 6, name: 'Best Series'}, {id: 7, name: 'Best Documentaries'}, {id: 8, name: 'Best Anime'}, {id: 9, name: 'Best Shows'}, {id: 10, name: 'Best Movies of the Year'}, {id: 11, name: 'Best Series of the Year'}, {id: 12, name: 'Best Documentaries of the Year'}, {id: 13, name: 'Best Anime of the Year'}, {id: 14, name: 'Best Shows of the Year'}, {id: 15, name: 'Best Movies of the Decade'}, {id: 16, name: 'Best Series of the Decade'}, {id: 17, name: 'Best Documentaries of the Decade'}, {id: 18, name: 'Best Anime of the Decade'}, {id: 19, name: 'Best Shows of the Decade'}, {id: 20, name: 'Best Movies of All Time'}, {id: 21, name: 'Best Series of All Time'}, {id: 22, name: 'Best Documentaries of All Time'}, {id: 23, name: 'Best Anime of All Time'}, {id: 24, name: 'Best Shows of All Time'}]">
         <span>{{ list.name }}</span>
       </label>
     </div>

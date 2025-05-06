@@ -271,11 +271,18 @@
   background-color: styles.$third;
   color: styles.$text;
   padding: 0.3rem 0.9rem;
+  z-index: 2;
 }
 
 .content {
   display: flex;
+  z-index: 1;
+  padding: 0.5rem;
+  overflow-x: auto;
+  background-color: styles.$background-contrast-mid;
   flex-direction: column;
-  overflow: auto;
+  max-height: 400px;
+  white-space: pre-wrap;
+  word-break: break-word;
 }
 
