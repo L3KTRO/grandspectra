@@ -10,7 +10,6 @@ export abstract class MediaContentBaseComponent {
   @Input() id!: string;
   backend = inject(BackendService);
 
-  rating = signal(null);
   watched = signal(false);
   watchlist = signal(false);
   favourite = signal(false);
@@ -51,16 +50,19 @@ export abstract class MediaContentBaseComponent {
   // Métodos que pueden ser sobrescritos por las clases hijas si es necesario
 
   cast() {
+    console.log("cast")
     return this.readonly().credits.filter(c => c.occupation_id === OccupationEnum.Actor.valueOf())
       .sort((a, b) => b.person.popularity - a.person.popularity);
   }
 
   crew() {
+    console.log("crew")
     return this.readonly().credits.filter(c => c.occupation_id !== OccupationEnum.Actor.valueOf())
       .sort((a, b) => b.person.popularity - a.person.popularity);
   }
 
   director() {
+    console.log("director")
     return this.crew().filter(c => c.occupation_id === OccupationEnum.Director.valueOf())
       .sort((a, b) => b.person.popularity - a.person.popularity)[0];
   }

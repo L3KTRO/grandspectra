@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
 import {NgForOf, NgIf, NgOptimizedImage} from '@angular/common';
 import {Skeleton} from 'primeng/skeleton';
 import Credit from '../../models/Credit';
@@ -15,6 +15,7 @@ import {RouterLink} from '@angular/router';
   ],
   templateUrl: './creditlist.component.html',
   styleUrl: './creditlist.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CreditlistComponent {
   @Input({required: true}) content: Credit[] = [];

@@ -1,5 +1,5 @@
 // media-content-display.component.ts
-import {ChangeDetectionStrategy, Component, Input, WritableSignal} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input, signal, WritableSignal} from '@angular/core';
 import {DecimalPipe, NgClass, NgIf, NgOptimizedImage} from '@angular/common';
 import {CreditlistComponent} from '../creditlist/creditlist.component';
 import {ContentlistComponent} from '../contentlist/contentlist.component';
@@ -38,7 +38,6 @@ export class MediaContentDisplayComponent {
   @Input() runtime!: string | null;
   @Input() budget!: string | null;
   @Input() revenue!: string | null;
-  @Input() isCast!: WritableSignal<boolean>;
   @Input() watched!: WritableSignal<boolean>;
   @Input() watchlist!: WritableSignal<boolean>;
   @Input() favourite!: WritableSignal<boolean>;
@@ -64,5 +63,7 @@ export class MediaContentDisplayComponent {
     return null;
   };
   @Input() getPoster: (path: string | null) => string = () => '';
+
+  isCast: WritableSignal<boolean> = signal(true);
 
 }
