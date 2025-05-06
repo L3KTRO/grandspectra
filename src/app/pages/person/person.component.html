@@ -4,6 +4,7 @@
     <p id="biography">{{ readonly().biography }}</p>
   </div>
   <div id="contents">
+    <h1 id="name">{{ readonly().name }}</h1>
     <h2 id="starring">FILMS STARRING</h2>
     <app-contentlist-wrap [content]="content(readonly().credits)"></app-contentlist-wrap>
   </div>

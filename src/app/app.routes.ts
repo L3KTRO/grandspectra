@@ -7,7 +7,6 @@ import {ProfileComponent} from './pages/profile/profile.component';
 import {SignComponent} from './pages/sign/sign.component';
 import {PersonComponent} from './pages/person/person.component';
 import {authGuard} from './auth/auth.guard';
-import {MovieTestComponent} from './pages/movie-test/movie.component';
 
 export const routes: Routes = [
   {
@@ -18,9 +17,6 @@ export const routes: Routes = [
   },
   {
     path: "movie/:id", component: MovieComponent
-  },
-  {
-    path: "movie-test/:id", component: MovieTestComponent
   },
   {
     path: "tv/:id", component: TvComponent

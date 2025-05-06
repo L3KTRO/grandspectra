@@ -1,4 +1,4 @@
-import {Component, computed, signal} from '@angular/core';
+import {ChangeDetectionStrategy, Component, computed, Input, signal} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 
 @Component({
@@ -7,10 +7,11 @@ import {FormsModule} from '@angular/forms';
   styleUrls: ['./rating.component.scss'],
   imports: [
     FormsModule
-  ]
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RatingComponent {
-  protected currentRating = signal(0);
+  @Input({required: true}) currentRating = signal(0);
   protected disablingDelete = computed(() => this.currentRating() === 0);
 
   protected deleteRating() {

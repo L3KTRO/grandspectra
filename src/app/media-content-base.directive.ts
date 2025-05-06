@@ -1,5 +1,5 @@
 // media-content-base.component.ts
-import {Directive, inject, Input, ResourceRef, Signal, signal} from '@angular/core';
+import {computed, Directive, inject, Input, ResourceRef, Signal, signal} from '@angular/core';
 import {BackendService} from './services/backend/backend.service';
 import {OccupationEnum} from './models/Occupation';
 import {Tv} from './models/Tv';
@@ -7,79 +7,56 @@ import {Movie} from './models/Movie';
 
 @Directive()
 export abstract class MediaContentBaseComponent {
-  @Input() id!: string;
-  backend = inject(BackendService);
+    @Input() id!: string;
+    backend = inject(BackendService);
 
-  watched = signal(false);
-  watchlist = signal(false);
-  favourite = signal(false);
-  isCast = signal(true);
+    isCast = signal(true);
 
-  // Cada componente hijo debe implementar esto
-  abstract mediaContent: ResourceRef<(Movie | Tv)>;
+    // Cada componente hijo debe implementar esto
+    abstract mediaContent: ResourceRef<(Movie | Tv)>;
 
-  readonly() {
-    return this.mediaContent.asReadonly().value()
-  };
+    readonly() {
+        return this.mediaContent.asReadonly().value()
+    };
 
-  // Método abstracto que debe ser implementado por las clases hijas
-  abstract getApiEndpoint(): string;
+    // Método abstracto que debe ser implementado por las clases hijas
+    abstract getApiEndpoint(): string;
 
-  // Métodos comunes
-  togglePeople() {
-    this.isCast.update(value => !value);
-  }
+    poster(path: string | null) {
+        if (!path) return "https://placehold.co/75x100";
+        return path.replace("original", "w780");
+    }
 
-  toggleWatched() {
-    this.watched.update(value => !value);
-  }
+    // Métodos que pueden ser sobrescritos por las clases hijas si es necesario
 
-  toggleWatchlist() {
-    this.watchlist.update(value => !value);
-  }
+    cast = computed(() => {
+        return this.readonly().credits.filter(c => c.occupation_id === OccupationEnum.Actor.valueOf())
+            .sort((a, b) => b.person.popularity - a.person.popularity);
+    });
 
-  toggleFavourite() {
-    this.favourite.update(value => !value);
-  }
+    crew = computed(() => {
+        return this.readonly().credits.filter(c => c.occupation_id !== OccupationEnum.Actor.valueOf())
+            .sort((a, b) => b.person.popularity - a.person.popularity);
+    });
 
-  poster(path: string | null) {
-    if (!path) return "https://placehold.co/75x100";
-    return path.replace("original", "w780");
-  }
+    director = computed(() => {
+        return this.crew().filter(c => c.occupation_id === OccupationEnum.Director.valueOf())
+            .sort((a, b) => b.person.popularity - a.person.popularity)[0];
+    });
 
-  // Métodos que pueden ser sobrescritos por las clases hijas si es necesario
+    genres() {
+        return this.readonly().genres.map(g => g.name).join(", ");
+    }
 
-  cast() {
-    console.log("cast")
-    return this.readonly().credits.filter(c => c.occupation_id === OccupationEnum.Actor.valueOf())
-      .sort((a, b) => b.person.popularity - a.person.popularity);
-  }
+    companies() {
+        return this.readonly().companies.map(g => g.name).join(", ");
+    }
 
-  crew() {
-    console.log("crew")
-    return this.readonly().credits.filter(c => c.occupation_id !== OccupationEnum.Actor.valueOf())
-      .sort((a, b) => b.person.popularity - a.person.popularity);
-  }
+    recommendations() {
+        return this.readonly().recommendations.map(r => r);
+    }
 
-  director() {
-    console.log("director")
-    return this.crew().filter(c => c.occupation_id === OccupationEnum.Director.valueOf())
-      .sort((a, b) => b.person.popularity - a.person.popularity)[0];
-  }
-
-  genres() {
-    return this.readonly().genres.map(g => g.name).join(", ");
-  }
-
-  companies() {
-    return this.readonly().companies.map(g => g.name).join(", ");
-  }
-
-  recommendations() {
-    return this.readonly().recommendations.map(r => r);
-  }
-
-  // Métodos abstractos que deben ser implementados por las clases hijas
-  abstract year: Signal<string | null>;
+    // Métodos abstractos que deben ser implementados por las clases hijas
+    abstract year: Signal<string | null>;
 
 }

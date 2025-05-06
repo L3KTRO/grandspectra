@@ -1,13 +1,11 @@
-import {computed, Injectable, signal} from '@angular/core';
-import axios, {AxiosRequestConfig, AxiosResponse} from 'axios';
-import {Observable, tap} from 'rxjs';
+import {Injectable} from '@angular/core';
+import axios, {AxiosRequestConfig} from 'axios';
 import {environment} from '../../../environments/environment';
 import {Auth} from '../../models/Auth';
-import {User} from '../../models/User';
 
 @Injectable({providedIn: 'root'})
 export class BackendService {
-  baseUrl = 'http://192.168.0.39:9000';
+  baseUrl = environment.apiUrl;
   private readonly TOKEN_KEY = 'access_token';
   api = axios.create({
     baseURL: this.baseUrl,
@@ -42,6 +40,18 @@ export class BackendService {
   }
 
   // AUTH
+
+  authRequest(endpoint: string, options: AxiosRequestConfig = {}) {
+    console.log(endpoint, options);
+    return this.api.request({
+      url: `${this.baseUrl}${endpoint}`,
+      ...options,
+      headers: {
+        ...options.headers,
+        'Authorization': `Bearer ${sessionStorage.getItem(this.TOKEN_KEY)}`,
+      },
+    });
+  }
 
   async login(credentials: { email: string; password: string }) {
     const res = await this.api.post<Auth>(environment.apiUrl + '/auth/login', credentials, {

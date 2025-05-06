@@ -1,5 +1,5 @@
-import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
-import {NgForOf, NgIf, NgOptimizedImage} from '@angular/common';
+import {AfterViewChecked, ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, Input} from '@angular/core';
+import {NgForOf, NgOptimizedImage} from '@angular/common';
 import {Skeleton} from 'primeng/skeleton';
 import Credit from '../../models/Credit';
 import {RouterLink} from '@angular/router';
@@ -7,7 +7,6 @@ import {RouterLink} from '@angular/router';
 @Component({
   selector: 'app-creditlist',
   imports: [
-    NgIf,
     NgForOf,
     Skeleton,
     NgOptimizedImage,
@@ -17,13 +16,17 @@ import {RouterLink} from '@angular/router';
   styleUrl: './creditlist.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CreditlistComponent {
+export class CreditlistComponent implements AfterViewChecked {
   @Input({required: true}) content: Credit[] = [];
-  @Input() title: string = '';
-  @Input() sizes: {
+  sizes: {
     width: number;
     height: number;
   } = {width: 150, height: 225};
+  cdr = inject(ChangeDetectorRef)
+
+  @Input() onChange: () => void = () => {
+    return null;
+  };
 
   intrinsic(poster: string | null) {
     if (!poster) return `https://placehold.co/${this.sizes.width}x${this.sizes.height}`
@@ -50,4 +53,8 @@ export class CreditlistComponent {
   }
 
   protected readonly Array = Array;
+
+  ngAfterViewChecked(): void {
+    //this.cdr.detach();
+  }
 }

@@ -2,7 +2,6 @@ import {Component, computed, inject, Input, resource, ResourceRef} from '@angula
 import {BackendService} from '../../services/backend/backend.service';
 import Person from '../../models/Person';
 import {NgOptimizedImage} from '@angular/common';
-import {ContentlistComponent} from '../../shared/contentlist/contentlist.component';
 import Credit from '../../models/Credit';
 import {Movie} from '../../models/Movie';
 import {Tv} from '../../models/Tv';
@@ -12,7 +11,6 @@ import {ContentlistWrapComponent} from '../../shared/contentlistwrap/contentlist
   selector: 'app-person',
   imports: [
     NgOptimizedImage,
-    ContentlistComponent,
     ContentlistWrapComponent
   ],
   templateUrl: './person.component.html',
