@@ -4,6 +4,7 @@ import {CommonModule} from '@angular/common';
 import {RouterModule} from '@angular/router';
 import {GrandSpectraBrandComponent} from '../../shared/grand-spectra-brand/grand-spectra-brand.component';
 import {BackendService} from '../../services/backend/backend.service';
+import {SyncStore} from '../../stores/SyncStore';
 
 @Component({
   selector: 'app-header',
@@ -13,8 +14,16 @@ import {BackendService} from '../../services/backend/backend.service';
   styleUrl: './header.component.scss'
 })
 export class HeaderComponent implements OnInit, OnDestroy {
+  constructor(public syncStore: SyncStore) {
+    this.initialSync.set(syncStore.loginSync())
+  }
+
+  initialSync = signal(0)
   backendService = inject(BackendService);
-  ifLoggedIn = computed(() => this.backendService.isLoggedIn());
+  ifLoggedIn = computed(() => {
+    this.syncStore.loginSync()
+    return this.backendService.isLoggedIn()
+  });
   windowWidth = signal(window.innerWidth);
 
   // Propiedades computadas

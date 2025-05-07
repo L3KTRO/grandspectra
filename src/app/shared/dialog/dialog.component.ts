@@ -17,8 +17,6 @@ export class DialogComponent implements AfterViewInit, OnDestroy {
     this.dialogRef.nativeElement.showModal();
 
     this.dialogRef.nativeElement.addEventListener('click', (event: MouseEvent) => {
-      // Solo cierra si el click es directamente sobre el <dialog> y no sobre su contenido
-
       const rect = this.dialogRef.nativeElement.getBoundingClientRect();
       const isOutside =
         event.clientX < rect.left || event.clientX > rect.right ||

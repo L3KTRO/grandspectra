@@ -1,4 +1,4 @@
-<div class="profile-container">
+<div class="profile-container" *ngIf="me()">
   <!-- Cabecera del perfil -->
   <div class="profile-header">
     <div class="profile-info">
@@ -33,6 +33,11 @@
   </div>
 
   <div class="content-section">
+    <h2 class="section-title">Recent watched</h2>
+    <app-contentlist [content]="watched()"/>
+  </div>
+
+  <div class="content-section">
     <h2 class="section-title">Recent ratings</h2>
     <app-contentlist [content]="ratings()"/>
   </div>
@@ -40,11 +45,6 @@
   <div class="content-section">
     <h2 class="section-title">Watchlist</h2>
     <app-contentlist [content]="watchlist()"/>
-  </div>
-
-  <div class="content-section">
-    <h2 class="section-title">Recent watched</h2>
-    <app-contentlist [content]="watched()"/>
   </div>
 
 

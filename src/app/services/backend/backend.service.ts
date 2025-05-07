@@ -1,11 +1,13 @@
-import {Injectable} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import axios, {AxiosRequestConfig} from 'axios';
 import {environment} from '../../../environments/environment';
 import {Auth} from '../../models/Auth';
+import {SyncStore} from '../../stores/SyncStore';
 
 @Injectable({providedIn: 'root'})
 export class BackendService {
   baseUrl = environment.apiUrl;
+  syncStore = inject(SyncStore);
   private readonly TOKEN_KEY = 'access_token';
   api = axios.create({
     baseURL: this.baseUrl,
@@ -42,7 +44,7 @@ export class BackendService {
   // AUTH
 
   authRequest(endpoint: string, options: AxiosRequestConfig = {}) {
-    console.log(endpoint, options);
+    if (options.method !== "GET") this.syncStore.addChangeProfile()
     return this.api.request({
       url: `${this.baseUrl}${endpoint}`,
       ...options,
@@ -61,6 +63,7 @@ export class BackendService {
     if (res.status === 200) {
       const {access_token} = res.data;
       sessionStorage.setItem(this.TOKEN_KEY, access_token);
+      this.syncStore.addChangeLogin()
       return res.data;
     } else {
       return null;
@@ -69,6 +72,7 @@ export class BackendService {
 
   logout(): void {
     sessionStorage.removeItem(this.TOKEN_KEY);
+    this.syncStore.addChangeLogin()
   }
 
   isLoggedIn(): boolean {

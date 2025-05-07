@@ -1,4 +1,4 @@
-import {Component, computed, inject, linkedSignal, resource, ResourceRef, Signal} from '@angular/core';
+import {Component, computed, effect, inject, linkedSignal, resource, ResourceRef, signal, Signal} from '@angular/core';
 import {NgIf, NgOptimizedImage} from '@angular/common';
 import {BackendService} from "../../services/backend/backend.service";
 import {Me} from '../../models/Me';
@@ -6,6 +6,7 @@ import {ContentlistComponent} from '../../shared/contentlist/contentlist.compone
 import {Movie} from '../../models/Movie';
 import {Tv} from '../../models/Tv';
 import {UserAndContent} from '../../models/UserAndContent';
+import {SyncStore} from '../../stores/SyncStore';
 
 @Component({
   selector: 'app-profile',
@@ -18,6 +19,17 @@ import {UserAndContent} from '../../models/UserAndContent';
   styleUrl: './profile.component.scss'
 })
 export class ProfileComponent {
+  constructor(public syncStore: SyncStore) {
+    this.initialSync.set(syncStore.profileSync())
+    effect(() => {
+      if (this.syncStore.profileSync() > this.initialSync()) {
+        this.resources.reload()
+        console.log("reload")
+      }
+    });
+  }
+
+  initialSync = signal(0)
   backend = inject(BackendService);
   resources: ResourceRef<Me> = resource({
     request: () => ({}),
