@@ -1,5 +1,6 @@
 import {User} from './User';
 import {UserAndContent} from './UserAndContent';
+import {ContentList} from './ContentList';
 
 export interface Me extends User {
   watched: Array<UserAndContent>;
@@ -7,4 +8,6 @@ export interface Me extends User {
   ratings: Array<UserAndContent>;
   followers: Array<User>;
   following: Array<User>;
+  content_lists: ContentList[];
+  content_lists_saved: ContentList[];
 }

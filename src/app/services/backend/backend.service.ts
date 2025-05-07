@@ -44,15 +44,20 @@ export class BackendService {
   // AUTH
 
   authRequest(endpoint: string, options: AxiosRequestConfig = {}) {
-    if (options.method !== "GET") this.syncStore.addChangeProfile()
-    return this.api.request({
+    const req = this.api.request({
       url: `${this.baseUrl}${endpoint}`,
       ...options,
       headers: {
         ...options.headers,
         'Authorization': `Bearer ${sessionStorage.getItem(this.TOKEN_KEY)}`,
       },
+    })
+
+    req.then(() => {
+      if (options.method !== "GET") this.syncStore.addChangeProfile()
     });
+
+    return req
   }
 
   async login(credentials: { email: string; password: string }) {

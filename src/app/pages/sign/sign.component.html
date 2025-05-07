@@ -31,7 +31,8 @@
           placeholder="Password"
           [class.is-invalid]="signForm.get('password')?.invalid && signForm.get('password')?.touched"
         />
-        <h5 (click)="togglePasswordVisibility()" id="password-hider">{{ showPassword() ? "Hide" : "Show" }} password</h5>
+        <h5 (click)="togglePasswordVisibility()" id="password-hider">{{ showPassword() ? "Hide" : "Show" }}
+          password</h5>
         <div *ngIf="signForm.get('password')?.invalid && signForm.get('password')?.touched" class="error">
           <small>Password required</small>
         </div>

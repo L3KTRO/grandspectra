@@ -1,14 +1,11 @@
 import {Component, Input} from '@angular/core';
-import {NgForOf, NgOptimizedImage} from '@angular/common';
-import {RouterLink} from '@angular/router';
+import {NgForOf} from '@angular/common';
 import {Skeleton} from 'primeng/skeleton';
 
 @Component({
   selector: 'app-ratingsandreview',
   imports: [
     NgForOf,
-    NgOptimizedImage,
-    RouterLink,
     Skeleton
   ],
   templateUrl: './ratingsandreview.component.html',

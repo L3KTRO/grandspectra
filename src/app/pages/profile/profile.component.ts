@@ -1,4 +1,4 @@
-import {Component, computed, effect, inject, linkedSignal, resource, ResourceRef, signal, Signal} from '@angular/core';
+import {Component, computed, effect, inject, resource, ResourceRef, signal, Signal} from '@angular/core';
 import {NgIf, NgOptimizedImage} from '@angular/common';
 import {BackendService} from "../../services/backend/backend.service";
 import {Me} from '../../models/Me';
@@ -24,7 +24,6 @@ export class ProfileComponent {
     effect(() => {
       if (this.syncStore.profileSync() > this.initialSync()) {
         this.resources.reload()
-        console.log("reload")
       }
     });
   }
@@ -37,22 +36,22 @@ export class ProfileComponent {
   });
   me = computed(() => this.resources.asReadonly().value());
 
-  moviesLength = linkedSignal(() => {
+  moviesLength = computed(() => {
     const allContent = [
       ...this.me()?.watched || [],
       ...this.me()?.watchlist || [],
       ...this.me()?.ratings || []
     ];
-    return allContent.filter(film => film.movie_id !== null).length;
+    return Array.from(new Set(allContent.filter(film => film.movie_id !== null).map(film => film.movie_id))).length;
   });
 
-  tvLength = linkedSignal(() => {
+  tvLength = computed(() => {
     const allContent = [
       ...this.me()?.watched || [],
       ...this.me()?.watchlist || [],
       ...this.me()?.ratings || []
     ];
-    return allContent.filter(film => film.tv_id !== null).length;
+    return Array.from(new Set(allContent.filter(film => film.tv_id !== null).map(film => film.tv_id))).length;
   });
 
   watched: Signal<(Movie | Tv)[]> = computed(() => this.me().watched.map(this.mapper));

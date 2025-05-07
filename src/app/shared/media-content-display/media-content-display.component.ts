@@ -5,6 +5,7 @@ import {
     computed,
     inject,
     Input,
+    linkedSignal,
     OnDestroy,
     resource,
     ResourceRef,
@@ -153,10 +154,10 @@ export class MediaContentDisplayComponent implements OnDestroy {
     @ViewChild('review') reviewDialog!: DialogComponent;
     @ViewChild("addToList") listDialog!: DialogComponent;
 
-    lists: WritableSignal<(number)[]> = signal([])
+    listsAdded = linkedSignal(() => this.data.value().content_lists.map(r => r.id))
 
     toggle(item: number) {
-        this.lists.update(res => {
+        this.listsAdded.update(res => {
             if (res.includes(item)) {
                 return res.filter(i => i !== item);
             } else {
