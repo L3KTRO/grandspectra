@@ -4,6 +4,7 @@
 $background: #111111;
 $background-contrast: #252020;
 $background-contrast-mid: #191616;
+$scrollbar: #3e3838;
 $text: #FFEFD4;
 $text-contrast: #736c60;
 $text-contrast-mid: #a89f8e;
@@ -55,6 +56,28 @@ html, body {
   padding: 0;
   margin: 0;
   overflow-x: hidden;
+
+}
+
+/* Ancho de la barra */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 10px;
+}
+
+/* Fondo de la barra (track) */
+::-webkit-scrollbar-track {
+  background-color: $background-contrast;
+}
+
+/* Color del "thumb" (la parte que se arrastra) */
+::-webkit-scrollbar-thumb {
+  background-color: $scrollbar;
+}
+
+/* Color al pasar el mouse */
+::-webkit-scrollbar-thumb:hover {
+  background: $text-contrast;
 }
 
 .light-neon-effect-text {

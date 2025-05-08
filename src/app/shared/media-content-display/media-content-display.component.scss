@@ -100,17 +100,22 @@
 }
 
 #buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 0.5rem;
   background-color: styles.$background-contrast;
-  padding: 0.25rem;
+  padding: 0.25rem 1rem;
   margin: 0;
   width: fit-content;
+  height: 100%;
 
   div {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    padding: inherit;
+    padding: 0;
     margin: 0;
   }
 }
@@ -122,6 +127,29 @@
   justify-content: start;
   max-width: 500px;
   gap: 2rem;
+}
+
+#unauthed {
+  z-index: 10;
+  position: fixed;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 1.5rem 8.5rem;
+  background-color: rgba(0, 0, 0, 0.5);
+
+
+  div {
+    width: 100%;
+
+    h3 {
+      width: 100%;
+      background-color: styles.$background-contrast;
+      border-radius: 3px;
+      padding: 0.5rem 1rem;
+    }
+  }
 }
 
 #rating {
@@ -260,6 +288,7 @@
   font-size: 1rem;
   font-weight: 500;
   padding: 0.5rem;
+  margin: 1rem;
   height: 4rem;
 }
 
@@ -272,6 +301,7 @@
   color: styles.$text;
   padding: 0.3rem 0.9rem;
   z-index: 2;
+  cursor: pointer;
 }
 
 .content {

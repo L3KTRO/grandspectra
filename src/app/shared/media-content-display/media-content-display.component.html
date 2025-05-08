@@ -1,4 +1,4 @@
-<app-dialog #review dialogTitle="Add a review">
+<app-dialog #review dialogTitle="Add a review" *ngIf="authed()">
   <div class="dialog">
     <app-rating [currentRating]="rating"/>
     <textarea
@@ -9,12 +9,13 @@
       overflow-x:hidden;
       white-space:pre-wrap;
       word-break:break-word;"
-      placeholder="Escribe tu review aquí..."></textarea>
+      placeholder="Add your review..."></textarea>
     <div class="save">Save</div>
   </div>
 </app-dialog>
 
-<app-dialog #addToList dialogTitle="Add to list">
+
+<app-dialog #addToList dialogTitle="Add to list" *ngIf="authed()">
   <div class="dialog">
     <span id="new-list" routerLink="/list/create">Create new list</span>
     <div class="content">
@@ -41,7 +42,7 @@
     </div>
     <div>
       <h1 id="title">{{ title }}</h1>
-      <h2 id="tagline">{{ tagline }}</h2>
+      <h1 id="tagline">{{ tagline }}</h1>
       <div id="metadata">
         <div id="tmdb-rating">
           <img ngSrc="../../../assets/tmdb.svg" alt="tmdb" height="25" width="40">
@@ -52,8 +53,15 @@
       </div>
 
       <div id="actions">
+        <div id="unauthed" *ngIf="!authed()">
+          <div>
+            <h3>Join us to unlock features</h3>
+          </div>
+        </div>
         <div id="buttons">
-          <div (click)="watched.update(toggler)">
+          <div (click)="watched.update(toggler)"
+               (mouseover)="hoverWatched.set(true)"
+               (mouseleave)="hoverWatched.set(false)">
             @if (watched()) {
               <svg width="35px" height="35px" viewBox="0 0 24 24" fill="none"
                    xmlns="http://www.w3.org/2000/svg"
@@ -72,6 +80,28 @@
                       <path id="Subtract" fill-rule="evenodd" clip-rule="evenodd"
                             d="M12 1.25C6.06294 1.25 1.25 6.06294 1.25 12C1.25 17.9371 6.06294 22.75 12 22.75C17.9371 22.75 22.75 17.9371 22.75 12C22.75 6.06294 17.9371 1.25 12 1.25ZM16.5303 10.0303C16.8232 9.73744 16.8232 9.26256 16.5303 8.96967C16.2374 8.67678 15.7626 8.67678 15.4697 8.96967L10.8434 13.5959C10.7458 13.6935 10.5875 13.6935 10.4899 13.5959L8.53033 11.6363C8.23744 11.3434 7.76256 11.3434 7.46967 11.6363C7.17678 11.9292 7.17678 12.4041 7.46967 12.697L9.42923 14.6566C10.1126 15.34 11.2207 15.34 11.9041 14.6566L16.5303 10.0303Z"
                             fill="#FFEFD4"></path>
+                    </g>
+                  </g>
+                </g>
+              </svg>
+            } @else if (hoverWatched()) {
+              <svg width="35px" height="35px" viewBox="0 0 24 24" fill="none"
+                   xmlns="http://www.w3.org/2000/svg"
+                   stroke="none">
+                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                <g id="SVGRepo_iconCarrier">
+                  <g id="style=stroke">
+                    <g id="check-circle">
+                      <path id="vector (Stroke)" fill-rule="evenodd" clip-rule="evenodd"
+                            d="M12 2.75C6.89137 2.75 2.75 6.89137 2.75 12C2.75 17.1086 6.89137 21.25 12 21.25C17.1086 21.25 21.25 17.1086 21.25 12C21.25 6.89137 17.1086 2.75 12 2.75ZM1.25 12C1.25 6.06294 6.06294 1.25 12 1.25C17.9371 1.25 22.75 6.06294 22.75 12C22.75 17.9371 17.9371 22.75 12 22.75C6.06294 22.75 1.25 17.9371 1.25 12Z"
+                            fill="#FFEFD4"></path>
+                      <path id="vector (Stroke)_2" fill-rule="evenodd" clip-rule="evenodd"
+                            d="M16.5303 8.96967C16.8232 9.26256 16.8232 9.73744 16.5303 10.0303L11.9041 14.6566C11.2207 15.34 10.1126 15.34 9.42923 14.6566L7.46967 12.697C7.17678 12.4041 7.17678 11.9292 7.46967 11.6363C7.76256 11.3434 8.23744 11.3434 8.53033 11.6363L10.4899 13.5959C10.5875 13.6935 10.7458 13.6935 10.8434 13.5959L15.4697 8.96967C15.7626 8.67678 16.2374 8.67678 16.5303 8.96967Z"
+                            fill="#FFEFD4"></path>
+                      <path id="Subtract" fill-rule="evenodd" clip-rule="evenodd"
+                            d="M12 1.25C6.06294 1.25 1.25 6.06294 1.25 12C1.25 17.9371 6.06294 22.75 12 22.75C17.9371 22.75 22.75 17.9371 22.75 12C22.75 6.06294 17.9371 1.25 12 1.25ZM16.5303 10.0303C16.8232 9.73744 16.8232 9.26256 16.5303 8.96967C16.2374 8.67678 15.7626 8.67678 15.4697 8.96967L10.8434 13.5959C10.7458 13.6935 10.5875 13.6935 10.4899 13.5959L8.53033 11.6363C8.23744 11.3434 7.76256 11.3434 7.46967 11.6363C7.17678 11.9292 7.17678 12.4041 7.46967 12.697L9.42923 14.6566C10.1126 15.34 11.2207 15.34 11.9041 14.6566L16.5303 10.0303Z"
+                            fill="none"></path>
                     </g>
                   </g>
                 </g>
@@ -100,7 +130,9 @@
               </svg>
             }
           </div>
-          <div (click)="watchlist.update(toggler)">
+          <div (click)="watchlist.update(toggler)"
+               (mouseover)="hoverWatchlist.set(true)"
+               (mouseleave)="hoverWatchlist.set(false)">
             @if (watchlist()) {
               <svg width="35px" height="35px" viewBox="0 0 24 24" fill="none"
                    xmlns="http://www.w3.org/2000/svg"
@@ -111,6 +143,18 @@
                   <path
                     d="M15.75 3.25H8.24999C7.52064 3.25 6.82117 3.53973 6.30545 4.05546C5.78972 4.57118 5.49999 5.27065 5.49999 6V20C5.49898 20.1377 5.53587 20.2729 5.60662 20.391C5.67738 20.5091 5.77926 20.6054 5.90112 20.6695C6.02298 20.7335 6.16012 20.7627 6.2975 20.754C6.43488 20.7453 6.56721 20.6989 6.67999 20.62L12 16.91L17.32 20.62C17.4467 20.7063 17.5967 20.7516 17.75 20.75C17.871 20.7486 17.9903 20.7213 18.1 20.67C18.2203 20.6041 18.3208 20.5072 18.3911 20.3894C18.4615 20.2716 18.499 20.1372 18.5 20V6C18.5 5.27065 18.2103 4.57118 17.6945 4.05546C17.1788 3.53973 16.4793 3.25 15.75 3.25Z"
                     fill="#FFEFD4"></path>
+                </g>
+              </svg>
+            } @else if (hoverWatchlist()) {
+              <svg width="35px" height="35px" viewBox="0 0 24 24" fill="none"
+                   xmlns="http://www.w3.org/2000/svg"
+                   stroke="#FFEFD4" stroke-width="1.416">
+                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                <g id="SVGRepo_iconCarrier">
+                  <path
+                    d="M15.75 3.25H8.24999C7.52064 3.25 6.82117 3.53973 6.30545 4.05546C5.78972 4.57118 5.49999 5.27065 5.49999 6V20C5.49898 20.1377 5.53587 20.2729 5.60662 20.391C5.67738 20.5091 5.77926 20.6054 5.90112 20.6695C6.02298 20.7335 6.16012 20.7627 6.2975 20.754C6.43488 20.7453 6.56721 20.6989 6.67999 20.62L12 16.91L17.32 20.62C17.4467 20.7063 17.5967 20.7516 17.75 20.75C17.871 20.7486 17.9903 20.7213 18.1 20.67C18.2203 20.6041 18.3208 20.5072 18.3911 20.3894C18.4615 20.2716 18.499 20.1372 18.5 20V6C18.5 5.27065 18.2103 4.57118 17.6945 4.05546C17.1788 3.53973 16.4793 3.25 15.75 3.25Z"
+                    fill="none"></path>
                 </g>
               </svg>
             } @else {
@@ -127,8 +171,8 @@
               </svg>
             }
           </div>
-          <div (mouseover)="addHover.set(true)" (mouseleave)="addHover.set(false)" (click)="openListDialog()">
-            @if (addHover()) {
+          <div (mouseover)="hoverList.set(true)" (mouseleave)="hoverList.set(false)" (click)="openListDialog()">
+            @if (hoverList()) {
               <svg width="35px" height="35px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                 <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -147,6 +191,31 @@
                   <path d="M15 12L12 12M12 12L9 12M12 12L12 9M12 12L12 15" stroke="#d1c6b5" stroke-width="1.5"
                         stroke-linecap="round"></path>
                 </g>
+              </svg>
+            }
+          </div>
+          <div (mouseover)="hoverReview.set(true)" (mouseleave)="hoverReview.set(false)" (click)="openReviewDialog()">
+            @if (hoverReview()) {
+              <svg xmlns="http://www.w3.org/2000/svg" width="35px" height="35px" viewBox="0 0 100 100" x="0px" y="0px">
+                <path stroke="#FFEFD4" fill="#FFEFD4"
+                      d="M64.06,5H41.56A36.56,36.56,0,0,0,15.71,67.42L43.29,95V80.94A14.06,14.06,0,0,1,57.36,66.88h6.71A30.94,30.94,0,1,0,64.06,5ZM82,53.84a25.22,25.22,0,0,1-17.9,7.41H57.36A19.68,19.68,0,0,0,37.67,80.94v.48l-18-18A30.93,30.93,0,0,1,41.56,10.63h22.5A25.3,25.3,0,0,1,82,53.84Z"/>
+                <path stroke="#FFEFD4" fill="#FFEFD4"
+                      d="M36.67,33.63l-5.85-.15-2-5.52a.7.7,0,0,0-.66-.47h0a.7.7,0,0,0-.66.47L25.6,33.49l-5.85.15a.7.7,0,0,0-.41,1.26L24,38.46l-1.66,5.61a.7.7,0,0,0,1.07.78l4.82-3.32L33,44.84a.7.7,0,0,0,1.07-.78l-1.67-5.61,4.64-3.56a.7.7,0,0,0-.41-1.26Z"/>
+                <path stroke="#FFEFD4" fill="#FFEFD4"
+                      d="M58.48,33.63l-5.85-.15-2-5.52A.7.7,0,0,0,50,27.5h0a.7.7,0,0,0-.66.47l-1.95,5.52-5.85.15a.7.7,0,0,0-.41,1.26l4.65,3.56-1.66,5.61a.7.7,0,0,0,1.07.78L50,41.53l4.82,3.32a.7.7,0,0,0,1.07-.78l-1.67-5.61,4.64-3.56a.7.7,0,0,0-.41-1.26Z"/>
+                <path stroke="#FFEFD4" fill="#FFEFD4"
+                      d="M80.3,33.63l-5.85-.15-2-5.52a.7.7,0,0,0-.66-.47h0a.7.7,0,0,0-.66.47l-1.95,5.52-5.85.15A.7.7,0,0,0,63,34.9l4.65,3.56-1.66,5.61a.7.7,0,0,0,1.07.78l4.82-3.32,4.82,3.32a.7.7,0,0,0,1.07-.78l-1.67-5.61,4.64-3.56a.7.7,0,0,0-.41-1.26Z"/>
+              </svg>
+            } @else {
+              <svg xmlns="http://www.w3.org/2000/svg" width="35px" height="35px" viewBox="0 0 100 100" x="0px" y="0px">
+                <path stroke="#d1c6b5" fill="#d1c6b5"
+                      d="M64.06,5H41.56A36.56,36.56,0,0,0,15.71,67.42L43.29,95V80.94A14.06,14.06,0,0,1,57.36,66.88h6.71A30.94,30.94,0,1,0,64.06,5ZM82,53.84a25.22,25.22,0,0,1-17.9,7.41H57.36A19.68,19.68,0,0,0,37.67,80.94v.48l-18-18A30.93,30.93,0,0,1,41.56,10.63h22.5A25.3,25.3,0,0,1,82,53.84Z"/>
+                <path stroke="#d1c6b5" fill="#d1c6b5"
+                      d="M36.67,33.63l-5.85-.15-2-5.52a.7.7,0,0,0-.66-.47h0a.7.7,0,0,0-.66.47L25.6,33.49l-5.85.15a.7.7,0,0,0-.41,1.26L24,38.46l-1.66,5.61a.7.7,0,0,0,1.07.78l4.82-3.32L33,44.84a.7.7,0,0,0,1.07-.78l-1.67-5.61,4.64-3.56a.7.7,0,0,0-.41-1.26Z"/>
+                <path stroke="#d1c6b5" fill="#d1c6b5"
+                      d="M58.48,33.63l-5.85-.15-2-5.52A.7.7,0,0,0,50,27.5h0a.7.7,0,0,0-.66.47l-1.95,5.52-5.85.15a.7.7,0,0,0-.41,1.26l4.65,3.56-1.66,5.61a.7.7,0,0,0,1.07.78L50,41.53l4.82,3.32a.7.7,0,0,0,1.07-.78l-1.67-5.61,4.64-3.56a.7.7,0,0,0-.41-1.26Z"/>
+                <path stroke="#d1c6b5" fill="#d1c6b5"
+                      d="M80.3,33.63l-5.85-.15-2-5.52a.7.7,0,0,0-.66-.47h0a.7.7,0,0,0-.66.47l-1.95,5.52-5.85.15A.7.7,0,0,0,63,34.9l4.65,3.56-1.66,5.61a.7.7,0,0,0,1.07.78l4.82-3.32,4.82,3.32a.7.7,0,0,0,1.07-.78l-1.67-5.61,4.64-3.56a.7.7,0,0,0-.41-1.26Z"/>
               </svg>
             }
           </div>
@@ -221,7 +290,7 @@
     </table>
   </div>
 
-  <div class="container" id="people">
+  <div class="container" id="people" *ngIf="cast.length > 0 || crew.length > 0">
     <h2>
       <span (click)="isCast.set(true)" [ngClass]="isCast() ? 'light-neon-effect-text' : ''">Cast</span>
       |

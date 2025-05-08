@@ -13,12 +13,25 @@
 }
 
 #page-mask {
-  background: rgba(0, 0, 0, 0.75);
-  filter: blur(1000px);
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(2px); // O el valor que prefieras
+  -webkit-backdrop-filter: blur(2px); // Para compatibilidad con Safari
   z-index: 10;
   position: fixed;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
+}
+
+.close {
+  width: fit-content;
+  display: flex;
+  align-self: flex-end;
+  font-family: "GTVCS", serif;
+  background-color: styles.$contrast-1-2;
+  color: styles.$text;
+  padding: 0.3rem 0.9rem;
+  z-index: 2;
+  cursor: pointer;
 }

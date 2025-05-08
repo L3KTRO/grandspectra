@@ -1,6 +1,7 @@
-<div id="page-mask" *ngIf="dialogRef.nativeElement.open"></div>
+<div id="page-mask" [hidden]="!visible()"></div>
 
-<dialog #dialog (close)="closed.emit()" class="dialog">
+<dialog #dialog (close)="closed.emit()" class="dialog" @dialogAnim [hidden]="!visible()">
   <h2 *ngIf="dialogTitle">{{ dialogTitle }}</h2>
   <ng-content></ng-content>
+  <div class="close" (click)="close()">Close</div>
 </dialog>

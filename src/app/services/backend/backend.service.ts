@@ -34,6 +34,7 @@ export class BackendService {
       headers: {
         'Authorization': `Bearer ${sessionStorage.getItem(this.TOKEN_KEY)}`,
       },
+      validateStatus: (status) => status === 200 || status === 401,
     })
   }
 
@@ -48,8 +49,8 @@ export class BackendService {
       url: `${this.baseUrl}${endpoint}`,
       ...options,
       headers: {
-        ...options.headers,
         'Authorization': `Bearer ${sessionStorage.getItem(this.TOKEN_KEY)}`,
+        ...options.headers,
       },
     })
 

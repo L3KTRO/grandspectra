@@ -4,7 +4,7 @@ import {BackendService} from '../../services/backend/backend.service';
 import {NgIf} from '@angular/common';
 
 @Component({
-  selector: 'app-content-list-creator',
+  selector: 'app-list-creator',
   imports: [
     FormsModule,
     ReactiveFormsModule,
@@ -26,8 +26,9 @@ export class ListCreatorComponent {
 
   onSubmit() {
     if (!this.form.invalid) {
-      console.log("correcto")
-      console.log(this.form.value)
+      this.backend.request("/lists", {
+        method: "POST",
+      })
     }
   }
 }
