@@ -303,7 +303,7 @@
     <app-contentlist [content]="recommendations"/>
   </div>
 
-  <div class="container" id="reviews">
+  <div class="container" id="reviews" *ngIf="reviews && reviews.length > 0">
     <h2>
       <span class="light-neon-effect-text">Ratings and reviews</span>
     </h2>

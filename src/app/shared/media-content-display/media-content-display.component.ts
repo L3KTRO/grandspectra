@@ -27,7 +27,6 @@ import {UserAndContent} from "../../models/UserAndContent";
 import {RatingsandreviewComponent} from "../ratingsandreview/ratingsandreview.component";
 import {DialogComponent} from "../dialog/dialog.component";
 import {FormsModule} from '@angular/forms';
-import {ProgressSpinnerComponent} from '../progress-spinner/progress-spinner.component';
 import {Review} from '../../models/Review';
 
 @Component({
@@ -45,7 +44,7 @@ import {Review} from '../../models/Review';
     DialogComponent,
     NgForOf,
     FormsModule,
-    ProgressSpinnerComponent,
+
   ],
   templateUrl: './media-content-display.component.html',
   styleUrl: './media-content-display.component.scss',
@@ -71,7 +70,7 @@ export class MediaContentDisplayComponent implements OnDestroy {
   @Input() recommendations!: (Movie | Tv)[];
   @Input() genres!: string;
   @Input() companies!: string;
-  @Input() reviews!: Review[];
+  @Input() reviews: Review[] = [];
   @Input() getPoster: (path: string | null) => string = () => '';
 
   router = inject(Router)
@@ -110,8 +109,6 @@ export class MediaContentDisplayComponent implements OnDestroy {
         return watchlist.movie_id === this.id || watchlist.tv_id === this.id;
       }) || null;
       this.watchlist.set(this.originalWatchlist !== null);
-
-      console.log(this.reviews)
 
       return data
     }
