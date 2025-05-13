@@ -1,0 +1,67 @@
+@use "../../../styles" as styles;
+
+.item {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 0.35rem;
+  padding: 1rem;
+  min-width: 250px;
+  height: 200px;
+  background-color: styles.$background-contrast;
+}
+
+.progress-bar {
+  margin: 0 10%;
+  min-height: 10px;
+  background-color: #e0e0e0;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.progress {
+  min-height: 100%;
+  background-color: #3f51b5;
+  border-radius: 5px;
+}
+
+#head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#date {
+  color: styles.$text-contrast-mid;
+}
+
+#content {
+  text-align: center;
+  line-break: anywhere;
+  margin: auto 0;
+  white-space: wrap; /* Prevent items from wrapping to next line */
+}
+
+#contents {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+  overflow-x: auto;
+  flex-wrap: nowrap;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+  justify-content: start;
+  padding-bottom: 1rem;
+  margin: 0.5rem;
+  white-space: nowrap; /* Prevent items from wrapping to next line */
+  width: 100%; /* Take full width of container */
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling on touch devices */
+}
+
+#dialog {
+  max-width: 500px;
+  text-align: center;
+  line-break: anywhere;
+  margin: auto 0;
+  white-space: wrap; /* Prevent items from wrapping to next line */
+}

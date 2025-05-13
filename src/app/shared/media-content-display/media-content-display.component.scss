@@ -131,12 +131,12 @@
 
 #unauthed {
   z-index: 10;
-  position: fixed;
+  position: absolute;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  padding: 1.5rem 8.5rem;
+  padding: 1.5rem 9.5rem;
   background-color: rgba(0, 0, 0, 0.5);
 
 
@@ -283,13 +283,19 @@
 #review {
   display: flex;
   background-color: styles.$background-contrast-mid;
-  color: styles.$text-contrast-light;
+  color: styles.$text;
   font-family: "GTVCS", serif;
   font-size: 1rem;
   font-weight: 500;
   padding: 0.5rem;
   margin: 1rem;
-  height: 4rem;
+  border: none;
+  width: 50vw;
+  height: 20vh;
+  resize: none;
+  overflow-x: hidden;
+  white-space: pre-wrap;
+  word-break: break-word;
 }
 
 .save {
@@ -319,6 +325,12 @@
   word-break: break-word;
 }
 
+#reviews {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin: 1rem;
+}
 
 #new-list {
   text-underline: styles.$text;

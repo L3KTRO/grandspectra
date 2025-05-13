@@ -1,0 +1,18 @@
+@use "../styles" as styles;
+
+
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Importante: usar vh en lugar de % */
+}
+
+header, footer {
+  flex: 0 0 auto; /* No crecer, no encoger, tamaño automático */
+}
+
+main {
+  flex: 1 0 auto; /* Crecer para ocupar espacio disponible */
+  display: flex;
+  flex-direction: column;
+}

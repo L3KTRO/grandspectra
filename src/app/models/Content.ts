@@ -3,6 +3,7 @@ import {Movie} from './Movie';
 import Credit from './Credit';
 import {Genre} from './Genre';
 import {Company} from './Company';
+import {Review} from './Review';
 
 export interface Content {
   id: number;
@@ -24,6 +25,7 @@ export interface Content {
   genres: Genre[];
   companies: Company[];
   recommendations: Content[];
+  reviews: Review[];
 }
 
 export type ContentType<T extends boolean> = T extends true ? Tv : Movie;

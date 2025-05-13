@@ -4,13 +4,10 @@
     <textarea
       id="review"
       rows="6"
-      style="width:50vw; height: 20vh;
-      resize: none;
-      overflow-x:hidden;
-      white-space:pre-wrap;
-      word-break:break-word;"
-      placeholder="Add your review..."></textarea>
-    <div class="save">Save</div>
+      placeholder="Add your review..."
+      [(ngModel)]="reviewText"
+    ></textarea>
+    <div class="save" (click)="saveReview()">Save</div>
   </div>
 </app-dialog>
 
@@ -24,7 +21,7 @@
           <span style="color: gray; cursor: auto;">No content</span>
         </label>
       } @else {
-        <label [className]="listsAdded().includes(list.id) ? 'list selected' : 'list'" (click)="toggle(list.id)"
+        <label [className]="listsAdded().includes(list.id) ? 'list selected' : 'list'" (click)="toggleList(list.id)"
                *ngFor="let list of data.value().content_lists">
           <span>{{ list.name }}</span>
         </label>
@@ -310,6 +307,6 @@
     <h2>
       <span class="light-neon-effect-text">Ratings and reviews</span>
     </h2>
-    <app-ratingsandreview/>
+    <app-ratingsandreview [content]="reviews"/>
   </div>
 </div>

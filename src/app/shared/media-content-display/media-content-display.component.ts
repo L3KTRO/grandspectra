@@ -24,8 +24,11 @@ import {RatingComponent} from '../rating/rating.component';
 import {BackendService} from "../../services/backend/backend.service";
 import {Me} from "../../models/Me";
 import {UserAndContent} from "../../models/UserAndContent";
-import {RatingsandreviewComponent} from "../../ratingsandreview/ratingsandreview.component";
+import {RatingsandreviewComponent} from "../ratingsandreview/ratingsandreview.component";
 import {DialogComponent} from "../dialog/dialog.component";
+import {FormsModule} from '@angular/forms';
+import {ProgressSpinnerComponent} from '../progress-spinner/progress-spinner.component';
+import {Review} from '../../models/Review';
 
 @Component({
   selector: 'app-media-content-display',
@@ -41,13 +44,15 @@ import {DialogComponent} from "../dialog/dialog.component";
     RatingsandreviewComponent,
     DialogComponent,
     NgForOf,
+    FormsModule,
+    ProgressSpinnerComponent,
   ],
   templateUrl: './media-content-display.component.html',
   styleUrl: './media-content-display.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MediaContentDisplayComponent implements OnDestroy {
-  @Input() id!: number;
+  @Input({required: true}) id!: number;
   @Input() imdbId!: number | null;
   @Input() title!: string;
   @Input() tagline!: string | null;
@@ -66,6 +71,7 @@ export class MediaContentDisplayComponent implements OnDestroy {
   @Input() recommendations!: (Movie | Tv)[];
   @Input() genres!: string;
   @Input() companies!: string;
+  @Input() reviews!: Review[];
   @Input() getPoster: (path: string | null) => string = () => '';
 
   router = inject(Router)
@@ -80,6 +86,7 @@ export class MediaContentDisplayComponent implements OnDestroy {
   hoverList = signal(false);
   hoverWatchlist = signal(false);
   hoverWatched = signal(false);
+  reviewText = signal('');
 
   authed = signal(false);
   data: ResourceRef<Me> = resource({
@@ -104,12 +111,18 @@ export class MediaContentDisplayComponent implements OnDestroy {
       }) || null;
       this.watchlist.set(this.originalWatchlist !== null);
 
+      console.log(this.reviews)
+
       return data
     }
   });
   isCast: WritableSignal<boolean> = signal(true);
   isMovie = this.router.url.includes('/movie');
   readonly = computed(() => this.data.asReadonly().value());
+
+  ngOnDestroy(): void {
+    this.updateInfo()
+  }
 
   async updateInfo() {
     const contentType = this.isMovie ? "movie" : "tv";
@@ -167,7 +180,7 @@ export class MediaContentDisplayComponent implements OnDestroy {
 
   listsAdded = linkedSignal(() => this.data.value().content_lists.map(r => r.id))
 
-  toggle(item: number) {
+  toggleList(item: number) {
     this.listsAdded.update(res => {
       if (res.includes(item)) {
         return res.filter(i => i !== item);
@@ -185,7 +198,20 @@ export class MediaContentDisplayComponent implements OnDestroy {
     this.listDialog.open();
   }
 
-  ngOnDestroy(): void {
-    this.updateInfo()
+  async saveReview() {
+    await this.backend.authRequest(`/me/reviews/`, {
+      method: 'POST',
+      data: {
+        content: this.reviewText(),
+        qualification: this.rating(),
+        movie_id: this.isMovie ? this.id : null,
+        tv_id: this.isMovie ? null : this.id,
+      }
+    }).then((res) => {
+      console.log(res)
+      this.reviewDialog.close();
+    }).catch((err) => {
+      console.error(err);
+    })
   }
 }

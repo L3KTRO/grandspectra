@@ -1,6 +1,6 @@
-<div id="body">
+<div id="body" *ngIf="readonly()">
   <div id="person">
-    <img id="still" ngSrc="{{readonly().still}}" alt="person" width="280" height="420"/>
+    <img id="still" ngSrc="{{readonly().still ?? 'https://placehold.co/280x420'}}" alt="person" width="280" height="420"/>
     <p id="biography">{{ readonly().biography }}</p>
   </div>
   <div id="contents">

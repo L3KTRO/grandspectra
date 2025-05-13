@@ -14,7 +14,8 @@ import {
   trigger,
   transition,
   style,
-  animate
+  animate,
+  state
 } from '@angular/animations';
 
 @Component({
@@ -25,19 +26,51 @@ import {
   styleUrls: ['./dialog.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [
-    trigger('dialogAnim', [
-      transition(':enter', [
-        style({opacity: 0, transform: 'scale(0.95)'}),
-        animate('200ms ease-out', style({opacity: 1, transform: 'scale(1)'}))
+    trigger('dialogAnimation', [
+      // Estado inicial/cerrado
+      state('closed', style({
+        transform: 'scale(0.5)',
+        opacity: 0
+      })),
+      // Estado abierto
+      state('open', style({
+        transform: 'scale(1)',
+        opacity: 1
+      })),
+      // Transición de cerrado a abierto (entrada)
+      transition('closed => open', [
+        animate('300ms ease-out')
       ]),
-      transition(':leave', [
-        animate('150ms ease-in', style({opacity: 0, transform: 'scale(0.95)'}))
+      // Transición de abierto a cerrado (salida)
+      transition('open => closed', [
+        animate('300ms ease-in-out')
       ])
-    ])
+    ]),
+    trigger('maskAnimation', [
+      // Estado inicial/cerrado
+      state('closed', style({
+        opacity: 0
+      })),
+      // Estado abierto
+      state('open', style({
+        opacity: 1
+      })),
+      // Transición de cerrado a abierto (entrada)
+      transition('closed => open', [
+        style({opacity: 1}),
+        animate('300ms ease-out')
+      ]),
+      // Transición de abierto a cerrado (salida)
+      transition('open => closed', [
+        style({opacity: 0}),
+        animate('200ms ease-in')
+      ])
+    ]),
   ]
+
 })
 export class DialogComponent implements AfterViewInit, OnDestroy {
-  visible = signal(false)
+  dialogState = signal('closed');
   @Input() dialogTitle = '';
   @Output() closed = new EventEmitter<void>();
   @ViewChild('dialog', {static: true}) dialogRef!: ElementRef<HTMLDialogElement>;
@@ -58,22 +91,32 @@ export class DialogComponent implements AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    const root = document.querySelector('html') as HTMLElement;
+    if (root) root.style.overflow = 'auto';
     this.dialogRef.nativeElement.removeEventListener('click', this.close);
   }
 
   open() {
-    this.visible.set(true);
+    this.dialogState.set('open');
     this.dialogRef.nativeElement.showModal();
     const root = document.querySelector('html') as HTMLElement;
     if (root) root.style.overflow = 'hidden';
   }
 
   close() {
-    this.visible.set(false);
-    this.dialogRef.nativeElement.close();
-    this.closed.emit();
-
-    const root = document.querySelector('html') as HTMLElement;
-    if (root) root.style.overflow = '';
+    this.dialogState.set('closed');
   }
+
+  onAnimationDone() {
+    // Si terminó la animación de cierre, cerramos el diálogo
+    if (this.dialogState() === 'closed') {
+      this.dialogRef.nativeElement.close();
+      this.closed.emit();
+
+      const root = document.querySelector('html') as HTMLElement;
+      if (root) root.style.overflow = '';
+    }
+  }
+
+  protected readonly event = event;
 }
