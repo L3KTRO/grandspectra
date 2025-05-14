@@ -1,5 +1,5 @@
 import {Component, computed, effect, inject, resource, ResourceRef, signal, Signal} from '@angular/core';
-import {NgIf, NgOptimizedImage} from '@angular/common';
+import {NgForOf, NgIf, NgOptimizedImage} from '@angular/common';
 import {BackendService} from "../../services/backend/backend.service";
 import {Me} from '../../models/Me';
 import {ContentlistComponent} from '../../shared/contentlist/contentlist.component';
@@ -7,13 +7,16 @@ import {Movie} from '../../models/Movie';
 import {Tv} from '../../models/Tv';
 import {UserAndContent} from '../../models/UserAndContent';
 import {SyncStore} from '../../stores/SyncStore';
+import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-profile',
   imports: [
     NgOptimizedImage,
     NgIf,
-    ContentlistComponent
+    ContentlistComponent,
+    NgForOf,
+    RouterLink
   ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss'

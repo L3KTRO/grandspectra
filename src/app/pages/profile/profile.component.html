@@ -47,5 +47,22 @@
     <app-contentlist [content]="watchlist()"/>
   </div>
 
+  <div class="container">
+    <div>
+      <h2>My lists</h2>
+      <ul>
+        <li *ngFor="let list of this.me().content_lists">
+          <a [routerLink]="['/lists', list.id]">
+            {{ list.name }}
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div>
+      <h2>Saved lists</h2>
+    </div>
+  </div>
+
 
 </div>
