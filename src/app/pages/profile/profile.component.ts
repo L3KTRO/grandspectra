@@ -25,6 +25,8 @@ export class ProfileComponent {
   constructor(public syncStore: SyncStore) {
     this.initialSync.set(syncStore.profileSync())
     effect(() => {
+      console.log(this.syncStore.profileSync())
+      console.log(this.initialSync())
       if (this.syncStore.profileSync() > this.initialSync()) {
         this.resources.reload()
       }

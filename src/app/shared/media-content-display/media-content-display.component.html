@@ -12,7 +12,7 @@
 </app-dialog>
 
 
-<app-dialog #addToList dialogTitle="Add to list" *ngIf="authed()">
+<app-dialog #addToList dialogTitle="Add to list" *ngIf="authed() && listsAdded()">
   <div class="dialog">
     <span id="new-list" routerLink="/list/create">Create new list</span>
     <div class="content">
@@ -28,7 +28,10 @@
       }
 
     </div>
-    <div class="save">Save</div>
+    <div class="save" (click)="saveLists()">
+      <h3 *ngIf="!loadingList()">Save</h3>
+      <app-spinner *ngIf="loadingList()" [size]="20"/>
+    </div>
   </div>
 </app-dialog>
 

@@ -8,7 +8,7 @@ import {SignComponent} from './pages/sign/sign.component';
 import {PersonComponent} from './pages/person/person.component';
 import {authGuard} from './auth/auth.guard';
 import {ListCreatorComponent} from './pages/list-creator/list-creator.component';
-import {ListsComponent} from './pages/lists/lists.component';
+import {ListComponent} from './pages/list/list.component';
 
 export const routes: Routes = [
   {
@@ -36,6 +36,6 @@ export const routes: Routes = [
     path: "list/create", component: ListCreatorComponent
   },
   {
-    path: "lists/:id", component: ListsComponent
+    path: "list/:id", component: ListComponent
   }
 ];

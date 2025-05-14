@@ -30,12 +30,16 @@ export class BackendService {
   }
 
   getMe() {
-    return this.api.get(this.baseUrl + '/me', {
+    return this.authRequest('/me', {
       headers: {
         'Authorization': `Bearer ${sessionStorage.getItem(this.TOKEN_KEY)}`,
       },
       validateStatus: (status) => status === 200 || status === 401,
     })
+  }
+
+  getUser(id: number) {
+    return this.api.get(`/users/${id}`)
   }
 
   request(endpoint: string, options: AxiosRequestConfig = {}) {
@@ -54,11 +58,17 @@ export class BackendService {
       },
     })
 
-    req.then(() => {
-      if (options.method !== "GET") this.syncStore.addChangeProfile()
+    req.then((it) => {
+      console.log(it)
+      if (options.method && options.method !== "GET") this.syncStore.addChangeProfile()
     });
 
+
     return req
+  }
+
+  list(id: string, options: AxiosRequestConfig = {}) {
+    return this.authRequest(`/lists/${id}`, options)
   }
 
   async login(credentials: { email: string; password: string }) {

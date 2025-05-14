@@ -10,6 +10,7 @@ export class SyncStore {
   }
 
   addChangeLogin() {
+
     this.loginSync.update(value => value + 1);
   }
 }

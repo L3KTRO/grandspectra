@@ -28,6 +28,8 @@ import {RatingsandreviewComponent} from "../ratingsandreview/ratingsandreview.co
 import {DialogComponent} from "../dialog/dialog.component";
 import {FormsModule} from '@angular/forms';
 import {Review} from '../../models/Review';
+import {toggler} from '../../helpers/Toggler';
+import {ProgressSpinnerComponent} from '../progress-spinner/progress-spinner.component';
 
 @Component({
   selector: 'app-media-content-display',
@@ -44,6 +46,7 @@ import {Review} from '../../models/Review';
     DialogComponent,
     NgForOf,
     FormsModule,
+    ProgressSpinnerComponent,
 
   ],
   templateUrl: './media-content-display.component.html',
@@ -86,6 +89,7 @@ export class MediaContentDisplayComponent implements OnDestroy {
   hoverWatchlist = signal(false);
   hoverWatched = signal(false);
   reviewText = signal('');
+  loadingList = signal(false);
 
   authed = signal(false);
   data: ResourceRef<Me> = resource({
@@ -168,14 +172,16 @@ export class MediaContentDisplayComponent implements OnDestroy {
     }
   }
 
-  toggler(value: boolean) {
-    return !value;
-  }
-
   @ViewChild('review') reviewDialog!: DialogComponent;
   @ViewChild("addToList") listDialog!: DialogComponent;
 
-  listsAdded = linkedSignal(() => this.data.value().content_lists.map(r => r.id))
+  originalLists = computed(() =>
+    this.data.value()?.content_lists.filter(list =>
+      list.tv.some(tv => tv.id === this.id) || list.movie.some(movie => movie.id === this.id)
+    ).map(r => r.id) || []
+  );
+
+  listsAdded: WritableSignal<number[]> = linkedSignal(() => this.originalLists());
 
   toggleList(item: number) {
     this.listsAdded.update(res => {
@@ -211,4 +217,56 @@ export class MediaContentDisplayComponent implements OnDestroy {
       console.error(err);
     })
   }
+
+  async saveLists() {
+    this.loadingList.set(true);
+    if (JSON.stringify(this.originalLists()) !== JSON.stringify(this.listsAdded())) {
+      const toDelete = this.originalLists().filter(i => !this.listsAdded().includes(i));
+      const toAdd = this.listsAdded().filter(i => !this.originalLists().includes(i));
+
+      const updateList = async (listId: number, isDelete: boolean) => {
+        const originalList = this.data.value()?.content_lists.find(list => list.id === listId);
+        if (!originalList) return;
+
+        const movieIds = this.isMovie
+          ? isDelete
+            ? originalList.movie.filter(movie => movie.id !== this.id).map(r => r.id)
+            : [this.id, ...originalList.movie.map(r => r.id)]
+          : originalList.movie.map(r => r.id);
+
+        const tvIds = this.isMovie
+          ? originalList.tv.map(r => r.id)
+          : isDelete
+            ? originalList.tv.filter(tv => tv.id !== this.id).map(r => r.id)
+            : [this.id, ...originalList.tv.map(r => r.id)];
+
+        try {
+          await this.backend.authRequest(`/lists/${listId}`, {
+            method: 'PUT',
+            data: {
+              movie_id: movieIds,
+              tv_id: tvIds
+            }
+          });
+          console.log('Lists updated successfully');
+        } catch (err) {
+          console.error('Error updating lists:', err);
+        }
+      };
+
+      for (const i of toDelete) {
+        await updateList(i, true);
+      }
+
+      for (const i of toAdd) {
+        await updateList(i, false);
+      }
+    }
+
+    this.data.reload()
+    this.loadingList.set(false);
+    this.listDialog.close();
+  }
+
+  protected readonly toggler = toggler;
 }

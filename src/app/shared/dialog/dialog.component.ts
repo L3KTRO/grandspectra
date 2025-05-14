@@ -6,17 +6,12 @@ import {
   EventEmitter,
   Input,
   OnDestroy,
-  Output, signal,
+  Output,
+  signal,
   ViewChild
 } from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {
-  trigger,
-  transition,
-  style,
-  animate,
-  state
-} from '@angular/animations';
+import {animate, state, style, transition, trigger} from '@angular/animations';
 
 @Component({
   selector: 'app-dialog',

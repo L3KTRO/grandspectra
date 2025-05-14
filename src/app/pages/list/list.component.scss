@@ -1,0 +1,55 @@
+@use "../../../styles" as styles;
+
+#title {
+  font-family: 'CharisSIL', "GTVCS", serif;
+  font-weight: bolder;
+  font-size: 2.5rem;
+}
+
+#body {
+  margin: 3rem 12%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+#content {
+  width: 66%;
+  height: 100%;
+}
+
+#votes {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  align-items: center;
+}
+
+#actions {
+  width: 33%;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  align-items: center;
+  justify-content: center;
+}
+
+#actions > div {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+#delete {
+  width: fit-content;
+  height: fit-content;
+  padding: 0.5rem 1rem;
+  margin: 1rem auto;
+  font-size: 1.25rem;
+  font-weight: bold;
+  background-color: styles.$contrast-1-2;
+  color: styles.$text;
+  border-radius: 0.5rem;
+}
