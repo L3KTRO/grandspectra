@@ -3,12 +3,12 @@
   <div class="form-row">
     <div class="form-group left">
       <label for="name" class="label-with-dot">
-        <span class="status-dot"></span>
         <span>Name</span>
+        <small *ngIf="form.get('name')?.errors?.['required']">Name is required</small>
+        <small *ngIf="form.get('name')?.errors?.['minlength']">At least 3 chars</small>
+        <small *ngIf="form.get('name')?.errors?.['maxlength']">Max 32 chars</small>
       </label>
       <input type="text" id="name" class="input" autocomplete="off" maxlength="250" formControlName="name"/>
-      <small *ngIf="form.get('name')?.errors?.['required']">Name is required</small>
-      <small *ngIf="form.get('name')?.errors?.['minlength']">At least 3 chars</small>
       <label for="visibility" class="label">
         Who can view
       </label>
@@ -20,9 +20,10 @@
     <div class="form-group right">
       <label for="description" class="label-right">
         Description
+        <small *ngIf="form.get('description')?.errors?.['required']">Description is required</small>
+        <small *ngIf="form.get('description')?.errors?.['maxlength']">Max 5000 chars</small>
       </label>
       <textarea id="description" class="textarea" maxlength="5000" formControlName="description"></textarea>
-      <small *ngIf="form.get('description')?.errors?.['required']">Description is required</small>
     </div>
   </div>
   <div class="form-row buttons-row">

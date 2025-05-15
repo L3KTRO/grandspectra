@@ -1,12 +1,15 @@
 <app-dialog #review dialogTitle="Add a review" *ngIf="authed()">
   <div class="dialog">
     <app-rating [currentRating]="rating"/>
+    <small *ngIf="rating() < 1">Qualification is required</small>
     <textarea
       id="review"
       rows="6"
       placeholder="Add your review..."
       [(ngModel)]="reviewText"
     ></textarea>
+    <small *ngIf="!reviewText()">Review is required</small>
+    <small *ngIf="reviewText().length > 10000">Max 10000 chars</small>
     <div class="save" (click)="saveReview()">Save</div>
   </div>
 </app-dialog>

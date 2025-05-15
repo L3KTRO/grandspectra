@@ -1,10 +1,9 @@
 @use "../styles" as styles;
 
-
 .container {
   display: flex;
   flex-direction: column;
-  min-height: 100vh; /* Importante: usar vh en lugar de % */
+  min-height: 100.1vh; /* Importante: usar vh en lugar de % */
 }
 
 header, footer {
@@ -15,4 +14,30 @@ main {
   flex: 1 0 auto; /* Crecer para ocupar espacio disponible */
   display: flex;
   flex-direction: column;
+}
+
+@keyframes enter {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes exit {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+::view-transition-old(root) {
+  animation: exit 2s ease 0s 1 normal forwards;
+}
+
+::view-transition-new(root) {
+  animation: enter 4s ease 0s 1 normal forwards;
 }

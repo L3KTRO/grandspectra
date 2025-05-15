@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {BackendService} from '../../services/backend/backend.service';
-import {NgIf, Location} from '@angular/common';
+import {Location, NgIf} from '@angular/common';
 
 @Component({
   selector: 'app-list-creator',
@@ -19,7 +19,7 @@ export class ListCreatorComponent {
 
   constructor(private fb: FormBuilder, private backend: BackendService, private location: Location) {
     this.form = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(3)]],
+      name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(32)]],
       description: ['', Validators.required],
       public: ["false", Validators.required],
     });

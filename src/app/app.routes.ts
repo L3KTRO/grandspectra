@@ -9,6 +9,8 @@ import {PersonComponent} from './pages/person/person.component';
 import {authGuard} from './auth/auth.guard';
 import {ListCreatorComponent} from './pages/list-creator/list-creator.component';
 import {ListComponent} from './pages/list/list.component';
+import {ListsComponent} from './pages/lists/lists.component';
+import {noAuthGuard} from './auth/no-auth.guard';
 
 export const routes: Routes = [
   {
@@ -30,12 +32,15 @@ export const routes: Routes = [
     path: "profile", component: ProfileComponent, canActivate: [authGuard]
   },
   {
-    path: "login", component: SignComponent
+    path: "login", component: SignComponent, canActivate: [noAuthGuard]
   },
   {
-    path: "list/create", component: ListCreatorComponent
+    path: "list/create", component: ListCreatorComponent, canActivate: [authGuard]
   },
   {
     path: "list/:id", component: ListComponent
+  },
+  {
+    path: "lists", component: ListsComponent
   }
 ];

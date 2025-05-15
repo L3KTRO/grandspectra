@@ -1,13 +1,19 @@
 <div id="contents">
   @if (content) {
     <div *ngFor="let item of content" class="item">
-      <app-dialog #fullContent>
+      <app-dialog #fullContent dialogTitle="Review #{{item.id}}">
         <div id="dialog">
-          {{ item.content }}
+          <h4 id="dialog-username">{{ item.user.username }}</h4>
+          <h4 class="date">{{ item.created_at | date: 'dd/MM/yyyy' }}</h4>
+          <div class="progress-bar">
+            <div class="progress" [style.width.%]="item.qualification * 10"></div>
+          </div>
+          <p id="dialog-content" (click)="fullContent.open()"
+             *ngIf="item.content">{{ item.content }}</p>
         </div>
       </app-dialog>
       <h4>{{ item.user.username }}</h4>
-      <h4 id="date">{{ item.created_at | date: 'dd/MM/yyyy' }}</h4>
+      <h4 class="date">{{ item.created_at | date: 'dd/MM/yyyy' }}</h4>
       <div class="progress-bar">
         <div class="progress" [style.width.%]="item.qualification * 10"></div>
       </div>

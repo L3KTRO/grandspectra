@@ -3,12 +3,14 @@ import axios, {AxiosRequestConfig} from 'axios';
 import {environment} from '../../../environments/environment';
 import {Auth} from '../../models/Auth';
 import {SyncStore} from '../../stores/SyncStore';
+import {LoadingInterceptor} from '../../helpers/load-interceptor/loading.interceptor';
 
 @Injectable({providedIn: 'root'})
 export class BackendService {
   baseUrl = environment.apiUrl;
   syncStore = inject(SyncStore);
   private readonly TOKEN_KEY = 'access_token';
+
   api = axios.create({
     baseURL: this.baseUrl,
     headers: {
@@ -16,6 +18,11 @@ export class BackendService {
       'Accept': 'application/json',
     },
   })
+
+  constructor(private axiosInterceptorService: LoadingInterceptor) {
+    // Configura los interceptores para mostrar/ocultar el spinner
+    //this.axiosInterceptorService.setupInterceptors(this.api);
+  }
 
   getGenres() {
     return this.api.get(this.baseUrl + '/genres');
@@ -69,6 +76,10 @@ export class BackendService {
 
   list(id: string, options: AxiosRequestConfig = {}) {
     return this.authRequest(`/lists/${id}`, options)
+  }
+
+  voteList(listId: string, options: AxiosRequestConfig = {}) {
+    return this.authRequest(`/lists/${listId}/vote`, options)
   }
 
   async login(credentials: { email: string; password: string }) {

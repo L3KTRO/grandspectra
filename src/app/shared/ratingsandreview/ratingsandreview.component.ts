@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, ViewChild} from '@angular/core';
 import {DatePipe, NgForOf, NgIf, SlicePipe} from '@angular/common';
 import {Skeleton} from 'primeng/skeleton';
 import {Review} from '../../models/Review';

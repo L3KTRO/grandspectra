@@ -26,7 +26,7 @@ import {Me} from "../../models/Me";
 import {UserAndContent} from "../../models/UserAndContent";
 import {RatingsandreviewComponent} from "../ratingsandreview/ratingsandreview.component";
 import {DialogComponent} from "../dialog/dialog.component";
-import {FormsModule} from '@angular/forms';
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Review} from '../../models/Review';
 import {toggler} from '../../helpers/Toggler';
 import {ProgressSpinnerComponent} from '../progress-spinner/progress-spinner.component';
@@ -47,7 +47,7 @@ import {ProgressSpinnerComponent} from '../progress-spinner/progress-spinner.com
     NgForOf,
     FormsModule,
     ProgressSpinnerComponent,
-
+    ReactiveFormsModule,
   ],
   templateUrl: './media-content-display.component.html',
   styleUrl: './media-content-display.component.scss',
@@ -90,8 +90,8 @@ export class MediaContentDisplayComponent implements OnDestroy {
   hoverWatched = signal(false);
   reviewText = signal('');
   loadingList = signal(false);
-
   authed = signal(false);
+
   data: ResourceRef<Me> = resource({
     request: () => ({}),
     loader: async () => {
@@ -120,6 +120,14 @@ export class MediaContentDisplayComponent implements OnDestroy {
   isCast: WritableSignal<boolean> = signal(true);
   isMovie = this.router.url.includes('/movie');
   readonly = computed(() => this.data.asReadonly().value());
+
+  form: FormGroup;
+
+  constructor(private fb: FormBuilder) {
+    this.form = this.fb.group({
+      name: ['review', [Validators.required, Validators.minLength(1), Validators.maxLength(10000)]],
+    });
+  }
 
   ngOnDestroy(): void {
     this.updateInfo()
@@ -202,6 +210,7 @@ export class MediaContentDisplayComponent implements OnDestroy {
   }
 
   async saveReview() {
+    if (this.rating() < 1 || !this.reviewText() || this.reviewText().length > 10000) return;
     await this.backend.authRequest(`/me/reviews/`, {
       method: 'POST',
       data: {

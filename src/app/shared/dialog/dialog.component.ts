@@ -71,8 +71,6 @@ export class DialogComponent implements AfterViewInit, OnDestroy {
   @ViewChild('dialog', {static: true}) dialogRef!: ElementRef<HTMLDialogElement>;
 
   ngAfterViewInit() {
-    //this.dialogRef.nativeElement.showModal(); //TODO: remove this line
-
     this.dialogRef.nativeElement.addEventListener('click', (event: MouseEvent) => {
       const rect = this.dialogRef.nativeElement.getBoundingClientRect();
       const isOutside =
@@ -92,13 +90,15 @@ export class DialogComponent implements AfterViewInit, OnDestroy {
   }
 
   open() {
-    this.dialogState.set('open');
-    this.dialogRef.nativeElement.showModal();
     const root = document.querySelector('html') as HTMLElement;
     if (root) root.style.overflow = 'hidden';
+    this.dialogState.set('open');
+    this.dialogRef.nativeElement.showModal();
   }
 
   close() {
+    const root = document.querySelector('html') as HTMLElement;
+    if (root) root.style.overflow = '';
     this.dialogState.set('closed');
   }
 
@@ -107,9 +107,6 @@ export class DialogComponent implements AfterViewInit, OnDestroy {
     if (this.dialogState() === 'closed') {
       this.dialogRef.nativeElement.close();
       this.closed.emit();
-
-      const root = document.querySelector('html') as HTMLElement;
-      if (root) root.style.overflow = '';
     }
   }
 
