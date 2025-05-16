@@ -40,8 +40,9 @@
 
 <div id="content-container" *ngIf="id">
   <div class="container" id="meta">
-    <div id="background-poster" [style.background-image]="'url('+getPoster(poster)+')'">
-      <img id="poster" ngSrc="{{ getPoster(poster) }}" alt="poster" height="450" width="300">
+    <div id="background-poster" [style.background-image]="'url('+backgroundPoster(poster)+')'">
+      <img class="poster" ngSrc="{{ getPoster(poster) }}" alt="poster" height="450" width="300"
+           (load)="getNextPoster()">
     </div>
     <div>
       <h1 id="title">{{ title }}</h1>

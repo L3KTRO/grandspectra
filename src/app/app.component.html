@@ -3,11 +3,7 @@
     <app-header/>
   </header>
   <main>
-    @if (loadingService.loading$ | async) {
-      <app-spinner></app-spinner>
-    } @else {
-      <router-outlet/>
-    }
+    <router-outlet/>
   </main>
   <footer>
     <app-footer/>

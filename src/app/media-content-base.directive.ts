@@ -22,11 +22,6 @@ export abstract class MediaContentBaseComponent {
   // Método abstracto que debe ser implementado por las clases hijas
   abstract getApiEndpoint(): string;
 
-  poster(path: string | null) {
-    if (!path) return "https://placehold.co/75x100";
-    return path.replace("original", "w780");
-  }
-
   // Métodos que pueden ser sobrescritos por las clases hijas si es necesario
 
   cast = computed(() => {

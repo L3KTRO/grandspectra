@@ -8,6 +8,7 @@ import {Tv} from '../../models/Tv';
 import {UserAndContent} from '../../models/UserAndContent';
 import {SyncStore} from '../../stores/SyncStore';
 import {RouterLink} from '@angular/router';
+import {ListsVisualizerComponent} from '../../shared/lists-visualizer/lists-visualizer.component';
 
 @Component({
   selector: 'app-profile',
@@ -16,7 +17,8 @@ import {RouterLink} from '@angular/router';
     NgIf,
     ContentlistComponent,
     NgForOf,
-    RouterLink
+    RouterLink,
+    ListsVisualizerComponent
   ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss'

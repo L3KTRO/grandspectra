@@ -29,7 +29,13 @@ export class ListComponent {
 
   svgSize = 30
 
-  vote: WritableSignal<boolean | null> = signal(null)
+  vote: WritableSignal<boolean | null> = linkedSignal(() => {
+    const ownVote = this.list().votes.find(v => v.user_id === this.me()?.id)
+    if (!ownVote) return null
+    if (ownVote.vote === 1) return true
+    if (ownVote.vote === 0) return false
+    else return null
+  })
   voteCount = linkedSignal(() => this.list().votes.length)
   nameList = linkedSignal(() => this.list().name)
   descriptionList = linkedSignal(() => this.list().description)
@@ -75,6 +81,7 @@ export class ListComponent {
   }
 
   editing() {
+    console.log(this.list().votes.find(v => v.user_id === this.me()?.id)?.vote)
     if (!this.descriptionList() || !this.nameList()) return;
     this.editMode.update(toggler)
     if (!this.editMode()) {

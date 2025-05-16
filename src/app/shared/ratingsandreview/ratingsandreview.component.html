@@ -1,6 +1,6 @@
 <div id="contents">
-  @if (content) {
-    <div *ngFor="let item of content" class="item">
+  @if (sorted()) {
+    <div *ngFor="let item of sorted()" class="item">
       <app-dialog #fullContent dialogTitle="Review #{{item.id}}">
         <div id="dialog">
           <h4 id="dialog-username">{{ item.user.username }}</h4>

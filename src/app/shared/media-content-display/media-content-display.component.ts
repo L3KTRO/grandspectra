@@ -74,7 +74,6 @@ export class MediaContentDisplayComponent implements OnDestroy {
   @Input() genres!: string;
   @Input() companies!: string;
   @Input() reviews: Review[] = [];
-  @Input() getPoster: (path: string | null) => string = () => '';
 
   router = inject(Router)
   backend = inject(BackendService)
@@ -275,6 +274,35 @@ export class MediaContentDisplayComponent implements OnDestroy {
     this.data.reload()
     this.loadingList.set(false);
     this.listDialog.close();
+  }
+
+  posterSizes = [
+    "w92",
+    "w154",
+    "w185",
+    "w342",
+    "w500",
+    "w780",
+    "original"
+  ]
+
+  posterSize = signal(this.posterSizes[0]);
+
+  backgroundPoster(path: string | null) {
+    if (!path) return "https://placehold.co/75x100";
+    return path.replace("original", "w92");
+  }
+
+  getPoster(path: string | null) {
+    if (!path) return "https://placehold.co/75x100";
+    return path.replace("original", this.posterSize());
+  }
+
+  getNextPoster() {
+    const currentIndex = this.posterSizes.indexOf(this.posterSize());
+    if (currentIndex === this.posterSizes.length - 1) return;
+    const nextIndex = (currentIndex + 1) % this.posterSizes.length;
+    this.posterSize.set(this.posterSizes[nextIndex]);
   }
 
   protected readonly toggler = toggler;
