@@ -78,6 +78,10 @@ export class BackendService {
     return this.authRequest(`/lists/${id}`, options)
   }
 
+  lists(options: AxiosRequestConfig = {}) {
+    return this.authRequest('/lists', options)
+  }
+
   voteList(listId: string, options: AxiosRequestConfig = {}) {
     return this.authRequest(`/lists/${listId}/vote`, options)
   }

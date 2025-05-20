@@ -1,1 +1,26 @@
-<p>lists works!</p>
+<div id="body">
+  <div class="row">
+    <h2 class="title">Most voted lists</h2>
+    <div class="list">
+      <div *ngFor="let list of voteCounting()">
+        <app-lists-visualizer [list]="list"></app-lists-visualizer>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <h2 class="title">Trending lists</h2>
+    <div class="list">
+      <div *ngFor="let list of popularities()">
+        <app-lists-visualizer [list]="list"></app-lists-visualizer>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <h2 class="title">Loved by spectators</h2>
+    <div class="list">
+      <div *ngFor="let list of bestVoted()">
+        <app-lists-visualizer [list]="list"></app-lists-visualizer>
+      </div>
+    </div>
+  </div>
+</div>

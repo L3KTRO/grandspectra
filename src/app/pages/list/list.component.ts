@@ -1,9 +1,19 @@
-import {Component, computed, Input, linkedSignal, signal, ViewChild, WritableSignal} from '@angular/core';
+import {
+  Component,
+  computed,
+  Input,
+  linkedSignal,
+  resource,
+  ResourceRef,
+  signal,
+  ViewChild,
+  WritableSignal
+} from '@angular/core';
 import {Me} from '../../models/Me';
 import {BackendService} from '../../services/backend/backend.service';
 import {ContentList} from '../../models/ContentList';
 import {ContentlistWrapComponent} from '../../shared/contentlistwrap/contentlistwrap.component';
-import {NgClass, NgIf} from '@angular/common';
+import {NgClass, NgIf, SlicePipe} from '@angular/common';
 import {computedResource} from '../../helpers/Resources';
 import {toggler} from '../../helpers/Toggler';
 import {DialogComponent} from '../../shared/dialog/dialog.component';
@@ -17,7 +27,8 @@ import {FormsModule} from '@angular/forms';
     NgIf,
     DialogComponent,
     FormsModule,
-    NgClass
+    NgClass,
+    SlicePipe
   ],
   templateUrl: './list.component.html',
   styleUrl: './list.component.scss'
@@ -36,7 +47,7 @@ export class ListComponent {
     if (ownVote.vote === 0) return false
     else return null
   })
-  voteCount = linkedSignal(() => this.list().votes.length)
+  voteCount = linkedSignal(() => this.list().votes.filter(v => v.vote === 1).length - this.list().votes.filter(v => v.vote === 0).length)
   nameList = linkedSignal(() => this.list().name)
   descriptionList = linkedSignal(() => this.list().description)
   editMode = signal(false)
@@ -51,17 +62,18 @@ export class ListComponent {
     }
   });
 
-  list = computedResource<ContentList>({
+  listResource: ResourceRef<ContentList> = resource({
     loader: async () => {
       try {
         const req = await this.backend.list(this.id)
         return req.status === 200 ? req.data : null
       } catch {
         await this.router.navigate(['/lists'])
-        return null
       }
     }
   })
+
+  list = computed(() => this.listResource.asReadonly().value())
 
   content = computed(() => {
     if (!this.list()) return []
@@ -81,8 +93,7 @@ export class ListComponent {
   }
 
   editing() {
-    console.log(this.list().votes.find(v => v.user_id === this.me()?.id)?.vote)
-    if (!this.descriptionList() || !this.nameList()) return;
+    if (this.editMode() && (!this.descriptionList() || !this.nameList())) return;
     this.editMode.update(toggler)
     if (!this.editMode()) {
       if (this.descriptionList() === this.list().description && this.nameList() === this.list().name) return;
@@ -102,20 +113,18 @@ export class ListComponent {
 
   voting(act: boolean | null) {
     this.vote.set(act)
-    setTimeout(() => {
-      this.backend.voteList(this.id, {
-        method: act === null ? "DELETE" : "PUT",
-        data: {
-          vote: act
-        }
-      }).then((res) => {
-        if (res.status === 200) {
-          this.vote.set(res.data)
-        } else {
-          this.vote.set(null)
-        }
-      })
-    }, 1000)
+    this.backend.voteList(this.id, {
+      method: act === null ? "DELETE" : "PUT",
+      data: {
+        vote: act
+      }
+    }).then((_) => {
+      this.listResource.reload()
+    })
+  }
+
+  saving(){
+
   }
 
   protected readonly toggler = toggler;

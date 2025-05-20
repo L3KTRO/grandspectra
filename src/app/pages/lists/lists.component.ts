@@ -3,57 +3,74 @@ import {
   AfterContentInit,
   AfterViewChecked,
   AfterViewInit,
-  Component, DoCheck, Input, OnChanges,
+  Component, computed, DoCheck, Input, OnChanges,
   OnDestroy,
-  OnInit, SimpleChanges
+  OnInit, Signal, SimpleChanges
 } from '@angular/core';
+import {NgForOf} from '@angular/common';
+import {ListsVisualizerComponent} from '../../shared/lists-visualizer/lists-visualizer.component';
+import {computedResource} from '../../helpers/Resources';
+import {BackendService} from '../../services/backend/backend.service';
+import {ContentList} from '../../models/ContentList';
+import {Content} from '../../models/Content';
 
 @Component({
   selector: 'app-lists',
-  imports: [],
+  imports: [
+    NgForOf,
+    ListsVisualizerComponent
+  ],
   templateUrl: './lists.component.html',
   styleUrl: './lists.component.scss'
 })
-export class ListsComponent implements OnInit, OnDestroy, AfterViewInit, AfterViewChecked, AfterContentInit, AfterContentChecked, DoCheck, OnChanges {
+export class ListsComponent {
 
-  @Input() inputProperty: any;
-
-  constructor() {
-    console.log('Constructor: El componente se está construyendo');
+  constructor(private backend: BackendService) {
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log('ngOnChanges: Se detectaron cambios en las propiedades de entrada', changes);
-  }
+  lists = computedResource<ContentList[]>({
+    loader: async () => (await this.backend.lists()).data
+  })
 
-  ngOnInit(): void {
-    console.log('ngOnInit: El componente se inicializó');
-    setTimeout(() => {
-      return true
-    }, 2000);
-  }
+  popularities = computed(() => {
+    return this.lists()
+      .map(list => {
+        let count = 0;
+        const summatory = (item: Content) => {
+          count += parseInt(`${item.popularity ?? 0}`)
+        }
+        list.movie.forEach(summatory)
+        list.tv.forEach(summatory)
+        return {
+          list,
+          popularity: count / (list.movie.length + list.tv.length)
+        }
+      })
+      .sort((a, b) => b.popularity - a.popularity)
+      .map(item => item.list);
+  });
 
-  ngDoCheck(): void {
-    console.log('ngDoCheck: Se ejecutó la detección de cambios personalizada');
-  }
+  voteCounting = computed(() => {
+    return this.lists()
+      .sort((a, b) => b.votes.length - a.votes.length);
+  });
 
-  ngAfterContentInit(): void {
-    console.log('ngAfterContentInit: El contenido proyectado se inicializó');
-  }
+  bestVoted = computed(() => {
+    return this.lists()
+      .map(list => {
+        let count = 0;
 
-  ngAfterContentChecked(): void {
-    console.log('ngAfterContentChecked: El contenido proyectado fue verificado');
-  }
+        list.votes.forEach(vote => {
+          count += vote.vote === 1 ? 1 : -1
+        })
 
-  ngAfterViewInit(): void {
-    console.log('ngAfterViewInit: Las vistas del componente se inicializaron');
-  }
+        return {
+          list,
+          totalVotes: count / (list.movie.length + list.tv.length)
+        }
+      })
+      .sort((a, b) => b.totalVotes - a.totalVotes)
+      .map(item => item.list);
+  });
 
-  ngAfterViewChecked(): void {
-    console.log('ngAfterViewChecked: Las vistas del componente fueron verificadas');
-  }
-
-  ngOnDestroy(): void {
-    console.log('ngOnDestroy: El componente se está destruyendo');
-  }
 }

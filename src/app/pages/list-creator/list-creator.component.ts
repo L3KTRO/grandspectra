@@ -19,7 +19,7 @@ export class ListCreatorComponent {
 
   constructor(private fb: FormBuilder, private backend: BackendService, private location: Location) {
     this.form = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(32)]],
+      name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
       description: ['', Validators.required],
       public: ["false", Validators.required],
     });

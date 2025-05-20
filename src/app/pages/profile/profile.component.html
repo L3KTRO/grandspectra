@@ -49,7 +49,7 @@
 
   <div class="content-section" *ngIf="this.me().content_lists.length > 0">
     <h2 class="section-title">My lists</h2>
-    <div id="lists">
+    <div class="lists">
       <div *ngFor="let list of this.me().content_lists">
         <app-lists-visualizer [list]="list"/>
       </div>
@@ -58,6 +58,11 @@
 
   <div class="content-section" *ngIf="this.me().content_lists_saved.length > 0">
     <h2 class="section-title">Saved lists</h2>
+    <div class="lists">
+      <div *ngFor="let list of this.me().content_lists_saved">
+        <app-lists-visualizer [list]="list"/>
+      </div>
+    </div>
   </div>
 
 

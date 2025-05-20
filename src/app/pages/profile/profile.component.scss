@@ -1,8 +1,8 @@
 @use "../../../styles" as styles;
 
 .profile-container {
-  max-width: 1200px;
-  margin: 0 5%;
+  max-width: 85%;
+  margin: 0 auto;
   padding: 0;
 }
 
@@ -127,7 +127,7 @@
   }
 }
 
-#lists {
+.lists {
   display: flex;
   flex-direction: row;
   gap: 1rem;
