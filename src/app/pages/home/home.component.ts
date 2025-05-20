@@ -3,8 +3,9 @@ import {Component, computed, HostListener, inject, resource, ResourceRef, Signal
 import {CommonModule} from '@angular/common';
 import {Movie} from '../../models/Movie';
 import {ContentlistComponent} from '../../shared/contentlist/contentlist.component';
-import {BackendService} from '../../services/backend/backend.service';
-import {Tv} from '../../models/Tv'; // Asegúrate de tener la interfaz Movie
+import {Tv} from '../../models/Tv';
+import {MeiliService} from '../../services/meili/meili.service';
+import {BackendService} from '../../services/backend/backend.service'; // Asegúrate de tener la interfaz Movie
 
 @Component({
   selector: 'app-home',
@@ -14,14 +15,15 @@ import {Tv} from '../../models/Tv'; // Asegúrate de tener la interfaz Movie
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent {
+  meili = inject(MeiliService)
   backend = inject(BackendService)
   windowWidth = signal(window.innerWidth);
   mobile: Signal<boolean> = computed(() => this.windowWidth() < 750);
-  movies: ResourceRef<Movie[]> = resource({
-    loader: async () => (await this.backend.getPopularMovies()).data.data,
+  movies: ResourceRef<Movie[] | undefined> = resource({
+    loader: async () => (await this.meili.movies("", "popularity")).hits as Movie[]
   });
   tv: ResourceRef<Tv[]> = resource({
-    loader: async () => (await this.backend.getPopularTv()).data.data,
+    loader: async () => (await this.backend.getPopularTv()).data.data
   });
 
   features = [

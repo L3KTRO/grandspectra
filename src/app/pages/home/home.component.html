@@ -16,12 +16,10 @@
 </div>
 
 <div id="trending">
-  <div>
-    <div>
-      <app-contentlist [title]="'Popular movies'" [content]="movies.asReadonly().value()"/>
-    </div>
-    <div>
-      <app-contentlist [title]="'Popular series'" [content]="tv.asReadonly().value()"/>
-    </div>
+  <div *ngIf="movies.asReadonly().value()">
+    <app-contentlist [title]="'Popular movies'" [content]="movies.asReadonly().value()!"/>
+  </div>
+  <div *ngIf="tv.asReadonly().value()">
+    <app-contentlist [title]="'Popular series'" [content]="tv.asReadonly().value()!"/>
   </div>
 </div>

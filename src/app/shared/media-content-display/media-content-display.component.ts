@@ -59,6 +59,7 @@ export class MediaContentDisplayComponent implements OnDestroy {
   @Input() title!: string;
   @Input() tagline!: string | null;
   @Input() poster!: string | null;
+  @Input() backdrop!: string | null;
   @Input() overview!: string | null;
   @Input() releaseDate!: Date | null;
   @Input() voteAverage!: string | null;
@@ -286,7 +287,15 @@ export class MediaContentDisplayComponent implements OnDestroy {
     "original"
   ]
 
+  backdropSizes = [
+    "w300",
+    "w780",
+    "w1280",
+    "original"
+  ]
+
   posterSize = signal(this.posterSizes[0]);
+  backdropSize = signal(this.backdropSizes[0]);
 
   backgroundPoster(path: string | null) {
     if (!path) return "https://placehold.co/75x100";
@@ -303,6 +312,18 @@ export class MediaContentDisplayComponent implements OnDestroy {
     if (currentIndex === this.posterSizes.length - 1) return;
     const nextIndex = (currentIndex + 1) % this.posterSizes.length;
     this.posterSize.set(this.posterSizes[nextIndex]);
+  }
+
+  getBackdrop(path: string | null) {
+    if (!path) return "https://placehold.co/75x100";
+    return path.replace("original", this.backdropSize());
+  }
+
+  getNextBackdrop() {
+    const currentIndex = this.backdropSizes.indexOf(this.backdropSize());
+    if (currentIndex === this.backdropSizes.length - 1) return;
+    const nextIndex = (currentIndex + 1) % this.backdropSizes.length;
+    this.backdropSize.set(this.backdropSizes[nextIndex]);
   }
 
   protected readonly toggler = toggler;

@@ -106,7 +106,7 @@
         </th>
       </tr>
       </thead>
-      @if (getContentList().length > 0) {
+      @if (getContentList() ? getContentList()!.length > 0 : false) {
         <tbody>
           @for (item of getContentList(); track item.id) {
             <tr class="row" (click)="navigate(item.type + '/' + item.id)">

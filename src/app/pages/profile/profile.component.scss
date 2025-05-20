@@ -1,18 +1,20 @@
 @use "../../../styles" as styles;
 
 .profile-container {
-  max-width: 85%;
-  margin: 0 auto;
+  margin: 0 5%;
   padding: 0;
 }
 
 // Cabecera del perfil
 .profile-header {
-  margin: 4rem 0;
+  margin: 4rem 3rem 4rem 7rem;
 
   .profile-info {
     display: flex;
+    flex-direction: row;
     align-items: center;
+    justify-content: center;
+    gap: 25%;
     width: 100%;
 
     .profile-avatar {
@@ -42,14 +44,12 @@
 
     .profile-stats {
       display: flex;
-      margin-left: auto;
-      margin-right: 40px;
+      gap: 1rem;
 
       .stat-item {
         display: flex;
         flex-direction: column;
         align-items: center;
-        margin-left: 30px;
 
         .stat-number {
           font-size: 20px;
@@ -58,6 +58,7 @@
 
         .stat-label {
           font-size: 14px;
+          white-space: none;
           color: darken(styles.$text, 10%);
         }
       }
@@ -67,7 +68,7 @@
 
 // Secciones de contenido
 .content-section {
-  margin-bottom: 40px;
+  margin-bottom: 2rem;
 
   .section-title {
     color: darken(styles.$text, 5%);
@@ -76,24 +77,6 @@
     font-weight: 300;
   }
 
-  .media-grid {
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: 15px;
-
-    .media-item {
-      aspect-ratio: 2/3;
-      background-color: styles.$text-contrast;
-      border-radius: 4px;
-      overflow: hidden;
-
-      img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
-    }
-  }
 }
 
 // Sección social

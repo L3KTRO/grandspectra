@@ -7,8 +7,12 @@
 
 <div class="container" id="body" *ngIf="list()">
   <div id="content">
-    <input id="list-title" [(ngModel)]="nameList" [disabled]="!editMode()" maxlength="50"
-           [ngClass]="editMode() ? 'editing' : 'not-editing'"/>
+    @if (editMode()) {
+      <input class="list-title" [(ngModel)]="nameList" [disabled]="!editMode()" maxlength="50"
+             [ngClass]="editMode() ? 'editing' : 'not-editing'"/>
+    } @else {
+      <h1 class="list-title" id="tip-title">{{ nameList() }}</h1>
+    }
     <small *ngIf="!nameList() && editMode()">Name is required</small>
     <h3 style="font-weight: 400">List by <span style="font-weight: 700">{{ list().user.username }}</span></h3>
     <textarea id="description" [(ngModel)]="descriptionList"

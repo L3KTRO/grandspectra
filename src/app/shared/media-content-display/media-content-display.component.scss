@@ -1,9 +1,13 @@
 @use "../../../styles" as styles;
 
 #content-container {
+  position: relative;
+  z-index: 5;
   display: flex;
   flex-direction: column;
   margin: 2rem;
+  background-color: styles.$background;
+  box-shadow: 0 -85px 40px -40px styles.$background;
 }
 
 #meta {
@@ -339,4 +343,18 @@
 
 #new-list:hover {
   color: styles.$text-contrast-light;
+}
+
+#backdrop-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-height: 50vh;
+  z-index: 0;
+}
+
+#backdrop {
+  mask-image: linear-gradient(to right, transparent 0%, styles.$background-contrast-mid 8%, styles.$background-contrast-mid 95%, transparent 100%);
+  width: 90vw;
+  z-index: 0;
 }

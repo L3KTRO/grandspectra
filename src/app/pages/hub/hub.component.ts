@@ -9,6 +9,7 @@ import {Tv} from '../../models/Tv';
 import {LoadingComponent} from '../../shared/loading/loading.component';
 import {ChecksliderComponent} from '../../shared/checkslider/checkslider.component';
 import {Router} from '@angular/router';
+import {MeiliService} from '../../services/meili/meili.service';
 
 @Component({
   selector: 'app-hub',
@@ -41,13 +42,13 @@ export class HubComponent {
   securedTitleName = signal<string | null>(null);
   genres: { id: number, name: string }[] = []
 
-  constructor() {
+  constructor(private meili: MeiliService) {
     this.backend.getGenres().then((response) => {
       this.genres = response.data.data;
     })
   }
 
-  tv: ResourceRef<Tv[]> = resource({
+  tv: ResourceRef<Tv[] | undefined> = resource({
     request: () => ({
       by: this.orderer(),
       trigger: this.isTv(),
@@ -56,18 +57,11 @@ export class HubComponent {
       }
     }),
     loader: async ({request}) => {
-      console.log(this.genres)
-      return (await this.backend.request("/tv", {
-        params: {
-          sort_by: request.by,
-          sort_dir: 'desc',
-          ...request.native
-        }
-      })).data.data
+      return (await this.meili.tv(request.native.name ?? "", request.by)).hits as Tv[];
     }
   });
 
-  movies: ResourceRef<Movie[]> = resource({
+  movies: ResourceRef<Movie[] | undefined> = resource({
     request: () => ({
       by: this.orderer(),
       trigger: this.isTv(),
@@ -75,25 +69,14 @@ export class HubComponent {
         title: this.securedTitleName()
       }
     }),
-    loader: async ({request}) => {
-      return (await this.backend.request("/movies", {
-        params: {
-          sort_by: request.by,
-          sort_dir: 'desc',
-          ...request.native
-        }
-      })).data.data
+    loader: async ({request}): Promise<Movie[]> => {
+      return (await this.meili.movies(request.native.title ?? "", request.by)).hits as Movie[];
     }
   });
 
   private debounceEffect = effect((onCleanup) => {
     const value = this.writingTitleName();
-    const timeoutId = setTimeout(() => {
-      this.securedTitleName.set(value);
-    }, 700);
-
-    // Limpieza del timeout si el valor cambia antes de 1s
-    onCleanup(() => clearTimeout(timeoutId));
+    this.securedTitleName.set(value);
   });
 
   navigate(path: string) {
@@ -115,7 +98,7 @@ export class HubComponent {
 
   getContentList() {
     if (!this.isTv() && this.movies.status() === 4) {
-      return this.movies.asReadonly().value().map(movie => ({
+      return this.movies.asReadonly().value()?.map(movie => ({
         id: movie.id,
         type: 'movie',
         title: movie.title,
@@ -130,7 +113,7 @@ export class HubComponent {
         imageHeight: 75
       }));
     } else if (this.isTv() && this.tv.status() === 4) {
-      return this.tv.asReadonly().value().map(show => ({
+      return this.tv.asReadonly().value()?.map(show => ({
         id: show.id,
         type: 'tv',
         title: show.name,

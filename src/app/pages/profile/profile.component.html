@@ -2,13 +2,14 @@
   <!-- Cabecera del perfil -->
   <div class="profile-header">
     <div class="profile-info">
-      <div class="profile-avatar">
-        <img ngSrc="assets/user.svg" alt="Avatar de usuario" height="400" width="400">
-      </div>
-
-      <div class="profile-username">
-        <h4 *ngIf="me()">{{ me().username }}</h4>
-        <div class="button" (click)="logout()"><h5 style="margin: 0.25rem 0.5rem">LOGOUT</h5></div>
+      <div style="display: flex; flex-direction: row; align-items: center; align-content: center">
+        <div class="profile-avatar">
+          <img ngSrc="assets/user.svg" alt="Avatar de usuario" height="400" width="400">
+        </div>
+        <div class="profile-username">
+          <h4 *ngIf="me()">{{ me().username }}</h4>
+          <div class="button" (click)="logout()"><h5 style="margin: 0.25rem 0.5rem">LOGOUT</h5></div>
+        </div>
       </div>
 
       <div class="profile-stats">
@@ -18,7 +19,7 @@
         </div>
         <div class="stat-item">
           <span class="stat-number">{{ tvLength() }}</span>
-          <span class="stat-label">tv shows</span>
+          <span class="stat-label">tv</span>
         </div>
         <div class="stat-item">
           <span class="stat-number">{{ me().followers.length }}</span>
@@ -32,38 +33,41 @@
     </div>
   </div>
 
-  <div class="content-section">
-    <h2 class="section-title">Recent watched</h2>
-    <app-contentlist [content]="watched()"/>
-  </div>
+  <div id="content-container">
 
-  <div class="content-section">
-    <h2 class="section-title">Recent ratings</h2>
-    <app-contentlist [content]="ratings()"/>
-  </div>
+    <div class="content-section">
+      <h2 class="section-title">Recent watched</h2>
+      <app-contentlist [content]="watched()"/>
+    </div>
 
-  <div class="content-section">
-    <h2 class="section-title">Watchlist</h2>
-    <app-contentlist [content]="watchlist()"/>
-  </div>
+    <div class="content-section">
+      <h2 class="section-title">Recent ratings</h2>
+      <app-contentlist [content]="ratings()"/>
+    </div>
 
-  <div class="content-section" *ngIf="this.me().content_lists.length > 0">
-    <h2 class="section-title">My lists</h2>
-    <div class="lists">
-      <div *ngFor="let list of this.me().content_lists">
-        <app-lists-visualizer [list]="list"/>
+    <div class="content-section">
+      <h2 class="section-title">Watchlist</h2>
+      <app-contentlist [content]="watchlist()"/>
+    </div>
+
+    <div class="content-section" *ngIf="this.me().content_lists.length > 0">
+      <h2 class="section-title">My lists</h2>
+      <div class="lists">
+        <div *ngFor="let list of this.me().content_lists">
+          <app-lists-visualizer [list]="list"/>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div class="content-section" *ngIf="this.me().content_lists_saved.length > 0">
-    <h2 class="section-title">Saved lists</h2>
-    <div class="lists">
-      <div *ngFor="let list of this.me().content_lists_saved">
-        <app-lists-visualizer [list]="list"/>
+    <div class="content-section" *ngIf="this.me().content_lists_saved.length > 0">
+      <h2 class="section-title">Saved lists</h2>
+      <div class="lists">
+        <div *ngFor="let list of this.me().content_lists_saved">
+          <app-lists-visualizer [list]="list"/>
+        </div>
       </div>
     </div>
-  </div>
 
+  </div>
 
 </div>
