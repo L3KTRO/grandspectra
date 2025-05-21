@@ -13,11 +13,24 @@
   align-items: center;
 }
 
+#searcher {
+  display: flex;
+  margin: 1rem 10%;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
 .content-type {
   margin: 0.75rem;
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   transition: 0.3s ease;
   color: styles.$text-contrast;
+  cursor: pointer;
+}
+
+.content-type:hover {
+  color: styles.$text-contrast-mid;
 }
 
 .content-selected {
@@ -58,7 +71,7 @@
   }
 }
 
-#table {
+.table {
   width: 100%;
   border-radius: 10px;
   overflow: hidden;
@@ -80,6 +93,11 @@
 }
 
 .empty-cell {
+}
+
+.cell-main {
+  text-align: start;
+  padding-bottom: 0;
 }
 
 .cell-svg {
@@ -115,7 +133,7 @@
   font-size: 1rem;
 }
 
-#head-row {
+.head-row {
   margin-bottom: 1rem;
   border-bottom: 1px solid styles.$text;
 }
@@ -130,13 +148,6 @@
   background-color: styles.$background-contrast-mid;
   padding: 1rem;
   border-radius: 10px;
-}
-
-#searcher {
-  display: flex;
-  margin: 2.5rem 10%;
-  flex-direction: row;
-  align-items: center;
 }
 
 #input {

@@ -6,10 +6,10 @@ import {NgClass, NgIf, NgOptimizedImage} from '@angular/common';
 import {BackendService} from '../../services/backend/backend.service';
 import {Movie} from '../../models/Movie';
 import {Tv} from '../../models/Tv';
-import {LoadingComponent} from '../../shared/loading/loading.component';
-import {ChecksliderComponent} from '../../shared/checkslider/checkslider.component';
 import {Router} from '@angular/router';
 import {MeiliService} from '../../services/meili/meili.service';
+import {ProgressSpinnerComponent} from '../../shared/progress-spinner/progress-spinner.component';
+import Person from '../../models/Person';
 
 @Component({
   selector: 'app-hub',
@@ -20,8 +20,7 @@ import {MeiliService} from '../../services/meili/meili.service';
     NgClass,
     NgOptimizedImage,
     NgIf,
-    LoadingComponent,
-    ChecksliderComponent,
+    ProgressSpinnerComponent,
 
   ],
   styleUrls: ['./hub.component.scss']
@@ -37,7 +36,7 @@ export class HubComponent {
     {label: 'Most votes', value: 'vote_count'}
   ];
   orderer = signal("popularity");
-  isTv = signal(false);
+  contentType = signal(ContentType.MOVIE);
   writingTitleName = signal<string | null>(null);
   securedTitleName = signal<string | null>(null);
   genres: { id: number, name: string }[] = []
@@ -51,7 +50,7 @@ export class HubComponent {
   tv: ResourceRef<Tv[] | undefined> = resource({
     request: () => ({
       by: this.orderer(),
-      trigger: this.isTv(),
+      trigger: this.contentType(),
       native: {
         name: this.securedTitleName()
       }
@@ -64,13 +63,26 @@ export class HubComponent {
   movies: ResourceRef<Movie[] | undefined> = resource({
     request: () => ({
       by: this.orderer(),
-      trigger: this.isTv(),
+      trigger: this.contentType(),
       native: {
         title: this.securedTitleName()
       }
     }),
     loader: async ({request}): Promise<Movie[]> => {
       return (await this.meili.movies(request.native.title ?? "", request.by)).hits as Movie[];
+    }
+  });
+
+  people: ResourceRef<Person[] | undefined> = resource({
+    request: () => ({
+      by: this.orderer(),
+      trigger: this.contentType(),
+      native: {
+        name: this.securedTitleName()
+      }
+    }),
+    loader: async ({request}) => {
+      return (await this.meili.people(request.native.name ?? "", request.by)).hits as any[];
     }
   });
 
@@ -97,7 +109,7 @@ export class HubComponent {
   }
 
   getContentList() {
-    if (!this.isTv() && this.movies.status() === 4) {
+    if (this.contentType() === ContentType.MOVIE && this.movies.status() === 4) {
       return this.movies.asReadonly().value()?.map(movie => ({
         id: movie.id,
         type: 'movie',
@@ -112,7 +124,7 @@ export class HubComponent {
         imageWidth: 50,
         imageHeight: 75
       }));
-    } else if (this.isTv() && this.tv.status() === 4) {
+    } else if (this.contentType() === ContentType.TV && this.tv.status() === 4) {
       return this.tv.asReadonly().value()?.map(show => ({
         id: show.id,
         type: 'tv',
@@ -135,4 +147,11 @@ export class HubComponent {
 
 
   protected readonly parseInt = parseInt;
+  protected readonly ContentType = ContentType;
+}
+
+enum ContentType {
+  MOVIE = 'movie',
+  TV = 'tv',
+  PEOPLE = 'people'
 }

@@ -300,12 +300,24 @@
   </div>
 
   <div class="container" id="people" *ngIf="cast.length > 0 || crew.length > 0">
-    <h2>
-      <span (click)="isCast.set(true)" [ngClass]="isCast() ? 'light-neon-effect-text' : ''">Cast</span>
-      |
-      <span (click)="isCast.set(false)" [ngClass]="!isCast() ? 'light-neon-effect-text' : ''">Crew</span>
-    </h2>
-    <app-creditlist [content]="isCast() ? cast : crew"/>
+    @if (cast.length > 0 && crew.length > 0) {
+      <h2>
+        <span (click)="isCast.set(true)" [ngClass]="isCast() ? 'light-neon-effect-text' : ''">Cast</span>
+        |
+        <span (click)="isCast.set(false)" [ngClass]="!isCast() ? 'light-neon-effect-text' : ''">Crew</span>
+      </h2>
+      <app-creditlist [content]="isCast() ? cast : crew"/>
+    } @else if (cast.length > 0) {
+      <h2>
+        <span class="light-neon-effect-text">Cast</span>
+      </h2>
+      <app-creditlist [content]="cast"/>
+    } @else if (crew.length > 0) {
+      <h2>
+        <span class="light-neon-effect-text">Crew</span>
+      </h2>
+      <app-creditlist [content]="crew"/>
+    }
   </div>
 
   <div class="container" id="recommendations" *ngIf="recommendations.length > 0">

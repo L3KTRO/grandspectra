@@ -17,8 +17,6 @@ import {DecimalPipe, NgClass, NgForOf, NgIf, NgOptimizedImage} from '@angular/co
 import {CreditlistComponent} from '../creditlist/creditlist.component';
 import {ContentlistComponent} from '../contentlist/contentlist.component';
 import Credit from '../../models/Credit';
-import {Tv} from '../../models/Tv';
-import {Movie} from '../../models/Movie';
 import {Router, RouterLink} from "@angular/router";
 import {RatingComponent} from '../rating/rating.component';
 import {BackendService} from "../../services/backend/backend.service";
@@ -30,6 +28,9 @@ import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} fr
 import {Review} from '../../models/Review';
 import {toggler} from '../../helpers/Toggler';
 import {ProgressSpinnerComponent} from '../progress-spinner/progress-spinner.component';
+import {MeiliService} from '../../services/meili/meili.service';
+import {Movie} from '../../models/Movie';
+import {Tv} from '../../models/Tv';
 
 @Component({
   selector: 'app-media-content-display',
@@ -78,6 +79,7 @@ export class MediaContentDisplayComponent implements OnDestroy {
 
   router = inject(Router)
   backend = inject(BackendService)
+  meili = inject(MeiliService)
   originalRating: UserAndContent | null = null;
   originalWatched: UserAndContent | null = null;
   originalWatchlist: UserAndContent | null = null;

@@ -10,8 +10,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  flex-grow: 1;
+  flex-grow: 0;
   width: 30%;
+  min-width: 300px;
   margin: 0 2rem;
 }
 

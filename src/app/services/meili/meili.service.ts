@@ -25,13 +25,18 @@ export class MeiliService {
 
   }
 
-  async movies(filter: string, sort_by: string) {
+  async movies(filter: string, sort_by: string = "popularity") {
     this.checks("movies").then(_ => null);
     return await this.client.index('movies').search(filter, {sort: [`${sort_by}:desc`]});
   }
 
-  async tv(filter: string, sort_by: string) {
+  async tv(filter: string, sort_by: string = "popularity") {
     this.checks("tv").then(_ => null);
     return await this.client.index('tv').search(filter, {sort: [`${sort_by}:desc`]});
+  }
+
+  async people(filter: string, sort_by: string) {
+    this.checks("people").then(_ => null);
+    return await this.client.index('people').search(filter, {sort: [`${sort_by}:desc`]});
   }
 }

@@ -41,7 +41,7 @@ export class ContentlistComponent {
     return '';
   }
 
-  isMovie(item: (Movie | Tv)) {
+  isMovie(item: (Movie | Tv)): Boolean {
     return 'title' in item;
   }
 

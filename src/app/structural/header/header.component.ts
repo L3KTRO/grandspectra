@@ -26,10 +26,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   });
   windowWidth = signal(window.innerWidth);
 
-  // Propiedades computadas
-  hub = computed(() =>
-    this.windowWidth() > 700 ? 'SPECTRA HUB' : 'HUB'
-  );
 
   members = computed(() => {
     const width = this.windowWidth();

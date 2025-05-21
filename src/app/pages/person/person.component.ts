@@ -6,6 +6,7 @@ import Credit from '../../models/Credit';
 import {Movie} from '../../models/Movie';
 import {Tv} from '../../models/Tv';
 import {ContentlistWrapComponent} from '../../shared/contentlistwrap/contentlistwrap.component';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-person',
@@ -20,11 +21,14 @@ import {ContentlistWrapComponent} from '../../shared/contentlistwrap/contentlist
 export class PersonComponent {
   @Input() id!: string;
   backend = inject(BackendService);
+  router = inject(Router);
   readonly = computed(() => this.data.asReadonly().value());
   data: ResourceRef<Person> = resource({
     request: () => ({id: this.id}),
     loader: async ({request}) => {
-      return (await this.backend.request(this.getApiEndpoint() + request.id)).data
+      const data = (await this.backend.request(this.getApiEndpoint() + request.id)).data
+      if (!data) this.router.navigateByUrl("/hub");
+      return data;
     }
   });
 
