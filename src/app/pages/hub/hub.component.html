@@ -19,6 +19,58 @@
       </select>
     </div>
   </div>
+  <div class="custom-paginator">
+    <!-- Botón anterior -->
+    <button
+      class="paginator-btn"
+      (click)="page.set(page() - 1)"
+      [disabled]="page() === 1">
+      ‹
+    </button>
+
+    <!-- Primera página (siempre visible) -->
+    <button
+      class="paginator-btn"
+      [class.active]="page() === 1"
+      (click)="page.set(1)">
+      1
+    </button>
+
+    <!-- Elipsis inicial (si estamos lejos del inicio) -->
+    <span class="paginator-ellipsis" *ngIf="page() > 4">...</span>
+
+    <!-- Páginas cercanas a la actual -->
+    <ng-container *ngFor="let p of getVisiblePages()">
+      <button
+        *ngIf="p !== 1 && p !== totalPages()"
+        class="paginator-btn"
+        [class.active]="page() === p"
+        (click)="page.set(p)">
+        {{ p }}
+      </button>
+    </ng-container>
+
+    <!-- Elipsis final (si estamos lejos del final) -->
+    <span class="paginator-ellipsis" *ngIf="page() < totalPages() - 3">...</span>
+
+    <!-- Última página (siempre visible si hay más de una) -->
+    <button
+      *ngIf="totalPages() > 1"
+      class="paginator-btn"
+      [class.active]="page() === totalPages()"
+      (click)="page.set(totalPages())">
+      {{ totalPages() }}
+    </button>
+
+    <!-- Botón siguiente -->
+    <button
+      class="paginator-btn"
+      (click)="page.set(page() + 1)"
+      [disabled]="page() === totalPages()">
+      ›
+    </button>
+  </div>
+
   <div id="contents">
     @if (contentType() === ContentType.PEOPLE) {
       <table class="table">
@@ -32,7 +84,7 @@
         </tr>
         </thead>
         <tbody>
-          @for (person of people.asReadonly().value(); track person.id) {
+          @for (person of peopleHits(); track person.id) {
             <tr class="row" (click)="navigate('person/' + person.id)">
               <td class="cell-poster cell">
                 <img [ngSrc]="poster(person.still)" [alt]="person.name" [width]="50"

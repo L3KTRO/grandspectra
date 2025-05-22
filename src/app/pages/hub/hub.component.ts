@@ -1,14 +1,14 @@
 // hub.component.ts
-import {Component, effect, ElementRef, inject, resource, ResourceRef, signal, ViewChild} from '@angular/core';
+import {Component, computed, effect, ElementRef, inject, resource, Signal, signal, ViewChild} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {InputText} from 'primeng/inputtext';
-import {NgClass, NgIf, NgOptimizedImage} from '@angular/common';
+import {NgClass, NgForOf, NgIf, NgOptimizedImage} from '@angular/common';
 import {BackendService} from '../../services/backend/backend.service';
-import {Movie} from '../../models/Movie';
-import {Tv} from '../../models/Tv';
 import {Router} from '@angular/router';
 import {MeiliService} from '../../services/meili/meili.service';
 import {ProgressSpinnerComponent} from '../../shared/progress-spinner/progress-spinner.component';
+import {Movie} from '../../models/Movie';
+import {Tv} from '../../models/Tv';
 import Person from '../../models/Person';
 
 @Component({
@@ -21,6 +21,7 @@ import Person from '../../models/Person';
     NgOptimizedImage,
     NgIf,
     ProgressSpinnerComponent,
+    NgForOf,
 
   ],
   styleUrls: ['./hub.component.scss']
@@ -39,6 +40,22 @@ export class HubComponent {
   contentType = signal(ContentType.MOVIE);
   writingTitleName = signal<string | null>(null);
   securedTitleName = signal<string | null>(null);
+  perPage = signal(10);
+  page = signal(1);
+  totalPages: Signal<number> = computed(() => {
+    switch (this.contentType()) {
+      case ContentType.MOVIE:
+        return this.movies.asReadonly().value()?.totalPages ?? 0;
+      case ContentType.TV:
+        return this.tv.asReadonly().value()?.totalPages ?? 0;
+      case ContentType.PEOPLE:
+        return this.people.asReadonly().value()?.totalPages ?? 0;
+      default:
+        return 0;
+    }
+  });
+  peopleHits = computed(() => this.people.asReadonly().value()?.hits as Person[]);
+
   genres: { id: number, name: string }[] = []
 
   constructor(private meili: MeiliService) {
@@ -47,42 +64,39 @@ export class HubComponent {
     })
   }
 
-  tv: ResourceRef<Tv[] | undefined> = resource({
+  tv = resource({
     request: () => ({
       by: this.orderer(),
-      trigger: this.contentType(),
-      native: {
-        name: this.securedTitleName()
-      }
+      title: this.securedTitleName(),
+      page: this.page(),
+      hitsPerPage: this.perPage(),
     }),
     loader: async ({request}) => {
-      return (await this.meili.tv(request.native.name ?? "", request.by)).hits as Tv[];
+      return await this.meili.tv(request.title ?? "", request.by, request.page, request.hitsPerPage);
     }
   });
 
-  movies: ResourceRef<Movie[] | undefined> = resource({
+  movies = resource({
     request: () => ({
       by: this.orderer(),
-      trigger: this.contentType(),
-      native: {
-        title: this.securedTitleName()
-      }
+      title: this.securedTitleName(),
+      page: this.page(),
+      hitsPerPage: this.perPage(),
     }),
-    loader: async ({request}): Promise<Movie[]> => {
-      return (await this.meili.movies(request.native.title ?? "", request.by)).hits as Movie[];
+    loader: async ({request}) => {
+      return await this.meili.movies(request.title ?? "", request.by, request.page, request.hitsPerPage);
     }
   });
 
-  people: ResourceRef<Person[] | undefined> = resource({
+  people = resource({
     request: () => ({
       by: this.orderer(),
-      trigger: this.contentType(),
-      native: {
-        name: this.securedTitleName()
-      }
+      name: this.securedTitleName(),
+      page: this.page(),
+      hitsPerPage: this.perPage(),
     }),
     loader: async ({request}) => {
-      return (await this.meili.people(request.native.name ?? "", request.by)).hits as any[];
+      return await this.meili.people(request.name ?? "", request.by, request.page, request.hitsPerPage);
     }
   });
 
@@ -90,6 +104,28 @@ export class HubComponent {
     const value = this.writingTitleName();
     this.securedTitleName.set(value);
   });
+
+// Añadir a hub.component.ts
+  getVisiblePages(): number[] {
+    const visiblePages: number[] = [];
+    const maxVisiblePages = 5; // Puedes ajustar este número
+
+    let start = Math.max(2, this.page() - Math.floor(maxVisiblePages / 2));
+    let end = Math.min(this.totalPages() - 1, start + maxVisiblePages - 1);
+
+    // Ajustar si estamos cerca del final
+    if (end >= this.totalPages() - 1) {
+      start = Math.max(2, this.totalPages() - maxVisiblePages);
+      end = this.totalPages() - 1;
+    }
+
+    // Generar array de páginas visibles
+    for (let i = start; i <= end; i++) {
+      visiblePages.push(i);
+    }
+
+    return visiblePages;
+  }
 
   navigate(path: string) {
     this.router.navigate([path])
@@ -110,7 +146,8 @@ export class HubComponent {
 
   getContentList() {
     if (this.contentType() === ContentType.MOVIE && this.movies.status() === 4) {
-      return this.movies.asReadonly().value()?.map(movie => ({
+      const content = this.movies.asReadonly().value()?.hits as Movie[];
+      return content.map(movie => ({
         id: movie.id,
         type: 'movie',
         title: movie.title,
@@ -125,7 +162,8 @@ export class HubComponent {
         imageHeight: 75
       }));
     } else if (this.contentType() === ContentType.TV && this.tv.status() === 4) {
-      return this.tv.asReadonly().value()?.map(show => ({
+      const content = this.tv.asReadonly().value()?.hits as Tv[];
+      return content.map(show => ({
         id: show.id,
         type: 'tv',
         title: show.name,

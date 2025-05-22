@@ -1,4 +1,4 @@
-<app-dialog #review dialogTitle="Add a review" *ngIf="authed()">
+<app-dialog #review dialogTitle="Add a review" *ngIf="trigger()">
   <div class="dialog">
     <app-rating [currentRating]="rating"/>
     <small *ngIf="rating() < 1">Qualification is required</small>
@@ -15,11 +15,11 @@
 </app-dialog>
 
 
-<app-dialog #addToList dialogTitle="Add to list" *ngIf="authed() && listsAdded()">
+<app-dialog #addToList dialogTitle="Add to list" *ngIf="trigger() && listsAdded()">
   <div class="dialog">
     <span id="new-list" routerLink="/list/create">Create new list</span>
     <div class="content">
-      @if (data.value().content_lists.length < 1) {
+      @if (data.value() && data.value().content_lists.length < 1) {
         <label class="list" style="cursor: auto;">
           <span style="color: gray; cursor: auto;">No content</span>
         </label>
@@ -62,7 +62,7 @@
       </div>
 
       <div id="actions">
-        <div id="unauthed" *ngIf="!authed()">
+        <div id="unauthed" *ngIf="notAuthed()">
           <div>
             <h3>Join us to unlock features</h3>
           </div>

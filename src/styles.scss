@@ -23,7 +23,8 @@ $input-border: #3a3a3a;
 
 // Mixins para efectos reutilizables
 @mixin light-neon-effect-text {
-  text-shadow: 0 0 15px $contrast-1;
+  text-shadow: 0 0 10px $contrast-1,
+  0 0 30px $contrast-1;
   font-weight: bold;
   transition: 0.2s ease-in-out;
 }

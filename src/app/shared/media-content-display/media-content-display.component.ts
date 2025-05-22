@@ -92,7 +92,8 @@ export class MediaContentDisplayComponent implements OnDestroy {
   hoverWatched = signal(false);
   reviewText = signal('');
   loadingList = signal(false);
-  authed = signal(false);
+  trigger = signal(false);
+  notAuthed = computed(() => this.data.asReadonly().value() === null);
 
   data: ResourceRef<Me> = resource({
     request: () => ({}),
@@ -101,7 +102,7 @@ export class MediaContentDisplayComponent implements OnDestroy {
 
       if (req.status !== 200) return null
 
-      this.authed.set(true);
+      this.trigger.set(true)
       const data = req.data
       this.originalRating = data.ratings.find((rating: UserAndContent) => {
         return rating.movie_id === this.id || rating.tv_id === this.id;

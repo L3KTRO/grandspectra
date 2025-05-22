@@ -162,3 +162,47 @@
 #input:focus {
   border: 1px solid styles.$text-contrast-mid;
 }
+
+.custom-paginator {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 2rem 0;
+
+  .paginator-btn {
+    background: styles.$background-contrast-mid;
+    color: styles.$text-contrast;
+    border: none;
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+    min-width: 2.5rem;
+    font-family: "GTVCS", serif;
+
+    &:hover:not(:disabled) {
+      background: styles.$text-contrast;
+      color: styles.$background-contrast-mid;
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    &.active {
+      background: styles.$text;
+      color: styles.$background-contrast-mid;
+      font-weight: bold;
+      box-shadow: 0 0 0 2px styles.$text-contrast;
+    }
+  }
+
+  .paginator-ellipsis {
+    color: styles.$text-contrast;
+    letter-spacing: 2px;
+    user-select: none;
+  }
+}

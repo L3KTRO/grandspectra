@@ -7,7 +7,6 @@ import {Movie} from '../../models/Movie';
 import {Tv} from '../../models/Tv';
 import {UserAndContent} from '../../models/UserAndContent';
 import {SyncStore} from '../../stores/SyncStore';
-import {RouterLink} from '@angular/router';
 import {ListsVisualizerComponent} from '../../shared/lists-visualizer/lists-visualizer.component';
 
 @Component({
@@ -17,7 +16,6 @@ import {ListsVisualizerComponent} from '../../shared/lists-visualizer/lists-visu
     NgIf,
     ContentlistComponent,
     NgForOf,
-    RouterLink,
     ListsVisualizerComponent
   ],
   templateUrl: './profile.component.html',
@@ -27,8 +25,6 @@ export class ProfileComponent {
   constructor(public syncStore: SyncStore) {
     this.initialSync.set(syncStore.profileSync())
     effect(() => {
-      console.log(this.syncStore.profileSync())
-      console.log(this.initialSync())
       if (this.syncStore.profileSync() > this.initialSync()) {
         this.resources.reload()
       }
@@ -61,10 +57,13 @@ export class ProfileComponent {
     return Array.from(new Set(allContent.filter(film => film.tv_id !== null).map(film => film.tv_id))).length;
   });
 
-  watched: Signal<(Movie | Tv)[]> = computed(() => this.me().watched.map(this.mapper));
-  watchlist: Signal<(Movie | Tv)[]> = computed(() => this.me().watchlist.map(this.mapper));
-  ratings: Signal<(Movie | Tv)[]> = computed(() => this.me().ratings.map(this.mapper));
+  watched: Signal<(Movie | Tv)[]> = computed(() => this.me().watched.sort(this.sorter).map(this.mapper));
+  watchlist: Signal<(Movie | Tv)[]> = computed(() => this.me().watchlist.sort(this.sorter).map(this.mapper));
+  ratings: Signal<(Movie | Tv)[]> = computed(() => this.me().ratings.sort(this.sorter).map(this.mapper));
 
+  sorter(a: UserAndContent, b: UserAndContent) {
+    return new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime();
+  }
 
   mapper(r: UserAndContent) {
     return r.movie_id ? r.movie! : r.tv!;
