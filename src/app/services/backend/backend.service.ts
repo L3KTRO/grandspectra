@@ -32,6 +32,15 @@ export class BackendService {
     return this.api.get(this.baseUrl + '/movies?sort_by=popularity&sort_dir=desc');
   }
 
+  getUsers(sortBy: string = 'followers') {
+    return this.api.get(this.baseUrl + '/users', {
+      params: {
+        sortBy,
+        per_page: 10,
+      }
+    });
+  }
+
   getPopularTv() {
     return this.api.get(this.baseUrl + '/tv?sort_by=popularity&sort_dir=desc');
   }

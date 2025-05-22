@@ -42,5 +42,9 @@ export const routes: Routes = [
   },
   {
     path: "lists", loadComponent: () => import('./pages/lists/lists.component').then(m => m.ListsComponent)
+  },
+  {
+    path: "spectators",
+    loadComponent: () => import('./pages/spectators/spectators.component').then(m => m.SpectatorsComponent)
   }
 ];

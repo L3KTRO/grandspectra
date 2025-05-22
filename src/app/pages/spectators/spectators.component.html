@@ -1,0 +1,17 @@
+<div>
+  <table>
+    <thead>
+    <tr>
+      <th>User</th>
+      <th>Movies</th>
+      <th>Tv</th>
+      <th>Reviews</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let spectator of users()">
+      <td>{{ spectator.username }}</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
