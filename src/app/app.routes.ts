@@ -23,9 +23,9 @@ export const routes: Routes = [
     path: "person/:id", loadComponent: () => import('./pages/person/person.component').then(m => m.PersonComponent)
   },
   {
-    path: "profile",
+    path: "spectator/:username",
     loadComponent: () => import('./pages/profile/profile.component').then(m => m.ProfileComponent),
-    canActivate: [authGuard]
+    //canActivate: [authGuard]
   },
   {
     path: "login",

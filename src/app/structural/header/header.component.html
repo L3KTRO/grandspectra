@@ -25,9 +25,9 @@
   </div>
 
   <div id="buttons">
-    <a routerLink="/profile">
+    <a [routerLink]="me() ? '/spectator/' + me().username : '/login'">
       <div class="header-item header-button button">
-        <h3 class="light-neon-effect-text">{{ ifLoggedIn() ? "PROFILE" : "JOIN US" }}</h3>
+        <h3 class="light-neon-effect-text">{{ me() ? "PROFILE" : "JOIN US" }}</h3>
       </div>
     </a>
   </div>

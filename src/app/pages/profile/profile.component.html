@@ -1,4 +1,4 @@
-<div class="profile-container" *ngIf="me()">
+<div class="profile-container" *ngIf="user()">
   <!-- Cabecera del perfil -->
   <div class="profile-header">
     <div class="profile-info">
@@ -7,8 +7,12 @@
           <img ngSrc="assets/user.svg" alt="Avatar de usuario" height="400" width="400">
         </div>
         <div class="profile-username">
-          <h4 *ngIf="me()">{{ me().username }}</h4>
-          <div class="button" (click)="logout()"><h5 style="margin: 0.25rem 0.5rem">LOGOUT</h5></div>
+          <h4 *ngIf="user()">{{ user().username }}</h4>
+          @if (me() && me().id === user().id) {
+            <div class="button" (click)="logout()"><h5 style="margin: 0.25rem 0.5rem">LOGOUT</h5></div>
+          } @else if (me() && me().id !== user().id) {
+            <div class="button"><h5 style="margin: 0.25rem 0.5rem">FOLLOW</h5></div>
+          }
         </div>
       </div>
 
@@ -22,11 +26,11 @@
           <span class="stat-label">tv</span>
         </div>
         <div class="stat-item">
-          <span class="stat-number">{{ me().followers.length }}</span>
+          <span class="stat-number">{{ user().followers.length }}</span>
           <span class="stat-label">followers</span>
         </div>
         <div class="stat-item">
-          <span class="stat-number">{{ me().following.length }}</span>
+          <span class="stat-number">{{ user().following.length }}</span>
           <span class="stat-label">following</span>
         </div>
       </div>
@@ -47,19 +51,19 @@
     <app-contentlist [content]="watched()"/>
   </div>
 
-  <div class="content-section" *ngIf="this.me().content_lists.length > 0">
+  <div class="content-section" *ngIf="this.user().content_lists.length > 0">
     <h2 class="section-title">My lists</h2>
     <div class="lists">
-      <div *ngFor="let list of this.me().content_lists">
+      <div *ngFor="let list of this.user().content_lists">
         <app-lists-visualizer [list]="list"/>
       </div>
     </div>
   </div>
 
-  <div class="content-section" *ngIf="this.me().content_lists_saved.length > 0">
+  <div class="content-section" *ngIf="this.user().content_lists_saved.length > 0">
     <h2 class="section-title">Saved lists</h2>
     <div class="lists">
-      <div *ngFor="let list of this.me().content_lists_saved">
+      <div *ngFor="let list of this.user().content_lists_saved">
         <app-lists-visualizer [list]="list"/>
       </div>
     </div>

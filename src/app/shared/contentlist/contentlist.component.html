@@ -1,7 +1,7 @@
 <div id="container">
   <h1 *ngIf="title" class="trend-title light-neon-effect-text">{{ title }}</h1>
   <div id="contents" [style]="wrap ? 'flex-wrap: wrap' : 'flex-wrap: nowrap;'">
-    @if (content) {
+    @if (content && content.length > 0) {
       <div *ngFor="let item of content" class="item">
         <div class="item" routerLink="/{{ isMovie(item) ? 'movie' : 'tv'}}/{{ item.id }}">
           <img class="poster" ngSrc="{{ intrinsic(item.poster) }}" alt="{{ getTitle(item) }}"
@@ -10,9 +10,7 @@
         </div>
       </div>
     } @else {
-      <div *ngFor="let _ of Array(10)">
-        <p-skeleton class="item" width="{{sizes.width}}px" height="{{sizes.height}}px"/>
-      </div>
+      <h4 style="font-style: italic; font-weight: 200">No content yet</h4>
     }
   </div>
 </div>

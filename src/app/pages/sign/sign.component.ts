@@ -1,8 +1,8 @@
 // sign.component.ts
-import {Component, OnChanges, signal, SimpleChanges} from '@angular/core';
+import {Component, signal} from '@angular/core';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
-import {NgIf, NgOptimizedImage} from '@angular/common';
+import {NgIf} from '@angular/common';
 import {BackendService} from '../../services/backend/backend.service';
 import {ProgressSpinnerComponent} from '../../shared/progress-spinner/progress-spinner.component';
 
@@ -46,7 +46,7 @@ export class SignComponent {
     if (this.signForm.valid) {
       this.backend.login(this.signForm.value).then(result => {
         if (result) {
-          this.router.navigate(['/profile']);
+          this.router.navigate([`/spectator/${result.user.username}`]);
         } else {
           this.signError.set('Invalid credentials');
         }

@@ -35,7 +35,8 @@ export class BackendService {
   getUsers(sortBy: string = 'followers') {
     return this.api.get(this.baseUrl + '/users', {
       params: {
-        sortBy,
+        relations: ["reviews", "followers", "watched"],
+        sort_by: sortBy,
         per_page: 10,
       }
     });
@@ -54,8 +55,10 @@ export class BackendService {
     })
   }
 
-  getUser(id: number) {
-    return this.api.get(`/users/${id}`)
+  getUser(username: string) {
+    return this.api.get(`/users/${username}`, {
+      validateStatus: (status) => status === 200 || status === 404,
+    })
   }
 
   request(endpoint: string, options: AxiosRequestConfig = {}) {

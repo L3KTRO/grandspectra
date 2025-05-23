@@ -5,6 +5,8 @@ import {RouterModule} from '@angular/router';
 import {GrandSpectraBrandComponent} from '../../shared/grand-spectra-brand/grand-spectra-brand.component';
 import {BackendService} from '../../services/backend/backend.service';
 import {SyncStore} from '../../stores/SyncStore';
+import {computedResource} from '../../helpers/Resources';
+import {Me} from '../../models/Me';
 
 @Component({
   selector: 'app-header',
@@ -20,12 +22,21 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   initialSync = signal(0)
   backendService = inject(BackendService);
-  ifLoggedIn = computed(() => {
-    this.syncStore.loginSync()
-    return this.backendService.isLoggedIn()
-  });
-  windowWidth = signal(window.innerWidth);
 
+  me = computedResource<Me>({
+    request: () => ({
+      sync: this.syncStore.loginSync()
+    }),
+    loader: async () => {
+      const req = await this.backendService.getMe();
+      if (req.status === 200) {
+        return req.data;
+      } else {
+        return null;
+      }
+    }
+  })
+  windowWidth = signal(window.innerWidth);
 
   members = computed(() => {
     const width = this.windowWidth();
