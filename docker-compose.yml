@@ -1,0 +1,18 @@
+services:
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: grandspectra-frontend
+    ports:
+      - "3338:4200"
+    pull_policy: always
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  dbdata:
+  laraveldata:
