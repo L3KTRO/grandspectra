@@ -7,7 +7,7 @@ import {MeiliSearch} from 'meilisearch';
 })
 export class MeiliService {
   client = new MeiliSearch({
-    host: "192.168.0.39:7700",
+    host: "https://gs-meili.lestro.top",
     apiKey: "masterKey"
   });
 
