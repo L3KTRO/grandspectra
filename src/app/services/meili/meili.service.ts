@@ -1,6 +1,6 @@
 // meili.service.ts
-import { Injectable } from '@angular/core';
-import { MeiliSearch } from 'meilisearch';
+import {Injectable} from '@angular/core';
+import {MeiliSearch} from 'meilisearch';
 
 @Injectable({
   providedIn: 'root'

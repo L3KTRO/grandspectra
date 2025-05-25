@@ -279,6 +279,12 @@ $input-border: #3a3a3a;
   color: styles.$text-contrast-light;
 }
 
+.error {
+  margin: 0.25rem;
+  display: flex;
+  flex-direction: column;
+}
+
 // Estilos responsivos
 @media (max-width: 480px) {
   .login-container {

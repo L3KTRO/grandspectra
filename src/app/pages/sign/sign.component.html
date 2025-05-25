@@ -1,9 +1,25 @@
 <div class="login-container">
   <div class="login-form-container">
-    <h2 class="login-title">Sign In</h2>
+    <h2 class="login-title">{{ signUp() ? "Join Us" : "Sign In" }}</h2>
 
     <!-- sign.component.html -->
-    <form [formGroup]="signForm" (ngSubmit)="onSubmit()" class="login-form">
+    <form [formGroup]="formActive()" (ngSubmit)="onSubmit()" class="login-form">
+      <div class="form-group" *ngIf="signUp()">
+        <label for="username">Username</label>
+        <input
+          id="username"
+          type="text"
+          formControlName="username"
+          placeholder="username123"
+          [class.is-invalid]="signUpForm.get('username')?.invalid && signUpForm.get('username')?.touched"
+        />
+        <div *ngIf="signUpForm.get('username')?.invalid && signUpForm.get('username')?.touched" class="error">
+          <small *ngIf="signUpForm.get('username')?.errors?.['required']">Username required</small>
+          <small *ngIf="signUpForm.get('username')?.errors?.['pattern']">Only letters and numbers</small>
+          <small *ngIf="signUpForm.get('username')?.errors?.['minlength']">Too small</small>
+        </div>
+      </div>
+
       <div class="form-group">
         <label for="email">Email</label>
         <input
@@ -11,11 +27,11 @@
           type="email"
           formControlName="email"
           placeholder="name@mail.com"
-          [class.is-invalid]="signForm.get('email')?.invalid && signForm.get('email')?.touched"
+          [class.is-invalid]="formActive().get('email')?.invalid && formActive().get('email')?.touched"
         />
-        <div *ngIf="signForm.get('email')?.invalid && signForm.get('email')?.touched" class="error">
-          <small *ngIf="signForm.get('email')?.errors?.['required']">Email required</small>
-          <small *ngIf="signForm.get('email')?.errors?.['email']">Invalid email</small>
+        <div *ngIf="formActive().get('email')?.invalid && formActive().get('email')?.touched" class="error">
+          <small *ngIf="formActive().get('email')?.errors?.['required']">Email required</small>
+          <small *ngIf="formActive().get('email')?.errors?.['email']">Invalid email</small>
         </div>
       </div>
 
@@ -26,26 +42,46 @@
           [type]="showPassword() ? 'text' : 'password'"
           formControlName="password"
           placeholder="Password"
-          [class.is-invalid]="signForm.get('password')?.invalid && signForm.get('password')?.touched"
+          [class.is-invalid]="formActive().get('password')?.invalid && formActive().get('password')?.touched"
         />
         <h5 (click)="togglePasswordVisibility()" id="password-hider">{{ showPassword() ? "Hide" : "Show" }}
           password</h5>
-        <div *ngIf="signForm.get('password')?.invalid && signForm.get('password')?.touched" class="error">
-          <small>Password required</small>
+        <div *ngIf="formActive().get('password')?.invalid && formActive().get('password')?.touched" class="error">
+          <small *ngIf="formActive().get('password')?.errors?.['required']">Password required</small>
+          <small *ngIf="signUpForm.get('password')?.errors?.['minlength']">At least 6 characters</small>
         </div>
       </div>
 
+      <!-- Confirm password -->
 
-      <button type="submit" class="login-button" [disabled]="isLoading">
-        <app-spinner [size]="15" *ngIf="isLoading"></app-spinner>
-        <h4 *ngIf="!isLoading">Sign In</h4>
+      <div class="form-group" *ngIf="signUp()">
+        <label for="confirmPassword">Confirm Password</label>
+        <input
+          id="confirmPassword"
+          [type]="showPassword() ? 'text' : 'password'"
+          formControlName="confirmPassword"
+          placeholder="Confirm Password"
+          [class.is-invalid]="signUpForm.get('confirmPassword')?.invalid && signUpForm.get('confirmPassword')?.touched"
+        />
+        <h5 (click)="togglePasswordVisibility()" id="password-hider">{{ showPassword() ? "Hide" : "Show" }}
+          password</h5>
+        <div *ngIf="signUpForm.get('confirmPassword')?.invalid && signUpForm.get('confirmPassword')?.touched"
+             class="error">
+          <small>Passwords doesn't match</small>
+        </div>
+      </div>
+
+      <button type="submit" class="login-button" [disabled]="isLoading()">
+        <app-spinner [size]="15" *ngIf="isLoading()"></app-spinner>
+        <h4 *ngIf="!isLoading()">Sign In</h4>
       </button>
       <small *ngIf="signError()">{{ signError() }}</small>
     </form>
 
 
     <div class="signup-link">
-      You are not Spectator yet? <a href="#">Join Us</a>
+      {{ signUp() ? "You are an Spectrator?" : "You are not Spectrator yet?" }}
+      <a (click)="signUp.update(toggler)">{{ signUp() ? "Sign In" : "Join Us" }}</a>
     </div>
   </div>
 </div>

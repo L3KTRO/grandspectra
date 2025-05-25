@@ -113,6 +113,10 @@ export class BackendService {
     }
   }
 
+  async register(credentials: { email: string; password: string; username: string }) {
+    const res = await this.api.post<Auth>(environment.apiUrl + '/auth/register', credentials, {});
+  }
+
   logout(): void {
     sessionStorage.removeItem(this.TOKEN_KEY);
     this.syncStore.addChangeLogin()
