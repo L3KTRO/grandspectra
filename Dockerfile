@@ -1,13 +1,19 @@
-FROM node:alpine
+FROM node:alpine AS build
 
-WORKDIR /usr/src/app
+WORKDIR /app
 
-COPY . /usr/src/app
-
-RUN npm install -g @angular/cli
-
+COPY package*.json ./
 RUN npm install
+COPY . .
 
-EXPOSE 4200
+RUN npm run build
 
-CMD ["ng", "serve", "--host", "0.0.0.0", "--disable-host-check"]
+FROM nginx:alpine
+
+RUN rm -rf /usr/share/nginx/html/*
+
+COPY --from=build /app/dist/grandspectra /usr/share/nginx/html
+
+COPY nginx.conf  /etc/nginx/conf.d/default.conf
+
+EXPOSE 80
