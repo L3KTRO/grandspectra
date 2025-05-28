@@ -113,8 +113,18 @@ export class BackendService {
     }
   }
 
-  async register(credentials: { email: string; password: string; username: string }) {
-    const res = await this.api.post<Auth>(environment.apiUrl + '/auth/register', credentials, {});
+  async register(credentials: { email: string; password: string; username: string, password_confirmation: string }) {
+    const res = await this.api.post<Auth | any>(environment.apiUrl + '/auth/register', credentials, {
+      validateStatus: (status) => status !== 500,
+    });
+
+    if (res.status === 201) {
+      const {access_token} = res.data;
+      sessionStorage.setItem(this.TOKEN_KEY, access_token);
+      this.syncStore.addChangeLogin()
+    }
+
+    return res;
   }
 
   logout(): void {
