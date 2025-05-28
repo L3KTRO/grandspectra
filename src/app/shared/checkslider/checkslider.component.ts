@@ -11,5 +11,6 @@ import {FormsModule} from "@angular/forms";
 })
 export class ChecksliderComponent {
   @Input({required: true}) checked = signal<boolean>(false);
+  @Input() enable = signal<boolean>(false);
 
 }

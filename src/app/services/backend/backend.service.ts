@@ -98,6 +98,22 @@ export class BackendService {
     return this.authRequest(`/lists/${listId}/vote`, options)
   }
 
+  saveList(listId: string, options: AxiosRequestConfig = {}) {
+    return this.authRequest(`/lists/${listId}/save`, options)
+  };
+
+  follow(username: string) {
+    return this.authRequest('/me/follow/' + username, {
+      method: 'PUT',
+    });
+  }
+
+  unfollow(username: string) {
+    return this.authRequest('/me/follow/' + username, {
+      method: 'DELETE',
+    });
+  }
+
   async login(credentials: { email: string; password: string }) {
     const res = await this.api.post<Auth>(environment.apiUrl + '/auth/login', credentials, {
       validateStatus: (status) => status === 200 || status === 401,

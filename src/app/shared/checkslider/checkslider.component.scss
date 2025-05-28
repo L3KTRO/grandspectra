@@ -56,3 +56,13 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+
+input:disabled + .slider {
+  background-color: styles.$text-contrast;
+  cursor: not-allowed;
+}
+
+input:disabled + .slider:before {
+  background-color: styles.$text-contrast-mid;
+  cursor: not-allowed;
+}

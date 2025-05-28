@@ -13,12 +13,15 @@ import {computedResource} from '../../helpers/Resources';
 import {BackendService} from '../../services/backend/backend.service';
 import {ContentList} from '../../models/ContentList';
 import {Content} from '../../models/Content';
+import {RouterLink, RouterLinkActive} from '@angular/router';
 
 @Component({
   selector: 'app-lists',
   imports: [
     NgForOf,
-    ListsVisualizerComponent
+    ListsVisualizerComponent,
+    RouterLink,
+    RouterLinkActive
   ],
   templateUrl: './lists.component.html',
   styleUrl: './lists.component.scss'

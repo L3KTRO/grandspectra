@@ -16,13 +16,17 @@
           <h1 class="list-title" id="tip-title">{{ nameList() }}</h1>
         }
         <small *ngIf="!nameList() && editMode()">Name is required</small>
-        <h3 style="font-weight: 400">List by <span style="font-weight: 700">{{ list().user.username }}</span></h3>
+        <h3 style="font-weight: 400">List by
+          <a style="font-weight: 700" [routerLink]="'/spectator/'+list().user.username" id="username">
+            {{ list().user.username }}
+          </a>
+        </h3>
         <textarea id="description" [(ngModel)]="descriptionList"
                   [disabled]="!editMode()" [ngClass]="editMode() ? 'editing' : 'not-editing'"></textarea>
         <small *ngIf="!descriptionList() && editMode()">Description is required</small>
       </div>
       <div id="actions">
-        <div>
+        <div *ngIf="me() && list()">
           <div id="votes">
             <div (click)="voting(vote() === true ? null : true)">
               @if (vote() === true) {
@@ -83,8 +87,8 @@
                 </svg>
               }
             </div>
-            <div *ngIf="list().user.id !== me().id">
-              @if (false) {
+            <div *ngIf="list().user.id !== me().id" (click)="saving()">
+              @if (save()) {
                 <svg width="35px" height="35px" viewBox="0 0 24 24" fill="none"
                      xmlns="http://www.w3.org/2000/svg"
                      stroke="none" stroke-width="1.416">
@@ -110,6 +114,11 @@
                 </svg>
               }
             </div>
+          </div>
+          <div id="visibility" *ngIf="list().user.id === me().id">
+            <h3>Private</h3>
+            <app-checkslider [checked]="visibility" [enable]="editMode"/>
+            <h3>Public</h3>
           </div>
           <div id="owner-actions" *ngIf="list().user.id === me().id">
             <div (click)="editing()">

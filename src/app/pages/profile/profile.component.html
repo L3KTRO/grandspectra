@@ -11,7 +11,13 @@
           @if (me() && me().id === user().id) {
             <div class="button" (click)="logout()"><h5 style="margin: 0.25rem 0.5rem">LOGOUT</h5></div>
           } @else if (me() && me().id !== user().id) {
-            <div class="button"><h5 style="margin: 0.25rem 0.5rem">FOLLOW</h5></div>
+
+            @if (meFollowing().includes(user().username)) {
+              <div class="button" (click)="unfollow()"><h5 style="margin: 0.25rem 0.5rem">UNFOLLOW</h5></div>
+            } @else {
+              <div class="button" (click)="follow()"><h5 style="margin: 0.25rem 0.5rem">FOLLOW</h5></div>
+            }
+
           }
         </div>
       </div>

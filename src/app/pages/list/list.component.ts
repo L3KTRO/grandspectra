@@ -17,8 +17,9 @@ import {NgClass, NgIf, SlicePipe} from '@angular/common';
 import {computedResource} from '../../helpers/Resources';
 import {toggler} from '../../helpers/Toggler';
 import {DialogComponent} from '../../shared/dialog/dialog.component';
-import {Router} from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
 import {FormsModule} from '@angular/forms';
+import {ChecksliderComponent} from '../../shared/checkslider/checkslider.component';
 
 @Component({
   selector: 'app-list',
@@ -28,7 +29,9 @@ import {FormsModule} from '@angular/forms';
     DialogComponent,
     FormsModule,
     NgClass,
-    SlicePipe
+    SlicePipe,
+    ChecksliderComponent,
+    RouterLink
   ],
   templateUrl: './list.component.html',
   styleUrl: './list.component.scss'
@@ -43,24 +46,30 @@ export class ListComponent {
   vote: WritableSignal<boolean | null> = linkedSignal(() => {
     const ownVote = this.list().votes.find(v => v.user_id === this.me()?.id)
     if (!ownVote) return null
-    if (ownVote.vote === 1) return true
-    if (ownVote.vote === 0) return false
+    if (ownVote.vote === 1) return true;
+    if (ownVote.vote === 0) return false;
     else return null
   })
+
+  save = computed(() => !!this.me().content_lists_saved.find(v => `${v.id}` === this.id))
+
   voteCount = linkedSignal(() => this.list().votes.filter(v => v.vote === 1).length - this.list().votes.filter(v => v.vote === 0).length)
   nameList = linkedSignal(() => this.list().name)
   descriptionList = linkedSignal(() => this.list().description)
   editMode = signal(false)
+  visibility = linkedSignal(() => this.list().public)
 
   constructor(private backend: BackendService, private router: Router) {
   }
 
-  me = computedResource<Me>({
+  meResource: ResourceRef<Me> = resource({
     loader: async () => {
       const req = await this.backend.getMe()
       return req.status === 200 ? req.data : null
     }
   });
+
+  me = computed(() => this.meResource.asReadonly().value());
 
   listResource: ResourceRef<ContentList> = resource({
     loader: async () => {
@@ -96,18 +105,17 @@ export class ListComponent {
     if (this.editMode() && (!this.descriptionList() || !this.nameList())) return;
     this.editMode.update(toggler)
     if (!this.editMode()) {
-      if (this.descriptionList() === this.list().description && this.nameList() === this.list().name) return;
+      if (this.descriptionList() === this.list().description && this.nameList() === this.list().name && this.list().public === this.visibility()) return;
       this.backend.list(this.id, {
         method: "PUT",
         data: {
           name: this.nameList(),
-          description: this.descriptionList()
+          description: this.descriptionList(),
+          public: this.visibility(),
         }
       }).then((_) => {
         window.location.reload()
       })
-    } else {
-      document.querySelector<HTMLInputElement>('#list-title')!.focus();
     }
   }
 
@@ -123,8 +131,12 @@ export class ListComponent {
     })
   }
 
-  saving(){
-
+  saving() {
+    this.backend.saveList(this.id, {
+      method: this.save() ? "DELETE" : "PUT",
+    }).then((_) => {
+      this.meResource.reload()
+    })
   }
 
   protected readonly toggler = toggler;

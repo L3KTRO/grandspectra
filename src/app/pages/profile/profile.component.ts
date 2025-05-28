@@ -1,4 +1,4 @@
-import {Component, computed, effect, inject, Input, OnInit, resource, signal, Signal} from '@angular/core';
+import {Component, computed, effect, inject, Input, OnInit, resource, ResourceRef, signal, Signal} from '@angular/core';
 import {NgForOf, NgIf, NgOptimizedImage} from '@angular/common';
 import {BackendService} from "../../services/backend/backend.service";
 import {ContentlistComponent} from '../../shared/contentlist/contentlist.component';
@@ -49,12 +49,16 @@ export class ProfileComponent implements OnInit {
   backend = inject(BackendService);
   router = inject(Router);
 
-  me = computedResource<Me>({
+  meResource: ResourceRef<Me> = resource(({
     loader: async () => {
       const req = await this.backend.getMe()
       return req.status === 200 ? req.data : null
     }
-  })
+  }))
+
+  me = computed(() => this.meResource.asReadonly().value());
+
+  meFollowing = computed(() => this.me().following.map(u => u.username))
 
   userResource = resource({
     request: () => ({
@@ -106,6 +110,22 @@ export class ProfileComponent implements OnInit {
   logout() {
     this.backend.logout();
     location.reload();
+  }
+
+  follow() {
+    this.backend.follow(this.user().username).then(res => {
+      if (res.status === 201) {
+        this.meResource.reload();
+      }
+    });
+  }
+
+  unfollow() {
+    this.backend.unfollow(this.user().username).then(res => {
+      if (res.status === 204) {
+        this.meResource.reload();
+      }
+    });
   }
 
 }

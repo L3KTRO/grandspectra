@@ -7,6 +7,14 @@
   gap: 2rem;
 }
 
+#list-creator {
+  color: styles.$text;
+}
+
+#list-creator:hover {
+  color: styles.$text-contrast-light;
+}
+
 .list {
   display: flex;
   flex-direction: row;

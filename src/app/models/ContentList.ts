@@ -7,6 +7,7 @@ export interface ContentList {
   id: number,
   name: string,
   description: string,
+  public: boolean,
   movie: Array<Movie>,
   tv: Array<Tv>,
   created_at: Date,
