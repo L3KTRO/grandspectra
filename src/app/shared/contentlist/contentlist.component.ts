@@ -29,7 +29,7 @@ export class ContentlistComponent {
 
   intrinsic(poster: string | null) {
     if (!poster) return `https://placehold.co/${this.sizes.width}x${this.sizes.height}`
-    return poster.replace('original', `w342`);
+    return poster.replace('original', `w185`);
   }
 
   getTitle(item: (Movie | Tv)) {
