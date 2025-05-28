@@ -8,10 +8,12 @@ COPY . .
 
 RUN npm run build
 
-FROM node:18-alpine
-WORKDIR /app
-RUN npm install -g serve
-COPY --from=builder /app/dist ./dist
+FROM nginx:alpine
 
-EXPOSE 3338
-CMD ["serve", "-s", "dist", "-l", "3338"]
+RUN rm -rf /usr/share/nginx/html/*
+
+COPY --from=build /app/dist/grandspectra /usr/share/nginx/html
+
+COPY nginx.conf  /etc/nginx/conf.d/default.conf
+
+EXPOSE 80
