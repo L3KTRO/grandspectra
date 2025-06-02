@@ -2,15 +2,15 @@
 import {Component, computed, HostListener, inject, resource, ResourceRef, Signal, signal} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {Movie} from '../../models/Movie';
-import {ContentlistComponent} from '../../shared/contentlist/contentlist.component';
 import {Tv} from '../../models/Tv';
 import {MeiliService} from '../../services/meili/meili.service';
-import {BackendService} from '../../services/backend/backend.service'; // Asegúrate de tener la interfaz Movie
+import {BackendService} from '../../services/backend/backend.service';
+import {ContentlistnumberedComponent} from '../../shared/contentlistnumbered/contentlistnumbered.component'; // Asegúrate de tener la interfaz Movie
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, ContentlistComponent],
+  imports: [CommonModule, ContentlistnumberedComponent],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
@@ -32,13 +32,17 @@ export class HomeComponent {
       description: 'Keep your watched list organized and accessible at all times.'
     },
     {
-      title: 'Don\'t know what to watch? Check Spectra Hub',
-      description: 'Our database has more than 1 million movies and more than 150,000 tv shows <br>More filters soon.'
+      title: 'Don\'t know what to watch? <br>Check our Hub',
+      description: 'Our database has more than 1 million movies and more than 150,000 tv shows'
     },
     {
       title: 'Share with your friends',
       description: 'Share your ratings, watchlist and watched content.'
-    }
+    },
+    {
+      title: 'Updated daily',
+      description: 'We update our database daily with the latest movies and tv shows.'
+    },
   ];
 
   @HostListener('window:resize')

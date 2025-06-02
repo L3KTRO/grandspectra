@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ContentlistComponent } from './creditlist.component';
 
-describe('ContentlistComponent', () => {
+describe('ContentlistnumberedComponent', () => {
   let component: ContentlistComponent;
   let fixture: ComponentFixture<ContentlistComponent>;
 

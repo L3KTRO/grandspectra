@@ -256,6 +256,10 @@
   }
 }
 
+#external-links:last-of-type {
+  //gap: 0.5rem;
+}
+
 .dialog {
   display: flex;
   flex-direction: column;
@@ -357,4 +361,21 @@
   mask-image: linear-gradient(to right, transparent 0%, styles.$background-contrast-mid 8%, styles.$background-contrast-mid 95%, transparent 100%);
   width: 90vw;
   z-index: 0;
+}
+
+.looping {
+  animation: donut-spin 2s linear infinite;
+}
+
+#request-text {
+  font-weight: 100;
+}
+
+@keyframes donut-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }

@@ -9,7 +9,7 @@
 <div id="features" [style]="mobile() ? 'flex-direction: column; gap: 2rem' : ''">
   @for (feature of features; track feature.title) {
     <div class="feature-container">
-      <h2>{{ feature.title }}</h2>
+      <h2 [innerHTML]="feature.title"></h2>
       <p style="font-weight: normal" [innerHTML]="feature.description"></p>
     </div>
   }
@@ -17,9 +17,13 @@
 
 <div id="trending">
   <div *ngIf="movies.asReadonly().value()">
-    <app-contentlist [title]="'Popular movies'" [content]="movies.asReadonly().value()!"/>
+    <app-contentlist-numbered [title]="'Top movies today'" [content]="movies.asReadonly().value()!"/>
   </div>
   <div *ngIf="tv.asReadonly().value()">
-    <app-contentlist [title]="'Popular series'" [content]="tv.asReadonly().value()!"/>
+    <app-contentlist-numbered [title]="'Top  tv shows today'" [content]="tv.asReadonly().value()!"/>
   </div>
+</div>
+
+<div id="stats">
+  <h3>Grand Spectra stats</h3>
 </div>

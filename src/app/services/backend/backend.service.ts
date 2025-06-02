@@ -68,6 +68,7 @@ export class BackendService {
   // AUTH
 
   authRequest(endpoint: string, options: AxiosRequestConfig = {}) {
+    console.log(`${this.baseUrl}${endpoint}`)
     const req = this.api.request({
       url: `${this.baseUrl}${endpoint}`,
       ...options,

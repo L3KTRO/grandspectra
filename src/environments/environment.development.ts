@@ -1,5 +1,5 @@
 import {environmentInterface} from './ienv';
 
 export const environment: environmentInterface = {
-  apiUrl: 'http://localhost:8000',
+  apiUrl: 'http://192.168.0.39:9000',
 };

@@ -28,9 +28,9 @@ import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} fr
 import {Review} from '../../models/Review';
 import {toggler} from '../../helpers/Toggler';
 import {ProgressSpinnerComponent} from '../progress-spinner/progress-spinner.component';
-import {MeiliService} from '../../services/meili/meili.service';
 import {Movie} from '../../models/Movie';
 import {Tv} from '../../models/Tv';
+import {RequestUpdate} from '../../stores/RequestUpdate';
 
 @Component({
   selector: 'app-media-content-display',
@@ -79,7 +79,7 @@ export class MediaContentDisplayComponent implements OnDestroy {
 
   router = inject(Router)
   backend = inject(BackendService)
-  meili = inject(MeiliService)
+  requestUpdateState = inject(RequestUpdate);
   originalRating: UserAndContent | null = null;
   originalWatched: UserAndContent | null = null;
   originalWatchlist: UserAndContent | null = null;
@@ -327,6 +327,15 @@ export class MediaContentDisplayComponent implements OnDestroy {
     if (currentIndex === this.backdropSizes.length - 1) return;
     const nextIndex = (currentIndex + 1) % this.backdropSizes.length;
     this.backdropSize.set(this.backdropSizes[nextIndex]);
+  }
+
+  requestUpdate() {
+    if (!this.requestUpdateState.check()) return;
+    console.log("test")
+    const entity = this.isMovie ? 'movies' : 'tv';
+    this.backend.authRequest(`/${entity}/${this.id}`, {method: "PUT"}).then(() => {
+      this.requestUpdateState.addDelay()
+    })
   }
 
   protected readonly toggler = toggler;

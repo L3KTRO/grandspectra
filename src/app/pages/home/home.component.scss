@@ -42,14 +42,13 @@
 #features {
   display: flex;
   justify-content: space-between;
-  padding: 2rem 0;
-  margin: 0 auto;
+  gap: 2rem;
+  margin: 0 2rem;
   max-width: 1600px;
 }
 
 .feature-container {
   flex: 1;
-  margin: 0 2rem;
   padding: 1.5rem;
   background: linear-gradient(to bottom, styles.$background-contrast, styles.$background);
   color: styles.$text;
