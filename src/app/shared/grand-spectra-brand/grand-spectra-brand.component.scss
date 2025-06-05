@@ -13,10 +13,10 @@
     font-family: 'CharisSIL', "GTVCS", serif;
     font-weight: bold;
     transition: 0.5s ease-in-out;
-    text-shadow: 0 0 7px styles.$contrast-1-2,
+    text-shadow: 0 0 3px styles.$contrast-1-2,
+    0 0 5px styles.$contrast-1-2,
     0 0 10px styles.$contrast-1-2,
-    0 0 21px styles.$contrast-1-2,
-    0 0 42px styles.$contrast-1-2;
+    0 0 30px styles.$contrast-1-2;
     text-decoration: none;
   }
 

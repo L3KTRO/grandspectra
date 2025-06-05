@@ -117,8 +117,8 @@
   <div class="profile-header">
     <div class="profile-info">
       <div style="display: flex; flex-direction: row; align-items: center; align-content: center">
-        <div class="profile-avatar" *ngIf="me()">
-          <img [ngSrc]="me().avatar ?? 'assets/user.svg'" alt="Avatar de usuario" height="400" width="400">
+        <div class="profile-avatar" *ngIf="user()">
+          <img [ngSrc]="user().avatar ?? 'assets/user.svg'" alt="Avatar de usuario" height="400" width="400">
         </div>
         <div class="profile-username">
           <h4 *ngIf="user()">{{ user().username }}</h4>

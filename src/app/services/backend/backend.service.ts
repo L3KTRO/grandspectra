@@ -149,6 +149,7 @@ export class BackendService {
     if (data.password_confirmation === '') delete data.password_confirmation;
     if (data.username === "") delete data.username;
     if (data.email === "") delete data.email;
+    if (!data.avatar) delete data.avatar;
     const formData = new FormData();
 
     if (data.avatar) {

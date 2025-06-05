@@ -46,5 +46,13 @@ export const routes: Routes = [
   {
     path: "spectators",
     loadComponent: () => import('./pages/spectators/spectators.component').then(m => m.SpectatorsComponent)
+  },
+  {
+    path: "about",
+    loadComponent: () => import('./pages/about/about.component').then(m => m.AboutComponent)
+  },
+  {
+    path: "spectrai",
+    loadComponent: () => import('./pages/spectrai/spectrai.component').then(m => m.SpectraiComponent)
   }
 ];

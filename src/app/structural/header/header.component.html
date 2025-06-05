@@ -26,8 +26,8 @@
 
   <div id="buttons">
     <a [routerLink]="me() ? '/spectator/' + me().username : '/login'">
-      <div class="header-item header-button button">
-        <h3 class="light-neon-effect-text">{{ me() ? "PROFILE" : "JOIN US" }}</h3>
+      <div class="header-item">
+        <h3 class="header-nav" id="sign">{{ me() ? "PROFILE" : "JOIN US" }}</h3>
       </div>
     </a>
   </div>
