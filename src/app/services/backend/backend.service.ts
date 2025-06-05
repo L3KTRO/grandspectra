@@ -3,7 +3,6 @@ import axios, {AxiosRequestConfig} from 'axios';
 import {environment} from '../../../environments/environment';
 import {Auth} from '../../models/Auth';
 import {SyncStore} from '../../stores/SyncStore';
-import {LoadingInterceptor} from '../../helpers/load-interceptor/loading.interceptor';
 
 @Injectable({providedIn: 'root'})
 export class BackendService {
@@ -18,11 +17,6 @@ export class BackendService {
       'Accept': 'application/json',
     },
   })
-
-  constructor(private axiosInterceptorService: LoadingInterceptor) {
-    // Configura los interceptores para mostrar/ocultar el spinner
-    //this.axiosInterceptorService.setupInterceptors(this.api);
-  }
 
   getGenres() {
     return this.api.get(this.baseUrl + '/genres');
@@ -142,6 +136,52 @@ export class BackendService {
     }
 
     return res;
+  }
+
+  async editProfile(data: {
+    username?: string;
+    email?: string;
+    password?: string;
+    password_confirmation?: string,
+    avatar?: File
+  }) {
+    if (data.password === '') delete data.password;
+    if (data.password_confirmation === '') delete data.password_confirmation;
+    if (data.username === "") delete data.username;
+    if (data.email === "") delete data.email;
+    const formData = new FormData();
+
+    if (data.avatar) {
+      formData.append('avatar', data.avatar);
+
+      if (data.username) formData.append("username", data.username);
+      if (data.email) formData.append("email", data.email);
+      if (data.password) formData.append("password", data.password);
+      if (data.password_confirmation) formData.append("password_confirmation", data.password_confirmation);
+    }
+
+
+    const res = await this.authRequest('/auth/edit', {
+      method: 'POST',
+      data: formData.has("avatar") ? formData : data,
+      headers: {
+        'Content-Type': formData.has("avatar") ? 'multipart/form-data' : 'application/json',
+      },
+      validateStatus: (status) => status !== 1,
+    });
+
+    if (res.status === 200) {
+      this.syncStore.addChangeProfile()
+    }
+
+    return res;
+  }
+
+  async resendVerification() {
+    return await this.authRequest('/auth/resend-verification', {
+      method: 'POST',
+      validateStatus: (status) => status === 200,
+    });
   }
 
   logout(): void {

@@ -285,6 +285,11 @@ $input-border: #3a3a3a;
   flex-direction: column;
 }
 
+.errors {
+  display: flex;
+  flex-direction: column;
+}
+
 // Estilos responsivos
 @media (max-width: 480px) {
   .login-container {

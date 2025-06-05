@@ -1,4 +1,16 @@
-import {Component, computed, effect, inject, Input, OnInit, resource, ResourceRef, signal, Signal} from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  inject,
+  Input,
+  OnInit,
+  resource,
+  ResourceRef,
+  signal,
+  Signal,
+  ViewChild
+} from '@angular/core';
 import {NgForOf, NgIf, NgOptimizedImage} from '@angular/common';
 import {BackendService} from "../../services/backend/backend.service";
 import {ContentlistComponent} from '../../shared/contentlist/contentlist.component';
@@ -7,9 +19,15 @@ import {Tv} from '../../models/Tv';
 import {UserAndContent} from '../../models/UserAndContent';
 import {SyncStore} from '../../stores/SyncStore';
 import {ListsVisualizerComponent} from '../../shared/lists-visualizer/lists-visualizer.component';
-import {computedResource} from '../../helpers/Resources';
 import {Me} from '../../models/Me';
 import {ActivatedRoute, Router} from '@angular/router';
+import {DialogComponent} from '../../shared/dialog/dialog.component';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {ProgressSpinnerComponent} from '../../shared/progress-spinner/progress-spinner.component';
+import {toggler} from '../../helpers/Toggler';
+import {RequestResendVerification} from '../../stores/RequestResendVerification';
+import {ImageCroppedEvent, ImageCropperComponent, LoadedImage} from 'ngx-image-cropper';
+import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-profile',
@@ -18,22 +36,50 @@ import {ActivatedRoute, Router} from '@angular/router';
     NgIf,
     ContentlistComponent,
     NgForOf,
-    ListsVisualizerComponent
+    ListsVisualizerComponent,
+    DialogComponent,
+    ReactiveFormsModule,
+    ProgressSpinnerComponent,
+    ImageCropperComponent
   ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss'
 })
 export class ProfileComponent implements OnInit {
   @Input() username!: string;
+  @ViewChild("edit") editDialog!: DialogComponent;
 
   usernamePath = signal(this.username);
+  editForm: FormGroup;
+  showPassword = signal(false);
+  isLoading = signal(false);
+  editError = signal([""]);
+  isLoadingResend = signal(false);
+  avatar = signal(null)
 
-  constructor(public syncStore: SyncStore, private route: ActivatedRoute) {
+  constructor(
+    public syncStore: SyncStore,
+    private route: ActivatedRoute,
+    private fb: FormBuilder,
+    public requestResendVerification: RequestResendVerification,
+    private sanitizer: DomSanitizer
+  ) {
     this.initialSync.set(syncStore.profileSync())
     effect(() => {
       if (this.syncStore.profileSync() > this.initialSync()) {
         this.triggerSync.update(res => res + 1);
       }
+    });
+
+
+    this.editForm = this.fb.group({
+      email: ["", [Validators.required, Validators.email]],
+      username: ["", [Validators.required, Validators.minLength(5), Validators.pattern('^[a-z0-9]+$'), Validators.maxLength(20)]],
+      password: ["", [Validators.minLength(8)]],
+      password_confirmation: ["", [(control: {
+        parent: { get: (arg0: string) => { (): any; new(): any; value: any; }; };
+        value: any;
+      }) => control.parent && control.value !== control.parent.get('password')?.value ? {notMatching: true} : null]],
     });
   }
 
@@ -52,6 +98,12 @@ export class ProfileComponent implements OnInit {
   meResource: ResourceRef<Me> = resource(({
     loader: async () => {
       const req = await this.backend.getMe()
+      this.editForm.setValue({
+        username: req.data.username,
+        email: req.data.email,
+        password: '',
+        password_confirmation: ''
+      });
       return req.status === 200 ? req.data : null
     }
   }))
@@ -128,4 +180,82 @@ export class ProfileComponent implements OnInit {
     });
   }
 
+  resendVerification() {
+    this.isLoadingResend.set(true)
+    this.backend.resendVerification().then(res => {
+      if (res.status === 200) {
+        this.requestResendVerification.addDelay()
+        this.editError.set(["Verification email sent successfully."]);
+      } else {
+        this.editError.set(["Failed to send verification email."]);
+      }
+      this.isLoadingResend.set(false)
+    });
+  }
+
+  togglePasswordVisibility() {
+    this.showPassword.update(toggler)
+  }
+
+  onSubmit() {
+    this.isLoading.set(true)
+    if (this.editForm.valid) {
+      this.backend.editProfile({
+        ...this.editForm.value,
+        avatar: this.cropped ?? null
+      }).then(res => {
+        if (res.status === 200) {
+          this.syncStore.addChangeLogin();
+          this.meResource.reload();
+          this.editDialog.close();
+          this.triggerSync.update(res => res + 1);
+          this.router.navigate(['/spectator/' + this.me().username]);
+          this.isLoading.set(false)
+        } else {
+          this.editError.set([res.data.message]);
+        }
+      });
+    } else {
+      this.editForm.markAllAsTouched();
+    }
+    this.isLoading.set(false);
+  }
+
+  imageChangedEvent: Event | null = null;
+  croppedImage: SafeUrl = '';
+  cropped: Blob | null = null;
+
+  @ViewChild("cropperDialog") cropperDialog!: DialogComponent;
+  @ViewChild(ImageCropperComponent) imageCropper!: ImageCropperComponent;
+
+  fileChangeEvent(event: Event): void {
+    this.imageChangedEvent = event;
+  }
+
+  imageCropped(event: ImageCroppedEvent) {
+    if (event.objectUrl != null) {
+      this.croppedImage = this.sanitizer.bypassSecurityTrustUrl(event.objectUrl);
+    }
+  }
+
+  imageLoaded(image: LoadedImage) {
+    this.cropperDialog.open();
+  }
+
+  cropperReady() {
+  }
+
+  loadImageFailed() {
+    this.cropperDialog.close();
+  }
+
+  cropImage() {
+    this.imageCropper.crop("blob")?.then(res => {
+      this.cropped = res.blob ?? null
+    });
+    this.cropperDialog.close();
+  }
+
+  protected readonly Math = Math;
+  protected readonly Date = Date;
 }

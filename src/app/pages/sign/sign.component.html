@@ -48,7 +48,7 @@
           password</h5>
         <div *ngIf="formActive().get('password')?.invalid && formActive().get('password')?.touched" class="error">
           <small *ngIf="formActive().get('password')?.errors?.['required']">Password required</small>
-          <small *ngIf="signUpForm.get('password')?.errors?.['minlength']">At least 8 characters</small>
+          <small *ngIf="formActive().get('password')?.errors?.['minlength']">At least 8 characters</small>
         </div>
       </div>
 

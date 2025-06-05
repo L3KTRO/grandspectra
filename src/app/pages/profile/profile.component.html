@@ -1,14 +1,142 @@
+<app-dialog #edit dialogTitle="Edit profile">
+  <form [formGroup]="editForm" (ngSubmit)="onSubmit()" class="login-form">
+    <div class="row">
+      <div class="col">
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input
+            id="username"
+            type="text"
+            formControlName="username"
+            placeholder="username123"
+            [class.is-invalid]="editForm.get('username')?.invalid && editForm.get('username')?.touched"
+          />
+          <div *ngIf="editForm.get('username')?.invalid && editForm.get('username')?.touched" class="error">
+            <small *ngIf="editForm.get('username')?.errors?.['required']">Username required</small>
+            <small *ngIf="editForm.get('username')?.errors?.['pattern']">Only letters and numbers</small>
+            <small *ngIf="editForm.get('username')?.errors?.['minlength']">Too small</small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input
+            id="email"
+            type="email"
+            formControlName="email"
+            placeholder="name@mail.com"
+            [class.is-invalid]="editForm.get('email')?.invalid && editForm.get('email')?.touched"
+          />
+          <div *ngIf="editForm.get('email')?.invalid && editForm.get('email')?.touched" class="error">
+            <small *ngIf="editForm.get('email')?.errors?.['required']">Email required</small>
+            <small *ngIf="editForm.get('email')?.errors?.['email']">Invalid email</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input
+            id="password"
+            [type]="showPassword() ? 'text' : 'password'"
+            formControlName="password"
+            placeholder="Password"
+            [class.is-invalid]="editForm.get('password')?.invalid && editForm.get('password')?.touched"
+          />
+          <div *ngIf="editForm.get('password')?.invalid && editForm.get('password')?.touched" class="error">
+            <small *ngIf="editForm.get('password')?.errors?.['required']">Password required</small>
+            <small *ngIf="editForm.get('password')?.errors?.['minlength']">At least 8 characters</small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="confirmPassword">Confirm Password</label>
+          <input
+            id="confirmPassword"
+            [type]="showPassword() ? 'text' : 'password'"
+            formControlName="password_confirmation"
+            placeholder="Confirm Password"
+            [class.is-invalid]="editForm.get('confirmPassword')?.invalid && editForm.get('confirmPassword')?.touched"
+          />
+          <h5 (click)="togglePasswordVisibility()" id="password-hider">{{ showPassword() ? "Hide" : "Show" }}
+            password</h5>
+          <div *ngIf="editForm.get('confirmPassword')?.invalid && editForm.get('confirmPassword')?.touched"
+               class="error">
+            <small>Passwords doesn't match</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <input type="file" (change)="fileChangeEvent($event)" accept="image/*"/>
+
+    <app-dialog #cropperDialog dialogTitle="Crop your image">
+      <image-cropper
+        style="width: 200px; height: 200px; margin: 1rem auto;"
+        [imageChangedEvent]="imageChangedEvent"
+        [maintainAspectRatio]="true"
+        [aspectRatio]="1"
+        [alignImage]="'center'"
+        [roundCropper]="true"
+        (imageCropped)="imageCropped($event)"
+        (imageLoaded)="imageLoaded($event)"
+        (cropperReady)="cropperReady()"
+        (loadImageFailed)="loadImageFailed()"
+      ></image-cropper>
+
+      <div style="margin: 1rem auto;">
+        <img [ngSrc]="croppedImage" width="100" height="100" alt="photo"/>
+      </div>
+
+      <button type="button" (click)="cropImage()" class="login-button">Crop</button>
+
+    </app-dialog>
+
+    <button type="button" class="login-button" id="resend" [disabled]="!requestResendVerification.check()"
+            (click)="resendVerification()" *ngIf="this.me() && this.me().email_verified_at === null">
+      <app-spinner *ngIf="isLoadingResend()"/>
+      <h4 *ngIf="!isLoadingResend()">Resend verification email</h4>
+      <h6 *ngIf="!requestResendVerification.check()">Next try
+        in {{ Math.ceil((requestResendVerification.get() - Date.now()) / 60000) }} min
+      </h6>
+    </button>
+
+    <button type="submit" class="login-button" [disabled]="isLoading()">
+      <app-spinner [size]="10" *ngIf="isLoading()"></app-spinner>
+      <h4 *ngIf="!isLoading()">Update</h4>
+    </button>
+    <div *ngIf="editError().length > 0" class="errors">
+      <small *ngFor="let error of editError()" class="error">{{ error }}</small>
+    </div>
+  </form>
+</app-dialog>
+
 <div class="profile-container" *ngIf="user()">
   <!-- Cabecera del perfil -->
   <div class="profile-header">
     <div class="profile-info">
       <div style="display: flex; flex-direction: row; align-items: center; align-content: center">
-        <div class="profile-avatar">
-          <img ngSrc="assets/user.svg" alt="Avatar de usuario" height="400" width="400">
+        <div class="profile-avatar" *ngIf="me()">
+          <img [ngSrc]="me().avatar ?? 'assets/user.svg'" alt="Avatar de usuario" height="400" width="400">
         </div>
         <div class="profile-username">
           <h4 *ngIf="user()">{{ user().username }}</h4>
           @if (me() && me().id === user().id) {
+            <svg (click)="editDialog.open()" width="30px" height="30px" viewBox="0 0 24 24" fill="none"
+                 xmlns="http://www.w3.org/2000/svg"
+                 stroke="#0000000">
+              <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+              <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+              <g id="SVGRepo_iconCarrier">
+                <path
+                  d="M21.2799 6.40005L11.7399 15.94C10.7899 16.89 7.96987 17.33 7.33987 16.7C6.70987 16.07 7.13987 13.25 8.08987 12.3L17.6399 2.75002C17.8754 2.49308 18.1605 2.28654 18.4781 2.14284C18.7956 1.99914 19.139 1.92124 19.4875 1.9139C19.8359 1.90657 20.1823 1.96991 20.5056 2.10012C20.8289 2.23033 21.1225 2.42473 21.3686 2.67153C21.6147 2.91833 21.8083 3.21243 21.9376 3.53609C22.0669 3.85976 22.1294 4.20626 22.1211 4.55471C22.1128 4.90316 22.0339 5.24635 21.8894 5.5635C21.7448 5.88065 21.5375 6.16524 21.2799 6.40005V6.40005Z"
+                  stroke="#FFEFD4FF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path
+                  d="M11 4H6C4.93913 4 3.92178 4.42142 3.17163 5.17157C2.42149 5.92172 2 6.93913 2 8V18C2 19.0609 2.42149 20.0783 3.17163 20.8284C3.92178 21.5786 4.93913 22 6 22H17C19.21 22 20 20.2 20 18V13"
+                  stroke="#FFEFD4FF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+              </g>
+            </svg>
             <div class="button" (click)="logout()"><h5 style="margin: 0.25rem 0.5rem">LOGOUT</h5></div>
           } @else if (me() && me().id !== user().id) {
 

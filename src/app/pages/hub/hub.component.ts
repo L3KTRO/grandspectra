@@ -4,7 +4,7 @@ import {FormsModule} from '@angular/forms';
 import {InputText} from 'primeng/inputtext';
 import {NgClass, NgForOf, NgIf, NgOptimizedImage} from '@angular/common';
 import {BackendService} from '../../services/backend/backend.service';
-import {Router} from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
 import {MeiliService} from '../../services/meili/meili.service';
 import {ProgressSpinnerComponent} from '../../shared/progress-spinner/progress-spinner.component';
 import {Movie} from '../../models/Movie';
@@ -22,6 +22,7 @@ import Person from '../../models/Person';
     NgIf,
     ProgressSpinnerComponent,
     NgForOf,
+    RouterLink,
 
   ],
   styleUrls: ['./hub.component.scss']

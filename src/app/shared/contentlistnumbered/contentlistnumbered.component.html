@@ -1,5 +1,5 @@
 <div id="container">
-  <h1 *ngIf="title" class="trend-title light-neon-effect-text">{{ title }}</h1>
+  <h1 *ngIf="title" class="trend-title">{{ title }}</h1>
   <div id="contents" [style]="wrap ? 'flex-wrap: wrap' : 'flex-wrap: nowrap;'">
     @if (content && content.length > 0) {
       @for (item of content.slice(0, 10); track item; let i = $index) {

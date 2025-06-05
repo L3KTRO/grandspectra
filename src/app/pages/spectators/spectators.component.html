@@ -24,7 +24,7 @@
       <div *ngFor="let user of usersSortByWatched()">
         <div class="user-card" routerLink="/spectator/{{ user.username }}">
           <div class="profile-avatar">
-            <img ngSrc="assets/user.svg" alt="Avatar de usuario" height="400" width="400">
+            <img [ngSrc]="user.avatar ?? 'assets/user.svg'" alt="Avatar de usuario" height="400" width="400">
           </div>
           <div class="user-info">
             <h3>{{ user.username }}</h3>

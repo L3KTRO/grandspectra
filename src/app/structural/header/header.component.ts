@@ -28,6 +28,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       sync: this.syncStore.loginSync()
     }),
     loader: async () => {
+      console.log("header refresh")
       const req = await this.backendService.getMe();
       if (req.status === 200) {
         return req.data;
