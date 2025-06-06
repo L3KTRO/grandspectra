@@ -1,0 +1,29 @@
+@use '../../../styles' as styles;
+
+:host {
+  * {
+    margin: 0;
+    padding: 0;
+    max-height: 90px;
+  }
+
+  #title {
+    color: styles.$text;
+    font-size: 3rem;
+    font-family: 'CharisSIL', "GTVCS", serif;
+    font-weight: bold;
+    transition: 0.5s ease-in-out;
+    text-shadow: 0 0 3px styles.$contrast-1-2,
+    0 0 5px styles.$contrast-1-2,
+    0 0 10px styles.$contrast-1-2,
+    0 0 30px styles.$contrast-1-2;
+    text-decoration: none;
+  }
+
+  @media (max-width: 400px) {
+    #title {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+  }
+}

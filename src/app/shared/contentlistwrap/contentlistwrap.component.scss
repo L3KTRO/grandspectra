@@ -1,0 +1,73 @@
+@use '../../../styles' as styles;
+
+#container {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  overflow-x: visible;
+}
+
+#contents {
+  display: flex;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  align-content: center;
+  gap: 2rem;
+  margin: 0.5rem;
+  overflow-x: auto;
+  white-space: nowrap;
+  flex-wrap: wrap;
+  width: fit-content;
+  -webkit-overflow-scrolling: touch;
+}
+
+.content {
+  text-align: center;
+  max-width: 170px;
+}
+
+.item {
+  position: relative;
+  display: inline-block;
+  flex: 0 0 auto;
+  width: fit-content;
+}
+
+.trend-title {
+  margin: 0 2rem;
+  font-weight: bold;
+  font-size: 1.25rem;
+}
+
+.poster {
+  border-radius: 0.3rem;
+  transition: filter 0.6s ease;
+}
+
+.title {
+  opacity: 0;
+  text-align: center;
+  position: absolute;
+  white-space: normal;
+  font-size: 1rem;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.3s ease;
+}
+
+.item:hover {
+  .poster {
+    transition: filter 0.3s ease;
+    filter: brightness(15%);
+  }
+
+  .title {
+    transition: opacity 0.3s ease;
+    visibility: visible;
+    opacity: 1;
+  }
+}

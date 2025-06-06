@@ -1,0 +1,36 @@
+// Variables para rutas base
+$charis-path: '../public/fonts/charis/';
+$gtvcs-path: '../public/fonts/gtvcs/';
+
+// Mixin para declaraciones de font-face (para reutilización)
+@mixin font-face($family, $file, $weight, $style, $format: 'truetype') {
+  @font-face {
+    font-family: $family;
+    src: url($file) format($format);
+    font-weight: $weight;
+    font-style: $style;
+  }
+}
+
+// CharisSIL font family
+@include font-face('CharisSIL', '#{$charis-path}CharisSILR.ttf', normal, normal);
+@include font-face('CharisSIL', '#{$charis-path}CharisSILB.ttf', bold, normal);
+@include font-face('CharisSIL', '#{$charis-path}CharisSILI.ttf', normal, italic);
+@include font-face('CharisSIL', '#{$charis-path}CharisSILBI.ttf', bold, italic);
+
+// GTVCS font family
+@include font-face('GTVCS', '#{$gtvcs-path}GTVCS-Black.otf', 900, normal, 'opentype');
+@include font-face('GTVCS', '#{$gtvcs-path}GTVCS-BlackItalic.otf', 900, italic, 'opentype');
+@include font-face('GTVCS', '#{$gtvcs-path}GTVCS-BlackSoftItalic.otf', 900, italic, 'opentype');
+@include font-face('GTVCS', '#{$gtvcs-path}GTVCS-Bold.otf', 700, normal, 'opentype');
+@include font-face('GTVCS', '#{$gtvcs-path}GTVCS-BoldItalic.otf', 700, italic, 'opentype');
+@include font-face('GTVCS', '#{$gtvcs-path}GTVCS-BoldSoftItalic.otf', 700, italic, 'opentype');
+@include font-face('GTVCS', '#{$gtvcs-path}GTVCS-Book.otf', 400, normal, 'opentype');
+@include font-face('GTVCS', '#{$gtvcs-path}GTVCS-BookItalic.otf', 400, italic, 'opentype');
+@include font-face('GTVCS', '#{$gtvcs-path}GTVCS-BookSoftItalic.otf', 400, italic, 'opentype');
+@include font-face('GTVCS', '#{$gtvcs-path}GTVCS-Light.otf', 300, normal, 'opentype');
+@include font-face('GTVCS', '#{$gtvcs-path}GTVCS-LightItalic.otf', 300, italic, 'opentype');
+@include font-face('GTVCS', '#{$gtvcs-path}GTVCS-LightSoftItalic.otf', 300, italic, 'opentype');
+@include font-face('GTVCS', '#{$gtvcs-path}GTVCS-Medium.otf', 500, normal, 'opentype');
+@include font-face('GTVCS', '#{$gtvcs-path}GTVCS-MediumItalic.otf', 500, italic, 'opentype');
+@include font-face('GTVCS', '#{$gtvcs-path}GTVCS-MediumSoftItalic.otf', 500, italic, 'opentype');

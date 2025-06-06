@@ -1,0 +1,18 @@
+<div id="container">
+  <h1 *ngIf="title" class="trend-title light-neon-effect-text">{{ title }}</h1>
+  <div id="contents">
+    @if (content) {
+      <div *ngFor="let item of content" class="item">
+        <div class="item" routerLink="/{{ isMovie(item) ? 'movie' : 'tv'}}/{{ item.id }}">
+          <img class="poster" ngSrc="{{ intrinsic(item.poster) }}" alt="{{ getTitle(item) }}"
+               width="{{sizes.width}}" height="{{sizes.height}}"/>
+          <h2 class="title" [style.width.px]="sizes.width">{{ getTitle(item) }}</h2>
+        </div>
+      </div>
+    } @else {
+      <div *ngFor="let _ of Array(10)">
+        <p-skeleton class="item" width="{{sizes.width}}px" height="{{sizes.height}}px"/>
+      </div>
+    }
+  </div>
+</div>

@@ -1,0 +1,15 @@
+<div id="page-mask" *ngIf="dialogRef.nativeElement.open"
+     [@maskAnimation]="dialogState()"
+     (@maskAnimation.done)="onAnimationDone()"></div>
+
+
+<dialog #dialog (close)="closed.emit()" class="dialog"
+        [@dialogAnimation]="dialogState()"
+        (@dialogAnimation.done)="onAnimationDone()"
+>
+  <div id="header">
+    <h2 *ngIf="dialogTitle">{{ dialogTitle }}</h2>
+    <div class="close" (click)="close()">X</div>
+  </div>
+  <ng-content></ng-content>
+</dialog>

@@ -1,0 +1,51 @@
+@use "../../../styles" as styles;
+
+.dialog {
+  margin: auto;
+  background-color: styles.$background-contrast;
+  color: styles.$text;
+  border-color: styles.$text-contrast;
+  border-radius: 8px;
+  padding: 2rem;
+  min-width: 300px;
+  overflow: hidden;
+  max-height: 80%;
+
+  ::backdrop {
+    background: none;
+  }
+}
+
+#header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+#page-mask {
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(2px); // O el valor que prefieras
+  -webkit-backdrop-filter: blur(2px); // Para compatibilidad con Safari
+  z-index: 10;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.close {
+  height: fit-content;
+  width: fit-content;
+  display: flex;
+  align-self: flex-end;
+  font-family: "GTVCS", serif;
+  background-color: styles.$contrast-1-2;
+  color: styles.$text;
+  padding: 0.3rem 0.9rem;
+  margin: 0 1rem;
+  z-index: 2;
+  cursor: pointer;
+}

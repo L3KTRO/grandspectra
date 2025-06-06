@@ -1,0 +1,81 @@
+@use "../../../styles" as styles;
+
+.rating-container {
+  display: flex;
+  flex-direction: row;
+  width: fit-content;
+  align-items: center;
+  padding: 5px;
+  border-radius: 8px;
+  background-color: styles.$background-contrast;
+}
+
+.slider-container {
+  display: flex;
+  align-items: center;
+  margin: 0 10px;
+}
+
+.rating-slider {
+  flex: 1;
+  height: 8px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: #ddd;
+  outline: none;
+  border-radius: 4px;
+}
+
+.rating-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #3f51b5;
+  cursor: pointer;
+}
+
+.rating-slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #3f51b5;
+  cursor: pointer;
+}
+
+.rating-value {
+  font-size: 20px;
+  font-weight: bold;
+  margin: 5px 0 0 0;
+  min-width: 40px;
+  text-align: center;
+}
+
+.rating-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.btn {
+  font-family: "GTVCS", serif;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 0.5rem 0.5rem 0.3rem 0.5rem;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.save-btn {
+  background-color: styles.$text;
+  color: styles.$contrast-1-2;
+}
+
+.delete-btn {
+  background-color: styles.$contrast-1-2;
+  color: styles.$text;
+}

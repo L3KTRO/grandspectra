@@ -1,0 +1,26 @@
+<div class="custom-select-container">
+  <label *ngIf="label" class="select-label">{{ label }}</label>
+
+  <div class="select-wrapper">
+    <!-- Select nativo (accesible pero oculto visualmente) -->
+    <select
+      [value]="internalValue"
+      (change)="onSelectChange($event)"
+      [disabled]="disabled"
+      class="native-select">
+      <option value="" disabled selected hidden>{{ placeholder }}</option>
+      <option *ngFor="let option of options" [value]="option.value">
+        {{ option.label }}
+      </option>
+    </select>
+
+    <!-- Apariencia personalizada del select -->
+    <div class="custom-select-trigger" [class.disabled]="disabled">
+      <span>{{ getSelectedLabel() }}</span>
+      <svg class="select-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+        <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M6 9l6 6 6-6"/>
+      </svg>
+    </div>
+  </div>
+</div>

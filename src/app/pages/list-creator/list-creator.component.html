@@ -1,0 +1,33 @@
+<form class="new-list-form" (ngSubmit)="onSubmit()" [formGroup]="form">
+  <h2 class="form-title">New List</h2>
+  <div class="form-row">
+    <div class="form-group left">
+      <label for="name" class="label-with-dot">
+        <span>Name</span>
+        <small *ngIf="form.get('name')?.errors?.['required']">Name is required</small>
+        <small *ngIf="form.get('name')?.errors?.['minlength']">At least 3 chars</small>
+        <small *ngIf="form.get('name')?.errors?.['maxlength']">Max 32 chars</small>
+      </label>
+      <input type="text" id="name" class="input" autocomplete="off" maxlength="250" formControlName="name"/>
+      <label for="visibility" class="label">
+        Who can view
+      </label>
+      <select id="visibility" class="input" formControlName="public">
+        <option selected [value]="true">Anyone</option>
+        <option [value]="false">Only me</option>
+      </select>
+    </div>
+    <div class="form-group right">
+      <label for="description" class="label-right">
+        Description
+        <small *ngIf="form.get('description')?.errors?.['required']">Description is required</small>
+        <small *ngIf="form.get('description')?.errors?.['maxlength']">Max 5000 chars</small>
+      </label>
+      <textarea id="description" class="textarea" maxlength="5000" formControlName="description"></textarea>
+    </div>
+  </div>
+  <div class="form-row buttons-row">
+    <div class="flex-grow"></div>
+    <button type="submit" class="btn save" [disabled]="form.invalid">Save</button>
+  </div>
+</form>

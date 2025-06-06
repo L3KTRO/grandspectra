@@ -1,0 +1,27 @@
+<div class="list-card" [routerLink]="['/list', list.id]">
+  <div class="posters-stack">
+    <!-- Muestra los posters superpuestos, limitando a 4 max -->
+    <ng-container *ngFor="let item of getFullContent(list).slice(0, 4); let i = index">
+      <div
+        *ngIf="i < 4"
+        class="poster-wrapper"
+        [style.z-index]="getFullContent(list).length - i"
+        [style.left.px]="i * 30"
+      >
+        <img
+          [ngSrc]="getPosterUrl(item.poster)"
+          width="150"
+          height="225"
+          [alt]="item.id"
+          class="poster"
+          loading="lazy"
+        />
+      </div>
+    </ng-container>
+  </div>
+
+  <div class="list-info">
+    <h3>{{ list.name }}</h3>
+    <p class="item-count">{{ getFullContent(list).length }} titles</p>
+  </div>
+</div>

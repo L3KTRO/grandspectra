@@ -5,9 +5,7 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "3339:3339"
-    environment:
-      EXTERNAL_API_URL: "https://gs-backend.lestro.top"
+      - "3338:80"
     pull_policy: always
 
 networks:

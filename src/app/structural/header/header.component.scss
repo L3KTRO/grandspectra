@@ -1,0 +1,79 @@
+@use '../../../styles' as styles;
+
+#items {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.header-nav {
+  font-size: 1.1rem;
+  font-weight: 900;
+  font-family: "GTVCS", serif;
+  color: #f1e1cb;
+  transition: 0.3s ease-in-out;
+
+  &:hover {
+    color: styles.$text;
+    text-shadow: 0 0 15px styles.$contrast-1;
+  }
+}
+
+#buttons {
+  display: flex;
+  flex-direction: row;
+}
+
+#header {
+  font-family: 'CharisSIL', "GTVCS", serif;
+  background-color: styles.$background-contrast;
+  color: styles.$text;
+  height: 5.5rem;
+  display: flex;
+  font-size: 1rem;
+  justify-content: space-between;
+  align-items: center;
+  filter: drop-shadow(0 0 20px rgba(251, 43, 43, 0.3));
+  box-shadow: inset 0 -15px 20px -10px rgba(251, 43, 43, 0.1);
+
+  * {
+    text-decoration: none;
+  }
+}
+
+#sign {
+  font-family: "GTVCS", serif;
+  font-size: 1.2rem;
+  font-weight: 900;
+  color: styles.$text;
+}
+
+.header-item {
+  padding: 10px;
+  margin: 0 1rem;
+  font-size: 1.25em;
+  font-weight: 700;
+}
+
+.header-button {
+  padding: 0.35rem 1.5rem;
+  border-radius: 10px;
+}
+
+@media (max-width: 500px) {
+  .header-item {
+    margin: 0 0.25rem;
+  }
+
+  .header-button {
+    max-height: 50px;
+    padding: 0.15rem 1rem 0.30rem;
+    margin: 0 0.5rem;
+
+    h3 {
+      white-space: nowrap;
+      display: inline;
+      font-size: 1.25rem;
+    }
+  }
+}

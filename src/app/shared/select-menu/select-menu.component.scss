@@ -1,0 +1,89 @@
+.custom-select-container {
+  margin-bottom: 1rem;
+}
+
+.select-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #FFEFD4; // text
+  font-weight: 500;
+}
+
+.select-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.native-select {
+  position: absolute;
+  top: 0;
+  left: 0;
+  min-width: 100%;
+  min-height: 100%;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 1;
+
+  &:focus + .custom-select-trigger {
+    box-shadow: 0 0 0 2px rgba(251, 43, 43, 0.2); // shadow-darker
+    border-color: #FB2B2B; // contrast-1
+  }
+
+  &:disabled + .custom-select-trigger {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.custom-select-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  background-color: #252020; // background-contrast
+  color: #FFEFD4; // text
+  border: 1px solid #736c60; // text-contrast
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  min-height: 2.5rem;
+
+  &:hover {
+    border-color: #a89f8e; // text-contrast-mid
+  }
+
+  &.disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.select-arrow {
+  width: 1rem;
+  height: 1rem;
+  color: #a89f8e; // text-contrast-mid
+  transition: transform 0.2s ease;
+}
+
+// Estilos para cuando el select está abierto
+.native-select:focus + .custom-select-trigger .select-arrow {
+  transform: rotate(180deg);
+}
+
+// Estilos para opciones (solo visibles en navegadores que permiten estilizar opciones)
+::ng-deep option {
+  background-color: #191616; // background-contrast-mid
+  color: #FFEFD4; // text
+  padding: 0.75rem 1rem;
+}
+
+// Estilo para el hover de las opciones en navegadores que lo soportan
+::ng-deep option:hover {
+  background-color: rgba(251, 43, 43, 0.2); // shadow-darker
+}

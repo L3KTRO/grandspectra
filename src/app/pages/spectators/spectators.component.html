@@ -1,0 +1,59 @@
+<div id="body">
+  <div class="section">
+    <h2>Popular spectators</h2>
+    <div id="users">
+      <div *ngFor="let user of usersSortByFollowers()" class="user-card">
+        <div class="user-card" routerLink="/spectator/{{ user.username }}">
+          <div class="profile-avatar">
+            <img ngSrc="assets/user.svg" alt="Avatar de usuario" height="400" width="400">
+          </div>
+          <div class="user-info">
+            <h3>{{ user.username }}</h3>
+            <div class="user-details">
+              <h4>{{ user.followers_count }} follows</h4>
+              <h4>{{ user.watched_count }} titles</h4>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="section">
+    <h2>Most loyal spectators</h2>
+    <div id="users">
+      <div *ngFor="let user of usersSortByWatched()">
+        <div class="user-card" routerLink="/spectator/{{ user.username }}">
+          <div class="profile-avatar">
+            <img [ngSrc]="user.avatar ?? 'assets/user.svg'" alt="Avatar de usuario" height="400" width="400">
+          </div>
+          <div class="user-info">
+            <h3>{{ user.username }}</h3>
+            <div class="user-details">
+              <h4>{{ user.followers_count }} follows</h4>
+              <h4>{{ user.watched_count }} titles</h4>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="section">
+    <h2>Most reviewers spectators</h2>
+    <div id="users">
+      <div *ngFor="let user of usersSortByRatings()">
+        <div class="user-card" routerLink="/spectator/{{ user.username }}">
+          <div class="profile-avatar">
+            <img ngSrc="assets/user.svg" alt="Avatar de usuario" height="400" width="400">
+          </div>
+          <div class="user-info">
+            <h3>{{ user.username }}</h3>
+            <div class="user-details">
+              <h4>{{ user.ratings_count }} ratings</h4>
+              <h4>{{ user.followers_count }} followers</h4>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

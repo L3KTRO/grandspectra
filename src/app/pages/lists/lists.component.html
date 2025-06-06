@@ -1,0 +1,27 @@
+<div id="body">
+  <a routerLink="/list/create" id="list-creator">Create a list</a>
+  <div class="row">
+    <h2 class="title">Most voted lists</h2>
+    <div class="list">
+      <div *ngFor="let list of voteCounting()">
+        <app-lists-visualizer [list]="list"></app-lists-visualizer>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <h2 class="title">Trending lists</h2>
+    <div class="list">
+      <div *ngFor="let list of popularities()">
+        <app-lists-visualizer [list]="list"></app-lists-visualizer>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <h2 class="title">Loved by spectators</h2>
+    <div class="list">
+      <div *ngFor="let list of bestVoted()">
+        <app-lists-visualizer [list]="list"></app-lists-visualizer>
+      </div>
+    </div>
+  </div>
+</div>

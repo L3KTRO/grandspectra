@@ -1,0 +1,28 @@
+<div id="contents">
+  @if (sorted()) {
+    <div *ngFor="let item of sorted()" class="item">
+      <app-dialog #fullContent dialogTitle="Review #{{item.id}}">
+        <div id="dialog">
+          <h4 id="dialog-username">{{ item.user.username }}</h4>
+          <h4 class="date">{{ item.created_at | date: 'dd/MM/yyyy' }}</h4>
+          <div class="progress-bar">
+            <div class="progress" [style.width.%]="item.qualification * 10"></div>
+          </div>
+          <p id="dialog-content" (click)="fullContent.open()"
+             *ngIf="item.content">{{ item.content }}</p>
+        </div>
+      </app-dialog>
+      <h4>{{ item.user.username }}</h4>
+      <h4 class="date">{{ item.created_at | date: 'dd/MM/yyyy' }}</h4>
+      <div class="progress-bar">
+        <div class="progress" [style.width.%]="item.qualification * 10"></div>
+      </div>
+      <p id="content" (click)="fullContent.open()"
+         *ngIf="item.content">{{ item.content.length > 80 ? (item.content | slice:0:80) + '...' : item.content }}</p>
+    </div>
+  } @else {
+    <div *ngFor="let _ of Array(10)">
+      <p-skeleton class="item" width="{{sizes.width}}px" height="{{sizes.height}}px"/>
+    </div>
+  }
+</div>

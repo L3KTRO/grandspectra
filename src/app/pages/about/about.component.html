@@ -1,0 +1,24 @@
+<div id="sections">
+  <!-- about.component.html -->
+  <section class="about-us">
+    <h1>About Grand Spectra</h1>
+    <!-- Contenido de About Us -->
+  </section>
+
+  <section class="credits">
+    <h1>Attributions & Credits</h1>
+
+  </section>
+
+  <section class="faq">
+    <h1>FAQ</h1>
+    <div class="faq-item" *ngFor="let item of faqItems; let i = index">
+      <div class="faq-question" (click)="toggleFaq(i)">
+        {{ item.question }}
+      </div>
+      <div class="faq-answer" [class.open]="item.isOpen">
+        {{ item.answer }}
+      </div>
+    </div>
+  </section>
+</div>

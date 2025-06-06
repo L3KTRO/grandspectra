@@ -1,0 +1,31 @@
+<!-- home.component.html -->
+<div id="slogan">
+  <p id="quote" class="light-neon-effect-text" [style.padding]="mobile() ? '6rem 0 0' : ''">
+    Keep track of your favorite movies and TV shows, <br>
+    rate them and share with your friends.
+  </p>
+</div>
+
+<div id="features" [style]="mobile() ? 'flex-direction: column; gap: 2rem' : ''">
+  @for (feature of features; track feature.title) {
+    <div class="feature-container">
+      <h2 [innerHTML]="feature.title"></h2>
+      <p style="font-weight: normal" [innerHTML]="feature.description"></p>
+    </div>
+  }
+</div>
+
+<div id="trending">
+  <div *ngIf="movies.asReadonly().value()">
+    <app-contentlist-numbered [title]="'Top movies today'" [content]="movies.asReadonly().value()!"/>
+  </div>
+  <div *ngIf="tv.asReadonly().value()">
+    <app-contentlist-numbered [title]="'Top  tv shows today'" [content]="tv.asReadonly().value()!"/>
+  </div>
+</div>
+
+<div id="last-cnt">
+  <h1>👋</h1>
+  <h2>Haven't found anything yet? </h2>
+  <p>Alright, let's try the <a routerLink="/hub">hub</a></p>
+</div>
