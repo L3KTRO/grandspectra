@@ -1,13 +1,14 @@
 // meili.service.ts
-import {Injectable} from '@angular/core';
-import {MeiliSearch} from 'meilisearch';
+import { Injectable } from '@angular/core';
+import { MeiliSearch } from 'meilisearch';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MeiliService {
   client = new MeiliSearch({
-    host: "https://gs-meili.lestro.top",
+    host: 'http://192.168.0.39:7700',
     apiKey: "masterKey"
   });
 

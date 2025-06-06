@@ -7,11 +7,11 @@ services:
     ports:
       - "3338:80"
     pull_policy: always
+    environment:
+      - BACKEND_URL=https://gs-backend.lestro.top
+      - MEILISEARCH_URL=https://gs-meilisearch.lestro.top
+      - MEILISEARCH_KEY=masterKey
 
 networks:
   app-network:
     driver: bridge
-
-volumes:
-  dbdata:
-  laraveldata:

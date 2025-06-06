@@ -19,15 +19,15 @@ export class BackendService {
   })
 
   getGenres() {
-    return this.api.get(this.baseUrl + '/genres');
+    return this.api.get('/genres');
   }
 
   getPopularMovies() {
-    return this.api.get(this.baseUrl + '/movies?sort_by=popularity&sort_dir=desc');
+    return this.api.get('/movies?sort_by=popularity&sort_dir=desc');
   }
 
   getUsers(sortBy: string = 'followers') {
-    return this.api.get(this.baseUrl + '/users', {
+    return this.api.get('/users', {
       params: {
         relations: ["reviews", "followers", "watched"],
         sort_by: sortBy,
@@ -37,7 +37,7 @@ export class BackendService {
   }
 
   getPopularTv() {
-    return this.api.get(this.baseUrl + '/tv?sort_by=popularity&sort_dir=desc');
+    return this.api.get('/tv?sort_by=popularity&sort_dir=desc');
   }
 
   getMe() {
@@ -56,15 +56,15 @@ export class BackendService {
   }
 
   request(endpoint: string, options: AxiosRequestConfig = {}) {
-    return this.api.get(`${this.baseUrl}${endpoint}`, options);
+    return this.api.get(`${endpoint}`, options);
   }
 
   // AUTH
 
   authRequest(endpoint: string, options: AxiosRequestConfig = {}) {
-    console.log(`${this.baseUrl}${endpoint}`)
+    console.log(`${endpoint}`)
     const req = this.api.request({
-      url: `${this.baseUrl}${endpoint}`,
+      url: endpoint,
       ...options,
       headers: {
         'Authorization': `Bearer ${sessionStorage.getItem(this.TOKEN_KEY)}`,
