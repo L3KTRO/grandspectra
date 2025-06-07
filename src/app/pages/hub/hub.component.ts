@@ -57,16 +57,16 @@ export class HubComponent {
   totalPages: Signal<number> = computed(() => {
     switch (this.contentType()) {
       case ContentType.MOVIE:
-        return this.movies.asReadonly().value()?.totalPages ?? 0;
+        return this.movies.asReadonly().value()?.last_page ?? 0;
       case ContentType.TV:
-        return this.tv.asReadonly().value()?.totalPages ?? 0;
+        return this.tv.asReadonly().value()?.last_page ?? 0;
       case ContentType.PEOPLE:
-        return this.people.asReadonly().value()?.totalPages ?? 0;
+        return this.people.asReadonly().value()?.last_page ?? 0;
       default:
         return 0;
     }
   });
-  peopleHits = computed(() => this.people.asReadonly().value() as Person[]);
+  peopleHits = computed(() => this.people.asReadonly().value() ? this.people.asReadonly().value().data as Person[] : []);
 
   genres: { id: number, name: string }[] = []
 
@@ -84,7 +84,7 @@ export class HubComponent {
       hitsPerPage: this.perPage(),
     }),
     loader: async ({request}) => {
-      return (await this.backend.getTv(request.title ?? "", request.by, request.page, request.hitsPerPage)).data.data;
+      return (await this.backend.getTv(request.title ?? "", request.by, request.page, request.hitsPerPage)).data;
     }
   });
 
@@ -96,7 +96,7 @@ export class HubComponent {
       hitsPerPage: this.perPage(),
     }),
     loader: async ({request}) => {
-      return (await this.backend.getMovies(request.title ?? "", request.by, request.page, request.hitsPerPage)).data.data;
+      return (await this.backend.getMovies(request.title ?? "", request.by, request.page, request.hitsPerPage)).data;
     }
   });
 
@@ -108,7 +108,7 @@ export class HubComponent {
       hitsPerPage: this.perPage(),
     }),
     loader: async ({request}) => {
-      return (await this.backend.getPeople(request.name ?? "", request.by, request.page, request.hitsPerPage)).data.data;
+      return (await this.backend.getPeople(request.name ?? "", request.by, request.page, request.hitsPerPage)).data;
     }
   });
 
@@ -158,7 +158,7 @@ export class HubComponent {
 
   getContentList() {
     if (this.contentType() === ContentType.MOVIE && this.movies.status() === 4) {
-      const content = this.movies.asReadonly().value() as Movie[];
+      const content = this.movies.asReadonly().value().data as Movie[];
       return content.map(movie => ({
         id: movie.id,
         type: 'movie',
@@ -174,7 +174,7 @@ export class HubComponent {
         imageHeight: 75
       }));
     } else if (this.contentType() === ContentType.TV && this.tv.status() === 4) {
-      const content = this.tv.asReadonly().value() as Tv[];
+      const content = this.tv.asReadonly().value().data as Tv[];
       return content.map(show => ({
         id: show.id,
         type: 'tv',
