@@ -1,6 +1,5 @@
 import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
 import {NgForOf, NgIf, NgOptimizedImage} from '@angular/common';
-import {Skeleton} from 'primeng/skeleton';
 import {Tv} from '../../models/Tv';
 import {Movie} from '../../models/Movie';
 import {RouterLink} from '@angular/router';
@@ -10,7 +9,6 @@ import {RouterLink} from '@angular/router';
   imports: [
     NgIf,
     NgForOf,
-    Skeleton,
     NgOptimizedImage,
     RouterLink
   ],

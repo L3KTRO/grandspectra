@@ -1,6 +1,5 @@
 import {AfterViewChecked, ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, Input} from '@angular/core';
 import {NgForOf, NgOptimizedImage} from '@angular/common';
-import {Skeleton} from 'primeng/skeleton';
 import Credit from '../../models/Credit';
 import {RouterLink} from '@angular/router';
 
@@ -8,7 +7,6 @@ import {RouterLink} from '@angular/router';
   selector: 'app-creditlist',
   imports: [
     NgForOf,
-    Skeleton,
     NgOptimizedImage,
     RouterLink
   ],

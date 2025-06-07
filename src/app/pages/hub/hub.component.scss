@@ -157,6 +157,10 @@
   border-radius: 10px;
   color: styles.$text;
   border: 1px solid styles.$text-contrast;
+  background-color: styles.$background-contrast;
+  font-family: "GTVCS", serif;
+  font-weight: 500;
+  font-size: 1.2rem;
 }
 
 #input:focus {

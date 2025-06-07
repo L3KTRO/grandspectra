@@ -20,9 +20,5 @@
       <p id="content" (click)="fullContent.open()"
          *ngIf="item.content">{{ item.content.length > 80 ? (item.content | slice:0:80) + '...' : item.content }}</p>
     </div>
-  } @else {
-    <div *ngFor="let _ of Array(10)">
-      <p-skeleton class="item" width="{{sizes.width}}px" height="{{sizes.height}}px"/>
-    </div>
   }
 </div>

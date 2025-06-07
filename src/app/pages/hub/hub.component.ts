@@ -12,11 +12,9 @@ import {
   ViewChild
 } from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {InputText} from 'primeng/inputtext';
 import {NgClass, NgForOf, NgIf, NgOptimizedImage} from '@angular/common';
 import {BackendService} from '../../services/backend/backend.service';
 import {Router, RouterLink} from '@angular/router';
-import {MeiliService} from '../../services/meili/meili.service';
 import {ProgressSpinnerComponent} from '../../shared/progress-spinner/progress-spinner.component';
 import {Movie} from '../../models/Movie';
 import {Tv} from '../../models/Tv';
@@ -27,7 +25,6 @@ import Person from '../../models/Person';
   templateUrl: './hub.component.html',
   imports: [
     FormsModule,
-    InputText,
     NgClass,
     NgOptimizedImage,
     NgIf,
@@ -70,7 +67,7 @@ export class HubComponent {
 
   genres: { id: number, name: string }[] = []
 
-  constructor(private meili: MeiliService) {
+  constructor() {
     this.backend.getGenres().then((response) => {
       this.genres = response.data.data;
     })

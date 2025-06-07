@@ -1,6 +1,5 @@
 import {Component, computed, Input, ViewChild} from '@angular/core';
 import {DatePipe, NgForOf, NgIf, SlicePipe} from '@angular/common';
-import {Skeleton} from 'primeng/skeleton';
 import {Review} from '../../models/Review';
 import {DialogComponent} from '../dialog/dialog.component';
 
@@ -8,7 +7,6 @@ import {DialogComponent} from '../dialog/dialog.component';
   selector: 'app-ratingsandreview',
   imports: [
     NgForOf,
-    Skeleton,
     NgIf,
     DatePipe,
     SlicePipe,

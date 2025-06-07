@@ -195,10 +195,8 @@
   <!-- Error Message -->
   <div *ngIf="chatError()" class="error-container">
     <div class="error-message">
-      <mat-icon class="error-icon">error_outline</mat-icon>
       <span class="error-text">{{ chatError() }}</span>
       <button
-        mat-button
         class="retry-btn"
         (click)="startConversation()">
         Reintentar
@@ -210,7 +208,6 @@
   <div class="chat-footer">
     <div class="footer-content">
       <div class="footer-info">
-        <mat-icon class="info-icon">info_outline</mat-icon>
         <p class="footer-text">
           Las recomendaciones se generan analizando usuarios con gustos similares
         </p>

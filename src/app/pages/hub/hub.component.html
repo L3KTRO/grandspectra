@@ -10,7 +10,7 @@
     </div>
   </div>
   <div id="filters">
-    <input id="input" [(ngModel)]="writingTitleName" type="text" pInputText>
+    <input id="input" [(ngModel)]="writingTitleName" type="text">
     <div id="orderby" *ngIf="contentType() !== ContentType.PEOPLE">
       <select #orderby (change)="onSelected()">
         @for (order of orderers; track order.label) {

@@ -2,9 +2,6 @@
 import {AfterViewChecked, Component, computed, effect, ElementRef, OnInit, signal, ViewChild} from '@angular/core';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {CommonModule} from '@angular/common';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import {MatIconModule} from '@angular/material/icon';
-import {MatButtonModule} from '@angular/material/button';
 
 interface ChatMessage {
   id: string;
@@ -25,10 +22,7 @@ interface ChatQuestion {
   selector: 'app-spectrai',
   standalone: true,
   imports: [
-    CommonModule,
-    MatProgressSpinnerModule,
-    MatIconModule,
-    MatButtonModule
+    CommonModule
   ],
   templateUrl: './spectrai.component.html',
   styleUrls: ['./spectrai.component.scss'],
