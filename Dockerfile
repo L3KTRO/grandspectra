@@ -18,9 +18,4 @@ RUN rm -rf /usr/share/nginx/html/*
 
 COPY --from=build /app/dist/grandspectra /usr/share/nginx/html
 
-COPY entrypoint.sh /
-RUN chmod +x /entrypoint.sh
-
-ENTRYPOINT ["/entrypoint.sh"]
-
 EXPOSE 80

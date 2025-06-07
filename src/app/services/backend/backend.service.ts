@@ -110,7 +110,7 @@ export class BackendService {
   }
 
   async login(credentials: { email: string; password: string }) {
-    const res = await this.api.post<Auth>(environment.apiUrl + '/auth/login', credentials, {
+    const res = await this.api.post<Auth>('/auth/login', credentials, {
       validateStatus: (status) => status === 200 || status === 401,
     })
 
@@ -125,7 +125,7 @@ export class BackendService {
   }
 
   async register(credentials: { email: string; password: string; username: string, password_confirmation: string }) {
-    const res = await this.api.post<Auth | any>(environment.apiUrl + '/auth/register', credentials, {
+    const res = await this.api.post<Auth | any>('/auth/register', credentials, {
       validateStatus: (status) => status !== 500,
     });
 
