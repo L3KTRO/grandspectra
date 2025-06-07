@@ -1,8 +1,5 @@
 FROM node:alpine AS build
 
-ARG BACKEND_URL
-ENV BACKEND_URL=$BACKEND_URL
-
 RUN apk add --no-cache gettext
 
 WORKDIR /app
