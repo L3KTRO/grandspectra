@@ -8,7 +8,7 @@ services:
       - "3338:80"
     pull_policy: always
     environment:
-      - BACKEND_URL=https://gs-backend.lestro.top
+      - API_URL=https://gs-backend.lestro.top
 
 networks:
   app-network:
