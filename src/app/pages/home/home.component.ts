@@ -16,15 +16,14 @@ import {RouterLink} from '@angular/router'; // Asegúrate de tener la interfaz M
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent {
-  meili = inject(MeiliService)
   backend = inject(BackendService)
   windowWidth = signal(window.innerWidth);
   mobile: Signal<boolean> = computed(() => this.windowWidth() < 750);
   movies: ResourceRef<Movie[] | undefined> = resource({
-    loader: async () => (await this.meili.movies("", "popularity")).hits as Movie[]
+    loader: async () => (await this.backend.getMovies()).data.data
   });
   tv: ResourceRef<Tv[]> = resource({
-    loader: async () => (await this.backend.getPopularTv()).data.data
+    loader: async () => (await this.backend.getTv()).data.data
   });
 
   features = [

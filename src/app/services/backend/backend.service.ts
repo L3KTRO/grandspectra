@@ -22,8 +22,37 @@ export class BackendService {
     return this.api.get('/genres');
   }
 
-  getPopularMovies() {
-    return this.api.get('/movies?sort_by=popularity&sort_dir=desc');
+  getMovies(filter: string = "", sort_by: string = "popularity", page: number = 1, hitsPerPage: number = 20) {
+    return this.api.get('/meili/movies', {
+      params: {
+        search: filter,
+        sort_by,
+        page,
+        hitsPerPage
+      }
+    });
+  }
+
+  getTv(filter: string = "", sort_by: string = "popularity", page: number = 1, hitsPerPage: number = 20) {
+    return this.api.get('/meili/tv', {
+      params: {
+        search: filter,
+        sort_by,
+        page,
+        hitsPerPage
+      }
+    });
+  }
+
+  getPeople(filter: string = "", sort_by: string = "popularity", page: number = 1, hitsPerPage: number = 20) {
+    return this.api.get('/meili/people', {
+      params: {
+        search: filter,
+        sort_by,
+        page,
+        hitsPerPage
+      }
+    });
   }
 
   getUsers(sortBy: string = 'followers') {
@@ -34,10 +63,6 @@ export class BackendService {
         per_page: 10,
       }
     });
-  }
-
-  getPopularTv() {
-    return this.api.get('/tv?sort_by=popularity&sort_dir=desc');
   }
 
   getMe() {

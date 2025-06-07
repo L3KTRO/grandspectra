@@ -1,5 +1,16 @@
 // hub.component.ts
-import {Component, computed, effect, ElementRef, inject, resource, Signal, signal, ViewChild} from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  ElementRef,
+  inject,
+  resource,
+  ResourceRef,
+  Signal,
+  signal,
+  ViewChild
+} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {InputText} from 'primeng/inputtext';
 import {NgClass, NgForOf, NgIf, NgOptimizedImage} from '@angular/common';
@@ -55,7 +66,7 @@ export class HubComponent {
         return 0;
     }
   });
-  peopleHits = computed(() => this.people.asReadonly().value()?.hits as Person[]);
+  peopleHits = computed(() => this.people.asReadonly().value() as Person[]);
 
   genres: { id: number, name: string }[] = []
 
@@ -73,7 +84,7 @@ export class HubComponent {
       hitsPerPage: this.perPage(),
     }),
     loader: async ({request}) => {
-      return await this.meili.tv(request.title ?? "", request.by, request.page, request.hitsPerPage);
+      return (await this.backend.getTv(request.title ?? "", request.by, request.page, request.hitsPerPage)).data.data;
     }
   });
 
@@ -85,7 +96,7 @@ export class HubComponent {
       hitsPerPage: this.perPage(),
     }),
     loader: async ({request}) => {
-      return await this.meili.movies(request.title ?? "", request.by, request.page, request.hitsPerPage);
+      return (await this.backend.getMovies(request.title ?? "", request.by, request.page, request.hitsPerPage)).data.data;
     }
   });
 
@@ -97,7 +108,7 @@ export class HubComponent {
       hitsPerPage: this.perPage(),
     }),
     loader: async ({request}) => {
-      return await this.meili.people(request.name ?? "", request.by, request.page, request.hitsPerPage);
+      return (await this.backend.getPeople(request.name ?? "", request.by, request.page, request.hitsPerPage)).data.data;
     }
   });
 
@@ -147,7 +158,7 @@ export class HubComponent {
 
   getContentList() {
     if (this.contentType() === ContentType.MOVIE && this.movies.status() === 4) {
-      const content = this.movies.asReadonly().value()?.hits as Movie[];
+      const content = this.movies.asReadonly().value() as Movie[];
       return content.map(movie => ({
         id: movie.id,
         type: 'movie',
@@ -163,7 +174,7 @@ export class HubComponent {
         imageHeight: 75
       }));
     } else if (this.contentType() === ContentType.TV && this.tv.status() === 4) {
-      const content = this.tv.asReadonly().value()?.hits as Tv[];
+      const content = this.tv.asReadonly().value() as Tv[];
       return content.map(show => ({
         id: show.id,
         type: 'tv',
