@@ -17,6 +17,7 @@ import {RouterLink} from '@angular/router';
 })
 export class ListsVisualizerComponent {
   @Input({required: true}) list!: ContentList;
+  @Input() disabled = true;
 
   getFullContent(list: ContentList): Content[] {
     return [...list.tv, ...list.movie]
@@ -32,6 +33,4 @@ export class ListsVisualizerComponent {
     // Si es solo el path de TMDB, añade la base URL
     return `https://image.tmdb.org/t/p/w185${path}`;
   }
-
-  protected readonly navigator = navigator;
 }

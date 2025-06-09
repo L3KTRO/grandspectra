@@ -19,6 +19,12 @@
   }
 }
 
+.disabled {
+  cursor: not-allowed;
+  filter: grayscale(0.5);
+  box-shadow: none;
+}
+
 .posters-stack {
   position: relative;
   height: 225px;

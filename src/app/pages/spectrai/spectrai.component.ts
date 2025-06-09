@@ -79,7 +79,7 @@ export class SpectraiComponent implements OnInit, AfterViewChecked {
     // Inicializar conversación al cargar
     effect(() => {
       if (this.messages().length === 0) {
-        this.startConversation();
+        //this.startConversation();
       }
     });
   }
@@ -112,10 +112,12 @@ export class SpectraiComponent implements OnInit, AfterViewChecked {
   }
 
   startConversation(): void {
+    console.log("test")
     this.messages.set([]);
     this.questionStep.set(0);
     this.chatError.set('');
     this.conversationId.set(this.generateConversationId());
+    this.addWelcomeMessage();
   }
 
   startQuestionFlow(): void {
