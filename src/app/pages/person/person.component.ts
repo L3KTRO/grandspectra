@@ -1,4 +1,14 @@
-import {Component, computed, inject, Input, resource, ResourceRef} from '@angular/core';
+import {
+  Component,
+  computed,
+  HostListener,
+  inject,
+  Input,
+  OnDestroy, OnInit,
+  resource,
+  ResourceRef,
+  signal
+} from '@angular/core';
 import {BackendService} from '../../services/backend/backend.service';
 import Person from '../../models/Person';
 import {NgIf, NgOptimizedImage} from '@angular/common';
@@ -18,7 +28,7 @@ import {Router} from '@angular/router';
   templateUrl: './person.component.html',
   styleUrl: './person.component.scss'
 })
-export class PersonComponent {
+export class PersonComponent implements OnInit, OnDestroy {
   @Input() id!: string;
   backend = inject(BackendService);
   router = inject(Router);
@@ -60,5 +70,21 @@ export class PersonComponent {
       }
       return b.popularity - a.popularity;
     });
+  }
+
+  windowWidth = signal(typeof window !== 'undefined' ? window.innerWidth : 1024);
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event) {
+    const target = event.target as Window;
+    this.windowWidth.set(target.innerWidth);
+  }
+
+  ngOnDestroy() {
+    window.removeEventListener('resize', this.onResize);
+  }
+
+  ngOnInit() {
+    this.windowWidth.set(window.innerWidth);
   }
 }

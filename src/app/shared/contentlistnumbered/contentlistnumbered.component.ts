@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
+import {ChangeDetectionStrategy, Component, computed, Input, signal} from '@angular/core';
 import {NgIf, NgOptimizedImage} from '@angular/common';
 import {Tv} from '../../models/Tv';
 import {Movie} from '../../models/Movie';

@@ -2,11 +2,11 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  computed,
+  computed, HostListener,
   inject,
   Input,
   linkedSignal,
-  OnDestroy,
+  OnDestroy, OnInit,
   resource,
   ResourceRef,
   signal,
@@ -54,7 +54,7 @@ import {RequestUpdate} from '../../stores/RequestUpdate';
   styleUrl: './media-content-display.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class MediaContentDisplayComponent implements OnDestroy {
+export class MediaContentDisplayComponent implements OnDestroy, OnInit {
   @Input({required: true}) id!: number;
   @Input() imdbId!: number | null;
   @Input() title!: string;
@@ -95,6 +95,22 @@ export class MediaContentDisplayComponent implements OnDestroy {
   trigger = signal(false);
   notAuthed = computed(() => this.data.asReadonly().value() === null);
 
+  posterWidth = computed(() => this.windowWidth() > 1200 ? 300 : 300 * (this.posterScale() > 0.4 ? this.posterScale() : 0.4));
+  posterHeight = computed(() => this.windowWidth() > 1200 ? 450 : 450 * (this.posterScale() > 0.4 ? this.posterScale() : 0.4));
+  posterScale = computed(() => this.windowWidth() > 1200 ? 1 : (this.windowWidth() / 1200));
+
+  windowWidth = signal(typeof window !== 'undefined' ? window.innerWidth : 1024);
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event) {
+    const target = event.target as Window;
+    this.windowWidth.set(target.innerWidth);
+  }
+
+  ngOnInit() {
+    this.windowWidth.set(window.innerWidth);
+  }
+
   data: ResourceRef<Me> = resource({
     request: () => ({}),
     loader: async () => {
@@ -133,6 +149,7 @@ export class MediaContentDisplayComponent implements OnDestroy {
   }
 
   ngOnDestroy(): void {
+    window.removeEventListener('resize', this.onResize);
     this.updateInfo()
   }
 

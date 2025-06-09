@@ -5,12 +5,15 @@
   flex-direction: column;
   justify-content: center;
   margin: 1rem 5%;
+  gap: 1rem;
 }
 
 #switch-content {
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: center;
+  margin: 1rem auto;
 }
 
 #searcher {
@@ -39,9 +42,10 @@
 
 #contents {
   gap: 1rem;
+  height: fit-content;
 }
 
-#filters {
+#searcher {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -73,6 +77,7 @@
 
 .table {
   width: 100%;
+  height: fit-content;
   border-radius: 10px;
   overflow: hidden;
   border-collapse: collapse;
@@ -131,6 +136,7 @@
 .content-misc {
   font-weight: lighter;
   font-size: 1rem;
+  white-space: nowrap;
 }
 
 .head-row {
@@ -172,7 +178,7 @@
   justify-content: center;
   align-items: center;
   gap: 0.5rem;
-  margin: 2rem 0;
+  margin: 1rem 0;
 
   .paginator-btn {
     background: styles.$background-contrast-mid;
@@ -208,5 +214,53 @@
     color: styles.$text-contrast;
     letter-spacing: 2px;
     user-select: none;
+  }
+}
+
+@media (max-width: 615px) {
+  .death-cell {
+    display: none;
+  }
+}
+
+@media (max-width: 500px) {
+  #searcher {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    margin: 0;
+  }
+
+  #orderby {
+    width: 100%;
+
+    select {
+      min-width: 100%;
+    }
+  }
+
+  .duration-cell {
+    display: none;
+  }
+
+  .birth-cell {
+    display: none;
+  }
+}
+
+
+@media (max-width: 412px) {
+  .rating-cell {
+    display: none;
+  }
+}
+
+@media (max-width: 340px) {
+  .date-cell {
+    display: none;
+  }
+
+  .dept-cell {
+    display: none;
   }
 }

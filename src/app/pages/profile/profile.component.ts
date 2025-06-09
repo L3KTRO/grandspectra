@@ -1,9 +1,9 @@
 import {
   Component,
   computed,
-  effect,
+  effect, HostListener,
   inject,
-  Input,
+  Input, OnDestroy,
   OnInit,
   resource,
   ResourceRef,
@@ -45,7 +45,7 @@ import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss'
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent implements OnInit, OnDestroy {
   @Input() username!: string;
   @ViewChild("edit") editDialog!: DialogComponent;
 
@@ -71,7 +71,6 @@ export class ProfileComponent implements OnInit {
       }
     });
 
-
     this.editForm = this.fb.group({
       email: ["", [Validators.required, Validators.email]],
       username: ["", [Validators.required, Validators.minLength(5), Validators.pattern('^[a-z0-9]+$'), Validators.maxLength(20)]],
@@ -83,7 +82,20 @@ export class ProfileComponent implements OnInit {
     });
   }
 
+  windowWidth = signal(typeof window !== 'undefined' ? window.innerWidth : 1024);
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event) {
+    const target = event.target as Window;
+    this.windowWidth.set(target.innerWidth);
+  }
+
+  ngOnDestroy() {
+    window.removeEventListener('resize', this.onResize);
+  }
+
   ngOnInit() {
+    this.windowWidth.set(window.innerWidth);
     this.route.paramMap.subscribe(data => {
       this.usernamePath.set(data.get("username") || '')
       this.userResource.reload();

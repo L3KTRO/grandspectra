@@ -1,34 +1,60 @@
 <!-- header.component.html -->
 <header id="header">
-  <div class="header-item">
+  <div class="header-item" id="brand">
     <app-grand-spectra-brand/>
   </div>
 
-  <div id="items">
-    <a routerLink="/hub">
+  <button
+    class="burger-menu"
+    [class.active]="isMenuOpen()"
+    (click)="togglerMenu(isMenuOpen)"
+    aria-label="Toggle navigation menu">
+    <span class="burger-line"></span>
+    <span class="burger-line"></span>
+    <span class="burger-line"></span>
+  </button>
+
+  <!-- Menú de navegación -->
+  <nav id="items" [class.mobile-menu-open]="isMenuOpen()">
+    <a routerLink="/hub" (click)="togglerMenu(isMenuOpen)">
       <div class="header-item">
-        <h3 class="header-nav">HUB</h3>
+        <span class="header-nav">HUB</span>
       </div>
     </a>
 
-    <a routerLink="/spectators">
+    <a routerLink="/spectators" (click)="togglerMenu(isMenuOpen)">
       <div class="header-item">
-        <h3 class="header-nav">{{ members() }}</h3>
+        <span class="header-nav">SPECTATORS</span>
       </div>
     </a>
 
-    <a routerLink="/lists">
+    <a routerLink="/lists" (click)="togglerMenu(isMenuOpen)">
       <div class="header-item">
-        <h3 class="header-nav">LISTS</h3>
+        <span class="header-nav">LISTS</span>
       </div>
     </a>
-  </div>
 
-  <div id="buttons">
-    <a [routerLink]="me() ? '/spectator/' + me().username : '/login'">
+    <a routerLink="/spectrai" (click)="togglerMenu(isMenuOpen)">
       <div class="header-item">
-        <h3 class="header-nav" id="sign">{{ me() ? "PROFILE" : "JOIN US" }}</h3>
+        <span class="header-nav" id="spectrai">SPECTR<span id="ai">AI</span></span>
       </div>
     </a>
-  </div>
+
+    <a [routerLink]="me() ? '/spectator/' + me().username : '/login'" (click)="togglerMenu(isMenuOpen)"
+       *ngIf="windowWidth() <= 725">
+      <div class="header-item">
+        <span class="header-nav" id="sign">{{ me() ? "PROFILE" : "JOIN US" }}</span>
+      </div>
+    </a>
+  </nav>
+
+  <a [routerLink]="me() ? '/spectator/' + me().username : '/login'" (click)="togglerMenu(isMenuOpen)"
+     *ngIf="windowWidth() >= 725">
+    <div class="header-item">
+      <span class="header-nav" id="sign">{{ me() ? "PROFILE" : "JOIN US" }}</span>
+    </div>
+  </a>
+
+  <!-- Overlay para cerrar el menú en móvil -->
+  <div class="menu-overlay" [class.active]="isMenuOpen()" (click)="togglerMenu(isMenuOpen)"></div>
 </header>

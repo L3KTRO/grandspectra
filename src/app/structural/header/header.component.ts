@@ -1,5 +1,5 @@
 // header.component.ts
-import {Component, computed, HostListener, inject, OnDestroy, OnInit, signal} from '@angular/core';
+import {Component, computed, HostListener, inject, OnDestroy, OnInit, signal, WritableSignal} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {RouterModule} from '@angular/router';
 import {GrandSpectraBrandComponent} from '../../shared/grand-spectra-brand/grand-spectra-brand.component';
@@ -21,6 +21,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   initialSync = signal(0)
+  isMenuOpen = signal(false);
   backendService = inject(BackendService);
 
   me = computedResource<Me>({
@@ -37,21 +38,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
       }
     }
   })
-  windowWidth = signal(window.innerWidth);
 
-  members = computed(() => {
-    const width = this.windowWidth();
-    return width > 700 ? 'SPECTATORS' : width > 650 ? 'SPECTATORS' : 'SPCTR';
-  });
+  windowWidth = signal(typeof window !== 'undefined' ? window.innerWidth : 1024);
 
-  @HostListener('window:resize')
-  onResize() {
-    this.windowWidth.set(window.innerWidth);
-  }
-
-  toggleDarkMode() {
-    const element = document.querySelector('html');
-    element?.classList.toggle('dark-mode');
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event) {
+    const target = event.target as Window;
+    this.windowWidth.set(target.innerWidth);
   }
 
   ngOnInit() {
@@ -61,4 +54,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     window.removeEventListener('resize', this.onResize);
   }
+
+  togglerMenu(signal: WritableSignal<boolean>) {
+    if (this.windowWidth() <= 725) signal.update(value => !value);
+  }
+
 }

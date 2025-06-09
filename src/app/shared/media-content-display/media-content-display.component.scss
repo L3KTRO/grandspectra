@@ -80,6 +80,7 @@
   font-size: 0.85rem;
   color: styles.$text-contrast-mid;
   gap: 1.5rem;
+  white-space: nowrap;
 }
 
 #director {
@@ -136,12 +137,14 @@
 #unauthed {
   z-index: 10;
   position: absolute;
+  position: absolute;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
   padding: 1.5rem 8.5rem;
   background-color: rgba(0, 0, 0, 0.5);
+  white-space: nowrap;
 
 
   div {
@@ -227,11 +230,8 @@
   background-repeat: no-repeat;
   background-size: contain;
   position: relative;
-  width: 300px;
-  height: 450px;
   background-position: center;
   margin-right: 3rem;
-
 }
 
 #background-poster::after {
@@ -354,6 +354,7 @@
   flex-direction: column;
   align-items: center;
   max-height: 50vh;
+  height: fit-content;
   z-index: 0;
 }
 
@@ -378,4 +379,108 @@
   100% {
     transform: rotate(360deg);
   }
+}
+
+@media (max-width: 1000px) {
+  #meta {
+    margin: 1rem 1.5rem 1rem 1.5rem;
+
+    #actions {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    #unauthed {
+      flex-direction: column;
+      align-items: center;
+      padding: 4rem 2rem;
+      transform: translate(-1rem, -1rem);
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  #metadata {
+    gap: 0.5rem;
+  }
+
+  #details {
+    margin: 0 0.5rem;
+  }
+
+  #title {
+    font-size: 2rem;
+    text-space: 1rem;
+    line-height: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  #background-poster {
+    margin-right: 2rem;
+  }
+
+  #tagline {
+    font-size: 0.8rem;
+  }
+
+  #overview {
+    font-size: 0.75rem;
+    margin: 0.5rem 0.25rem;
+    color: styles.$text;
+  }
+
+  #mobile-content {
+    #actions {
+      flex-direction: column;
+      align-items: center;
+      justify-self: center;
+    }
+
+    #unauthed {
+      flex-direction: column;
+      align-items: center;
+      padding: 4rem 2rem;
+      transform: translateY(-1rem);
+    }
+  }
+
+  #external-links {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: center;
+    gap: 1rem;
+
+    a {
+      height: fit-content;
+      width: fit-content;
+      padding: 0.1rem 0.3rem;
+      border: 1px solid styles.$text-contrast;
+      color: styles.$text;
+      text-decoration: none;
+      display: flex;
+    }
+  }
+
+  #metadata {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    font-size: 0.7rem;
+    color: styles.$text-contrast-mid;
+    gap: 0.5rem;
+    white-space: nowrap;
+  }
+
+  #content-container {
+    margin: 1rem;
+  }
+}
+
+
+@media (max-width: 400px) {
+  #meta {
+    margin: 0.5rem 1.5rem 1rem 0.5rem;
+  }
+
 }
