@@ -16,6 +16,7 @@
   flex-direction: column;
   overflow: hidden;
   backdrop-filter: blur(20px);
+  color: styles.$text;
 
   &::before {
     content: '';
@@ -191,7 +192,6 @@
       background: linear-gradient(135deg,
         rgba(#666eea, 0.9),
         rgba(#764ba2, 0.9));
-      color: white;
       border: 1px solid rgba(#666eea, 0.4);
     }
 
@@ -219,13 +219,6 @@
       background: linear-gradient(45deg, #ff6b6b, #feca57);
       box-shadow: 0 0 15px rgba(#ff6b6b, 0.3);
     }
-
-    mat-icon {
-      color: white;
-      font-size: 20px;
-      width: 20px;
-      height: 20px;
-    }
   }
 }
 
@@ -243,7 +236,6 @@
 
   .message-text {
     font-family: 'CharisSIL', serif;
-    color: #ffffff;
     line-height: 1.6;
     margin: 0;
     font-size: 1rem;
@@ -263,21 +255,20 @@
 .option-button {
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(#666eea, 0.3);
+  color: styles.$text;
   border-radius: 1rem;
-  padding: 1rem 1.5rem;
-  color: rgba(255, 255, 255, 0.8);
+  padding: 0.5rem 1rem;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-family: 'CharisSIL', serif;
   font-size: 0.95rem;
+  font-family: "GTVCS", serif;
 
   &:hover:not([disabled]) {
     background: rgba(#666eea, 0.15);
     border-color: #666eea;
-    color: white;
     transform: translateY(-2px);
     box-shadow: 0 8px 25px rgba(#666eea, 0.25);
   }

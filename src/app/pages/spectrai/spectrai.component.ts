@@ -1,7 +1,22 @@
 // spectrai-chatbot.component.ts
-import {AfterViewChecked, Component, computed, effect, ElementRef, OnInit, signal, ViewChild} from '@angular/core';
+import {
+  AfterViewChecked,
+  Component,
+  computed,
+  ElementRef,
+  OnInit,
+  signal,
+  ViewChild,
+  WritableSignal
+} from '@angular/core';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {CommonModule} from '@angular/common';
+import {IntelligenceService} from '../../services/intelligence/intelligence.service';
+import {IntelligenceRecommendation} from '../../models/IntelligenceRecommendation';
+import {BackendService} from '../../services/backend/backend.service';
+import {Movie} from '../../models/Movie';
+import {Tv} from '../../models/Tv';
+import {ContentlistWrapComponent} from '../../shared/contentlistwrap/contentlistwrap.component';
 
 interface ChatMessage {
   id: string;
@@ -9,6 +24,7 @@ interface ChatMessage {
   content: string;
   timestamp: Date;
   options?: string[];
+  showMatched?: boolean; // Indica si se deben mostrar las coincidencias
 }
 
 interface ChatQuestion {
@@ -22,7 +38,8 @@ interface ChatQuestion {
   selector: 'app-spectrai',
   standalone: true,
   imports: [
-    CommonModule
+    CommonModule,
+    ContentlistWrapComponent,
   ],
   templateUrl: './spectrai.component.html',
   styleUrls: ['./spectrai.component.scss'],
@@ -69,19 +86,16 @@ export class SpectraiComponent implements OnInit, AfterViewChecked {
   questionStep = signal<number>(0);
   totalSteps = signal<number>(5);
   hoveredOption = signal<string>('');
+  responses = signal<string[]>([]);
+  matched: WritableSignal<(Movie | Tv)[]> = signal([])
+
 
   // Computed properties
   progressPercentage = computed(() => {
     return Math.round((this.questionStep() / this.totalSteps()) * 100);
   });
 
-  constructor() {
-    // Inicializar conversación al cargar
-    effect(() => {
-      if (this.messages().length === 0) {
-        //this.startConversation();
-      }
-    });
+  constructor(protected intelligenceService: IntelligenceService, protected backend: BackendService) {
   }
 
   ngOnInit(): void {
@@ -99,7 +113,7 @@ export class SpectraiComponent implements OnInit, AfterViewChecked {
     const welcomeMessage: ChatMessage = {
       id: this.generateMessageId(),
       type: 'bot',
-      content: '¡Hola! 🎬 Soy SpectrAI, tu asistente personal de recomendaciones cinematográficas. Te haré algunas preguntas para conocer mejor tus gustos y encontrar contenido perfecto para ti.',
+      content: 'Hello! 🎬 I\'m SpectrAI, your personal movie and tv shows recommendation assistant. I\'ll ask you a few questions to better understand your tastes and find the perfect content for you.',
       timestamp: new Date()
     };
 
@@ -112,7 +126,6 @@ export class SpectraiComponent implements OnInit, AfterViewChecked {
   }
 
   startConversation(): void {
-    console.log("test")
     this.messages.set([]);
     this.questionStep.set(0);
     this.chatError.set('');
@@ -133,33 +146,33 @@ export class SpectraiComponent implements OnInit, AfterViewChecked {
     const questions: ChatQuestion[] = [
       {
         id: 1,
-        question: '¿Cómo te sientes hoy? Esto me ayudará a recomendarte el tono perfecto.',
+        question: 'How are you feeling today? This will help me recommend the perfect content for you.',
         type: 'single',
-        options: ['Quiero algo emocionante', 'Necesito relajarme', 'Busco inspiración', 'Quiero reír', 'Algo nostálgico']
+        options: ['I want something exciting', 'I need to relax', 'Looking for inspiration', 'I want to laugh']
       },
       {
         id: 2,
-        question: '¿Qué géneros te llaman más la atención? (Puedes elegir hasta 3)',
+        question: 'What genre appeals to you the most?',
         type: 'multiple',
-        options: ['Acción', 'Drama', 'Comedia', 'Sci-Fi', 'Terror', 'Romance', 'Thriller', 'Fantasía', 'Documental']
+        options: ['Action', 'Drama', 'Comedy', 'Sci-Fi', 'Horror', 'Romance', 'Thriller', 'Fantasy', 'Kids']
       },
       {
         id: 3,
-        question: '¿Cuánto tiempo tienes disponible para ver contenido?',
+        question: 'How much time do you have available to watch content?',
         type: 'single',
-        options: ['1-2 horas (película corta)', '2-3 horas (película larga)', 'Serie de episodios cortos', 'Serie para maratonear', 'No tengo preferencia']
+        options: ['1-2 hours (short movie)', '2-3 hours (long movie)', 'Series with short episodes', 'Series to binge-watch']
       },
       {
         id: 4,
-        question: '¿Qué época de contenido prefieres?',
+        question: 'What era of content do you prefer?',
         type: 'single',
-        options: ['Muy reciente (2023-2025)', 'Moderna (2010-2022)', 'Nostálgica (2000-2009)', 'Clásica (1990-1999)', 'Vintage (antes 1990)']
+        options: ['Very recent (2023-2025)', 'Modern (2010-2022)', 'Nostalgic (2000-2009)', 'Classic (1990-1999)', 'Vintage (before 1990)']
       },
       {
         id: 5,
-        question: '¿Qué tipo de popularidad buscas?',
+        question: 'What type of popularity are you looking for?',
         type: 'single',
-        options: ['Grandes éxitos mainstream', 'Joyas ocultas poco conocidas', 'Aclamado por la crítica', 'Trending en redes sociales', 'Clásicos atemporales']
+        options: ['Mainstream blockbusters', 'Hidden gems little known', 'Critically acclaimed']
       }
     ];
 
@@ -196,7 +209,10 @@ export class SpectraiComponent implements OnInit, AfterViewChecked {
       timestamp: new Date()
     };
 
+    this.responses.update(res => [...res, option]);
+
     this.messages.update(msgs => [...msgs, userMessage]);
+    this.scrollToBottom()
 
     // Simular typing antes de la siguiente pregunta
     this.isTyping.set(true);
@@ -224,7 +240,7 @@ export class SpectraiComponent implements OnInit, AfterViewChecked {
       const finishMessage: ChatMessage = {
         id: this.generateMessageId(),
         type: 'bot',
-        content: '¡Perfecto! 🎯 Estoy analizando tus preferencias para encontrar las mejores recomendaciones. Dame un momento...',
+        content: `Perfect! 🎯 I'm analyzing your preferences to find the best recommendations. Give me a moment...`,
         timestamp: new Date()
       };
 
@@ -239,15 +255,41 @@ export class SpectraiComponent implements OnInit, AfterViewChecked {
   }
 
   generateRecommendations(): void {
-    const recommendationsMessage: ChatMessage = {
-      id: this.generateMessageId(),
-      type: 'bot',
-      content: '🎬 ¡Increíble! He encontrado contenido perfecto basado en usuarios con gustos similares. ¿Te gustaría ver las recomendaciones?',
-      timestamp: new Date(),
-      options: ['Ver recomendaciones', 'Guardar en lista privada', 'Empezar nueva búsqueda']
-    };
+    this.intelligenceService.generateRecommendations(this.responses()).then((value: {
+      text: string,
+      recommendations: IntelligenceRecommendation[],
+      sources: any,
+      providerMetadata: any
+    }) => {
+      this.matched.set([]);
+      value.recommendations.forEach((recommendation: IntelligenceRecommendation) => {
+        if (this.messages().some(msg => msg.type === "user" && msg.content.includes("movie"))) {
+          this.backend.getMovies(recommendation.title + ' ' + recommendation.year).then((movies) => {
+            const result = movies.data.data.length > 0 ? movies.data.data[0] : null
+            if (result) {
+              this.matched.update(res => [...res, result]);
+            }
+          })
+        } else {
+          this.backend.getTv(recommendation.title + ' ' + recommendation.year).then((tv) => {
+            const result = tv.data.data.length > 0 ? tv.data.data[0] : null
+            if (result) {
+              this.matched.update(res => [...res, result]);
+            }
+          })
+        }
+      })
 
-    this.messages.update(msgs => [...msgs, recommendationsMessage]);
+      const recommendationsMessage: ChatMessage = {
+        id: this.generateMessageId(),
+        type: 'bot',
+        content: '🎬 Nice! I found some recommendations:',
+        timestamp: new Date(),
+        options: ['Find more recommendations'],
+        showMatched: true
+      };
+      this.messages.update(msgs => [...msgs, recommendationsMessage]);
+    });
   }
 
   // Métodos auxiliares
