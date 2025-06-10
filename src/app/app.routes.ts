@@ -55,5 +55,10 @@ export const routes: Routes = [
     path: "spectrai",
     loadComponent: () => import('./pages/spectrai/spectrai.component').then(m => m.SpectraiComponent),
     canActivate: [authGuard]
+  },
+  {
+    path: "notifications",
+    loadComponent: () => import('./pages/notifications/notifications.component').then(m => m.NotificationsComponent),
+    canActivate: [authGuard]
   }
 ];

@@ -1,0 +1,88 @@
+<!-- notifications.component.html -->
+<div class="notifications-container">
+  <div class="notifications-header">
+    <div class="header-content">
+      <h1 class="page-title">
+        <span class="title-text">NOTIFICATIONS</span>
+        <span class="unread-badge" *ngIf="unreadCount() > 0">{{ unreadCount() }}</span>
+      </h1>
+
+      <div class="header-actions">
+        <div class="filter-tabs">
+          <h2>All</h2>
+          <app-checkslider [checked]="unread" [enable]="signal(true)"/>
+          <h2>Unread</h2>
+        </div>
+
+        <button
+          class="mark-all-btn"
+          *ngIf="unreadCount() > 0"
+          (click)="markAllAsRead()">
+          MARK ALL READ
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="notifications-content">
+    <div class="notifications-list" *ngIf="filteredNotifications().length > 0">
+      <div
+        class="notification-item"
+        [class.unread]="!notification.read_at"
+        *ngFor="let notification of filteredNotifications();">
+
+        <div class="notification-icon">
+          {{ getNotificationIcon(notification.type) }}
+        </div>
+
+        <div class="notification-content">
+          <div class="notification-header">
+            <h3 class="notification-title">{{ notification.title }}</h3>
+            <span class="notification-time">{{ getTimeAgo(notification.created_at) }}</span>
+          </div>
+
+          <p class="notification-message">{{ notification.message }}</p>
+
+          <div class="notification-meta" *ngIf="notification.user || notification.content">
+            <div class="user-info" *ngIf="notification.user">
+              <img
+                [src]="notification.user.avatar"
+                [alt]="notification.user.username"
+                class="user-avatar">
+              <span class="username">{{ notification.user.username }}</span>
+            </div>
+
+            <div class="content-info" *ngIf="notification.content">
+              <img
+                [src]="notification.content.poster"
+                [alt]="notification.content.title"
+                class="content-poster">
+              <div class="content-details">
+                <span class="content-title">{{ notification.content.title }}</span>
+                <span class="content-type">{{ notification.content.type }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="notification-actions">
+          <button
+            class="read-btn"
+            *ngIf="!notification.read_at"
+            (click)="markAsRead(notification.id)"
+            title="Mark as read">
+            ✓
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="empty-state" *ngIf="filteredNotifications().length === 0">
+      <div class="empty-icon">🔔</div>
+      <h2 class="empty-title">No notifications</h2>
+      <p class="empty-message">
+        {{ unread() ? 'All caught up! No unread notifications.' : 'You have no notifications yet.' }}
+      </p>
+    </div>
+  </div>
+</div>

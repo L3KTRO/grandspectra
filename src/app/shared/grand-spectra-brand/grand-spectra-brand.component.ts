@@ -13,7 +13,7 @@ export class GrandSpectraBrandComponent {
   windowWidth = signal(window.innerWidth);
 
   title = computed(() =>
-    this.windowWidth() > 1000 ? 'GRAND SPECTRA' : 'GS'
+    this.windowWidth() > 1100 ? 'GRAND SPECTRA' : 'GS'
   );
 
   @HostListener('window:resize')

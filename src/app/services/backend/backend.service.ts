@@ -10,7 +10,7 @@ export class BackendService {
   syncStore = inject(SyncStore);
   private readonly TOKEN_KEY = 'access_token';
 
-  api = axios.create({
+  public api = axios.create({
     baseURL: this.baseUrl,
     headers: {
       'Content-Type': 'application/json',
@@ -22,10 +22,11 @@ export class BackendService {
     return this.api.get('/genres');
   }
 
-  getMovies(filter: string = "", sort_by: string = "popularity", page: number = 1, hitsPerPage: number = 20) {
+  getMovies(filter: string = "", genres: string[] = [], sort_by: string = "popularity", page: number = 1, hitsPerPage: number = 20) {
     return this.api.get('/meili/movies', {
       params: {
         search: filter,
+        genres,
         sort_by,
         page,
         hitsPerPage
@@ -33,10 +34,11 @@ export class BackendService {
     });
   }
 
-  getTv(filter: string = "", sort_by: string = "popularity", page: number = 1, hitsPerPage: number = 20) {
+  getTv(filter: string = "", genres: string[] = [], sort_by: string = "popularity", page: number = 1, hitsPerPage: number = 20) {
     return this.api.get('/meili/tv', {
       params: {
         search: filter,
+        genres,
         sort_by,
         page,
         hitsPerPage

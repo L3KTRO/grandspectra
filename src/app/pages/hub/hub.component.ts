@@ -1,16 +1,5 @@
 // hub.component.ts
-import {
-  Component,
-  computed,
-  effect,
-  ElementRef,
-  inject,
-  resource,
-  ResourceRef,
-  Signal,
-  signal,
-  ViewChild
-} from '@angular/core';
+import {Component, computed, effect, ElementRef, inject, resource, Signal, signal, ViewChild} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {NgClass, NgForOf, NgIf, NgOptimizedImage} from '@angular/common';
 import {BackendService} from '../../services/backend/backend.service';
@@ -19,10 +8,10 @@ import {ProgressSpinnerComponent} from '../../shared/progress-spinner/progress-s
 import {Movie} from '../../models/Movie';
 import {Tv} from '../../models/Tv';
 import Person from '../../models/Person';
+import {toggler} from '../../helpers/Toggler';
 
 @Component({
   selector: 'app-hub',
-  templateUrl: './hub.component.html',
   imports: [
     FormsModule,
     NgClass,
@@ -33,7 +22,8 @@ import Person from '../../models/Person';
     RouterLink,
 
   ],
-  styleUrls: ['./hub.component.scss']
+  styleUrls: ['./hub.component.scss'],
+  templateUrl: './hub.component.html',
 })
 
 export class HubComponent {
@@ -65,7 +55,9 @@ export class HubComponent {
   });
   peopleHits = computed(() => this.people.asReadonly().value() ? this.people.asReadonly().value().data as Person[] : []);
 
+  showFilters = signal(false);
   genres: { id: number, name: string }[] = []
+  selectedGenres = signal<string[]>([]);
 
   constructor() {
     this.backend.getGenres().then((response) => {
@@ -73,27 +65,38 @@ export class HubComponent {
     })
   }
 
+  toggleSelectedGenre(genre: string) {
+    const currentGenres = this.selectedGenres();
+    if (currentGenres.includes(genre)) {
+      this.selectedGenres.set(currentGenres.filter(g => g !== genre));
+    } else {
+      this.selectedGenres.set([...currentGenres, genre]);
+    }
+  }
+
   tv = resource({
     request: () => ({
       by: this.orderer(),
+      genres: this.selectedGenres(),
       title: this.securedTitleName(),
       page: this.page(),
       hitsPerPage: this.perPage(),
     }),
     loader: async ({request}) => {
-      return (await this.backend.getTv(request.title ?? "", request.by, request.page, request.hitsPerPage)).data;
+      return (await this.backend.getTv(request.title ?? "", request.genres, request.by, request.page, request.hitsPerPage)).data;
     }
   });
 
   movies = resource({
     request: () => ({
       by: this.orderer(),
+      genres: this.selectedGenres(),
       title: this.securedTitleName(),
       page: this.page(),
       hitsPerPage: this.perPage(),
     }),
     loader: async ({request}) => {
-      return (await this.backend.getMovies(request.title ?? "", request.by, request.page, request.hitsPerPage)).data;
+      return (await this.backend.getMovies(request.title ?? "", request.genres, request.by, request.page, request.hitsPerPage)).data;
     }
   });
 
@@ -195,6 +198,7 @@ export class HubComponent {
 
   protected readonly parseInt = parseInt;
   protected readonly ContentType = ContentType;
+  protected readonly toggler = toggler;
 }
 
 enum ContentType {

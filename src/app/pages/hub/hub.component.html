@@ -18,8 +18,58 @@
     </div>
   </div>
 
-  <div id="filters">
-
+  <div id="filters" *ngIf="contentType() !== ContentType.PEOPLE">
+    <div style="display: flex; flex-direction: row; gap: 4rem; align-items: center;"
+         (click)="showFilters.update(toggler)">
+      <svg *ngIf="!showFilters()" width="30px" height="30px" viewBox="0 0 1024 1024" class="icon" version="1.1"
+           xmlns="http://www.w3.org/2000/svg" fill="fff1e0" stroke="fff1e0">
+        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+        <g id="SVGRepo_iconCarrier">
+          <path d="M903.232 256l56.768 50.432L512 768 64 306.432 120.768 256 512 659.072z" fill="#fff1e0"></path>
+        </g>
+      </svg>
+      <svg *ngIf="showFilters()" width="30px" height="30px" viewBox="0 0 1024 1024" class="icon" version="1.1"
+           xmlns="http://www.w3.org/2000/svg" fill="#fff1e0">
+        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+        <g id="SVGRepo_iconCarrier">
+          <path d="M903.232 768l56.768-50.432L512 256l-448 461.568 56.768 50.432L512 364.928z" fill="#fff1e0"></path>
+        </g>
+      </svg>
+      <h2>Show advanced filters</h2>
+      <svg *ngIf="showFilters()" width="30px" height="30px" viewBox="0 0 1024 1024" class="icon" version="1.1"
+           xmlns="http://www.w3.org/2000/svg" fill="#fff1e0">
+        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+        <g id="SVGRepo_iconCarrier">
+          <path d="M903.232 768l56.768-50.432L512 256l-448 461.568 56.768 50.432L512 364.928z" fill="#fff1e0"></path>
+        </g>
+      </svg>
+      <svg *ngIf="!showFilters()" width="30px" height="30px" viewBox="0 0 1024 1024" class="icon" version="1.1"
+           xmlns="http://www.w3.org/2000/svg" fill="fff1e0" stroke="fff1e0">
+        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+        <g id="SVGRepo_iconCarrier">
+          <path d="M903.232 256l56.768 50.432L512 768 64 306.432 120.768 256 512 659.072z" fill="#fff1e0"></path>
+        </g>
+      </svg>
+    </div>
+    <div id="expander" [style.display]="showFilters() ? 'block' : 'none'">
+      <h3>Genres</h3>
+      <div class="filter" id="common">
+        @for (genre of genres; track genre.id) {
+          <div class="simple-checkbox">
+            <input type="checkbox" id="{{genre.id}}" class="checkbox-input"
+                   (change)="toggleSelectedGenre(genre.name)">
+            <label for="{{genre.id}}" class="checkbox-label">
+              <span class="checkmark"></span>
+              {{ genre.name }}
+            </label>
+          </div>
+        }
+      </div>
+    </div>
   </div>
 
   <div id="contents">
