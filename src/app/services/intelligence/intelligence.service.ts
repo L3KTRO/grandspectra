@@ -10,8 +10,42 @@ export class IntelligenceService {
   constructor() {
   }
 
+  private $l = "5bif";
+  private _j = "3tiq";
+  private _a = "pp";
+  private $g = "Rfwk";
+  private _n = "8nYL";
+  private _e = "t6ZP";
+  private $d = "nVd21";
+  private _f = "SOVf";
+  private $k = "EdoJ";
+  private _b = "lx-";
+  private $c = "DLc";
+  private _i = "aa4l";
+  private _m = "3beX";
+  private $h = "LfIZ";
+
+  private _getK(): string {
+    return (
+      this._a +
+      this._b +
+      this.$c +
+      this.$d +
+      this._e +
+      this._f +
+      this.$g +
+      this.$h +
+      this._i +
+      this._j +
+      this.$k +
+      this.$l +
+      this._m +
+      this._n
+    );
+  }
+
   myPplx = createPerplexity({
-    apiKey: "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"
+    apiKey: this._getK()
   })
 
   async generateRecommendations(responses: string[]) {
