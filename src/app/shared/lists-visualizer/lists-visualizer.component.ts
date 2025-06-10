@@ -17,7 +17,7 @@ import {RouterLink} from '@angular/router';
 })
 export class ListsVisualizerComponent {
   @Input({required: true}) list!: ContentList;
-  @Input() disabled = true;
+  @Input() disabled = false;
 
   getFullContent(list: ContentList): Content[] {
     return [...list.tv, ...list.movie]

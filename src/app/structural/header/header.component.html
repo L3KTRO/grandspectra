@@ -16,31 +16,31 @@
 
   <!-- Menú de navegación -->
   <nav id="items" [class.mobile-menu-open]="isMenuOpen()">
-    <a routerLink="/hub" (click)="togglerMenu(isMenuOpen)">
+    <a routerLink="/hub" routerLinkActive="active-route" (click)="togglerMenu(isMenuOpen)">
       <div class="header-item">
         <span class="header-nav">HUB</span>
       </div>
     </a>
 
-    <a routerLink="/spectators" (click)="togglerMenu(isMenuOpen)">
+    <a routerLink="/spectators" routerLinkActive="active-route" (click)="togglerMenu(isMenuOpen)">
       <div class="header-item">
         <span class="header-nav">SPECTATORS</span>
       </div>
     </a>
 
-    <a routerLink="/lists" (click)="togglerMenu(isMenuOpen)">
+    <a routerLink="/lists" routerLinkActive="active-route" (click)="togglerMenu(isMenuOpen)">
       <div class="header-item">
         <span class="header-nav">LISTS</span>
       </div>
     </a>
 
-    <a routerLink="/spectrai" (click)="togglerMenu(isMenuOpen)">
+    <a routerLink="/spectrai" routerLinkActive="active-route" (click)="togglerMenu(isMenuOpen)">
       <div class="header-item">
         <span class="header-nav" id="spectrai">SPECTR<span id="ai">AI</span></span>
       </div>
     </a>
 
-    <a [routerLink]="me() ? '/spectator/' + me().username : '/login'" (click)="togglerMenu(isMenuOpen)"
+    <a [routerLink]="me() ? '/spectator/' + me().username : '/login'" routerLinkActive="active-route" (click)="togglerMenu(isMenuOpen)"
        *ngIf="windowWidth() <= 725">
       <div class="header-item">
         <span class="header-nav" id="sign">{{ me() ? "PROFILE" : "JOIN US" }}</span>
@@ -48,7 +48,7 @@
     </a>
   </nav>
 
-  <a [routerLink]="me() ? '/spectator/' + me().username : '/login'" (click)="togglerMenu(isMenuOpen)"
+  <a [routerLink]="me() ? '/spectator/' + me().username : '/login'" routerLinkActive="active-route" (click)="togglerMenu(isMenuOpen)"
      *ngIf="windowWidth() >= 725">
     <div class="header-item">
       <span class="header-nav" id="sign">{{ me() ? "PROFILE" : "JOIN US" }}</span>
