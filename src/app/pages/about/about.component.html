@@ -2,22 +2,117 @@
   <!-- about.component.html -->
   <section class="about-us">
     <h1>About Grand Spectra</h1>
-    <!-- Contenido de About Us -->
+    <div class="about-content">
+      <div class="intro">
+        <h2>Welcome to Grand Spectra</h2>
+        <p>
+          Grand Spectra is the ultimate social platform for cinema enthusiasts. We've created a space where movie and series lovers can discover, share, and connect through their passion for visual storytelling.
+        </p>
+      </div>
+
+      <div class="features">
+        <h2>What Makes Us Special</h2>
+        <div class="feature-grid">
+          <div class="feature-item">
+            <h3>🎬 Smart Recommendations</h3>
+            <p>Our AI-powered recommendation engine learns your preferences to suggest the perfect content for every mood.</p>
+          </div>
+          <div class="feature-item">
+            <h3>📝 Custom Lists</h3>
+            <p>Create and share personalized watchlists, favorites, and themed collections with the community.</p>
+          </div>
+          <div class="feature-item">
+            <h3>👥 Social Discovery</h3>
+            <p>Follow fellow spectators, discover new content through their recommendations, and build your cinematic network.</p>
+          </div>
+          <div class="feature-item">
+            <h3>🔍 Advanced Search</h3>
+            <p>Find exactly what you're looking for with our powerful search engine that indexes movies, series, actors, and users.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="mission">
+        <h2>Our Mission</h2>
+        <p>
+          At Grand Spectra, we believe that cinema is more than entertainment—it's a universal language that connects people across cultures and generations. Our mission is to create the most comprehensive and intuitive platform where every film enthusiast can explore, discover, and share their passion for movies and series.
+        </p>
+      </div>
+
+      <div class="technology">
+        <h2>Built with Modern Technology</h2>
+        <p>
+          Grand Spectra is powered by cutting-edge technology including Laravel 12, Angular 19, Meilisearch for lightning-fast search, and AI-driven recommendation systems to provide you with the best possible experience.
+        </p>
+      </div>
+
+      <div class="contact">
+        <h2>Get in Touch</h2>
+        <p>
+          Have questions, suggestions, or feedback? We'd love to hear from you!
+        </p>
+        <div class="contact-info">
+          <p><strong>Email: </strong> <a href="mailto:contact@grandspectra.top">{{ 'contact@grandspectra.top' }}</a></p>
+          <p><strong>Community:</strong> Join our growing community of spectators and share your cinematic journey</p>
+        </div>
+      </div>
+    </div>
   </section>
 
   <section class="credits">
     <h1>Attributions & Credits</h1>
+    <div class="credits-content">
+      <div class="data-sources">
+        <h2>Data Sources</h2>
+        <ul>
+          <li><strong>The Movie Database (TMDb):</strong> Movie and TV show metadata, images, and information</li>
+          <li><strong>Internet Movie Database (IMDb):</strong> Industry-standard movie information</li>
+        </ul>
+      </div>
 
+      <div class="technology-stack">
+        <h2>Technology Stack</h2>
+        <ul>
+          <li><strong>Backend:</strong> Laravel 12 - The PHP Framework for Web Artisans</li>
+          <li><strong>Frontend:</strong> Angular 19 - Platform for building mobile and desktop web applications</li>
+          <li><strong>Search Engine:</strong> Meilisearch - Lightning-fast search API</li>
+          <li><strong>File Storage:</strong> MinIO - High-performance object storage</li>
+          <li><strong>Email Server:</strong> Stalwart - Modern mail server</li>
+          <li><strong>AI Integration:</strong> Perplexity AI - Intelligent recommendation system</li>
+        </ul>
+      </div>
+
+      <div class="open-source">
+        <h2>Open Source Libraries</h2>
+        <ul>
+          <li><strong>RxJS:</strong> Reactive Extensions for JavaScript</li>
+          <li><strong>TypeScript:</strong> Typed superset of JavaScript</li>
+          <li><strong>Sass:</strong> CSS extension language</li>
+          <li><strong>Various NPM packages</strong> that make Grand Spectra possible</li>
+        </ul>
+      </div>
+
+      <div class="special-thanks">
+        <h2>Special Thanks</h2>
+        <p>
+          To the amazing open-source community, movie databases that provide free access to film data,
+          and all the developers who contribute to the tools and frameworks that power Grand Spectra.
+        </p>
+      </div>
+    </div>
   </section>
 
   <section class="faq">
-    <h1>FAQ</h1>
-    <div class="faq-item" *ngFor="let item of faqItems; let i = index">
-      <div class="faq-question" (click)="toggleFaq(i)">
-        {{ item.question }}
-      </div>
-      <div class="faq-answer" [class.open]="item.isOpen">
-        {{ item.answer }}
+    <h1>Frequently Asked Questions</h1>
+    <div class="faq-container">
+      <div class="faq-item" *ngFor="let item of faqItems; let i = index">
+        <div class="faq-question" (click)="toggleFaq(i)" [class.active]="item.isOpen">
+          <span>{{ item.question }}</span>
+          <span class="faq-icon">{{ item.isOpen ? '−' : '+' }}</span>
+        </div>
+        <div class="faq-answer" [class.open]="item.isOpen">
+          <p>{{ item.answer }}</p>
+        </div>
       </div>
     </div>
   </section>

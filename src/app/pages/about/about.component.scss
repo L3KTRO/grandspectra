@@ -1,26 +1,244 @@
-#sections {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  margin: 3rem;
-}
+@use '../../../styles' as styles;
 
-section {
-  h1 {
-    font-family: "CharisSIL", "GTVCS", serif;
-    font-size: 2rem;
+#sections {
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+  color: styles.$text;
+  min-height: 100vh;
+  padding: 2rem;
+
+  @media (max-width: 768px) {
+    padding: 1rem;
+  }
+
+  section {
+    margin-bottom: 4rem;
+
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: styles.$text;
+      background: linear-gradient(45deg, styles.$text-contrast, styles.$text);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: 0 0 20px rgba(255, 68, 68, 0.3);
+      margin-bottom: 2rem;
+      text-align: center;
+    }
   }
 }
 
-.faq-item {
+.about-content {
+  max-width: 1200px;
+  margin: 0 auto;
+
+  .intro, .mission, .technology, .contact {
+    margin-bottom: 3rem;
+
+    h2 {
+      color: styles.$text;
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+      text-shadow: 0 0 10px rgba(255, 102, 102, 0.3);
+    }
+
+    p {
+      line-height: 1.8;
+      color: #cccccc;
+      font-size: 1.1rem;
+    }
+  }
+
+  .features {
+    margin-bottom: 3rem;
+
+    h2 {
+      background: linear-gradient(45deg, styles.$text-contrast, styles.$text);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;      font-size: 1.8rem;
+      margin-bottom: 2rem;
+      text-align: center;
+      text-shadow: 0 0 10px rgba(255, 102, 102, 0.3);
+    }
+  }
+
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+
+    .feature-item {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 68, 68, 0.2);
+      border-radius: 12px;
+      padding: 2rem;
+      transition: all 0.3s ease;
+
+      &:hover {
+        background: rgba(255, 68, 68, 0.1);
+        border-color: rgba(255, 68, 68, 0.4);
+        box-shadow: 0 8px 32px rgba(255, 68, 68, 0.2);
+        transform: translateY(-4px);
+      }
+
+      h3 {
+        color: styles.$text;
+        font-size: 1.3rem;
+        margin-bottom: 1rem;
+      }
+
+      p {
+        color: #cccccc;
+        line-height: 1.6;
+      }
+    }
+  }
+
+  .contact-info {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-top: 1rem;
+
+    p {
+      margin: 0.5rem 0;
+
+      a {
+        color: #ff6666;
+        text-decoration: none;
+        transition: color 0.3s ease;
+
+        &:hover {
+          color: #ff4444;
+          text-shadow: 0 0 8px rgba(255, 68, 68, 0.5);
+        }
+      }
+    }
+  }
+}
+
+.credits-content {
+  max-width: 1000px;
+  margin: 0 auto;
+
+  h2 {
+    color: styles.$text;
+    font-size: 1.6rem;
+    margin-bottom: 1rem;
+    text-shadow: 0 0 10px rgba(255, 102, 102, 0.3);
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 2rem;
+
+    li {
+      background: rgba(255, 255, 255, 0.03);
+      border-left: 3px solid #ff4444;
+      padding: 1rem;
+      margin-bottom: 0.5rem;
+      border-radius: 0 8px 8px 0;
+
+      strong {
+        color: #ff6666;
+      }
+    }
+  }
+
+  .special-thanks {
+    background: rgba(255, 68, 68, 0.1);
+    border: 1px solid rgba(255, 68, 68, 0.3);
+    border-radius: 12px;
+    padding: 2rem;
+    text-align: center;
+    margin-top: 2rem;
+
+    p {
+      color: #cccccc;
+      line-height: 1.8;
+      font-style: italic;
+    }
+  }
+}
+
+.faq-container {
+  max-width: 800px;
+  margin: 0 auto;
+
+  .faq-item {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    margin-bottom: 1rem;
+    overflow: hidden;
+    transition: all 0.3s ease;
+
+    &:hover {
+      border-color: rgba(255, 68, 68, 0.3);
+    }
+  }
+
   .faq-question {
-    font-family: "CharisSIL", "GTVCS", serif;
-    font-size: 1.25rem;
+    padding: 1.5rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 600;
+    color: styles.$text;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background: rgba(255, 68, 68, 0.1);
+      color: #ff6666;
+    }
+
+    &.active {
+      background: rgba(255, 68, 68, 0.15);
+      color: #ff6666;
+    }
+
+    .faq-icon {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #ff4444;
+      transition: transform 0.3s ease;
+    }
   }
 
   .faq-answer {
-    font-family: "GTVCS", serif;
-    font-size: 1rem;
-    margin-bottom: 1rem;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    background: rgba(0, 0, 0, 0.3);
+
+    &.open {
+      max-height: 200px;
+    }
+
+    p {
+      padding: 1.5rem;
+      margin: 0;
+      color: #cccccc;
+      line-height: 1.6;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .feature-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .faq-question {
+    padding: 1rem;
+    font-size: 0.9rem;
+  }
+
+  .faq-answer p {
+    padding: 1rem;
   }
 }
