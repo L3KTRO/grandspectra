@@ -593,17 +593,17 @@
     }
   </div>
 
-  <div class="container" id="recommendations" *ngIf="recommendations.length > 0">
-    <h2>
-      <span class="light-neon-effect-text">Recommendations</span>
-    </h2>
-    <app-contentlist [content]="recommendations"/>
-  </div>
-
   <div class="container" id="reviews" *ngIf="reviews && reviews.length > 0">
     <h2>
       <span class="light-neon-effect-text">Ratings and reviews</span>
     </h2>
     <app-ratingsandreview [content]="reviews"/>
+  </div>
+
+  <div class="container" id="recommendations" *ngIf="recommendations.length > 0">
+    <h2>
+      <span class="light-neon-effect-text">Recommendations</span>
+    </h2>
+    <app-contentlist [content]="recommendations"/>
   </div>
 </div>

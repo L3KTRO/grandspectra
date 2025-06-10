@@ -53,6 +53,7 @@ export const routes: Routes = [
   },
   {
     path: "spectrai",
-    loadComponent: () => import('./pages/spectrai/spectrai.component').then(m => m.SpectraiComponent)
+    loadComponent: () => import('./pages/spectrai/spectrai.component').then(m => m.SpectraiComponent),
+    canActivate: [authGuard]
   }
 ];

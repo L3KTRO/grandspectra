@@ -400,10 +400,6 @@
 }
 
 @media (max-width: 600px) {
-  #metadata {
-    gap: 0.5rem;
-  }
-
   #details {
     margin: 0 0.5rem;
   }
@@ -462,25 +458,47 @@
     }
   }
 
-  #metadata {
-    display: flex;
-    flex-direction: row;
-    justify-content: start;
-    font-size: 0.7rem;
-    color: styles.$text-contrast-mid;
-    gap: 0.5rem;
-    white-space: nowrap;
-  }
-
   #content-container {
     margin: 1rem;
   }
+
+  #meta {
+    #metadata {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: flex-start;
+      font-size: 0.8rem;
+      color: styles.$text-contrast-mid;
+      white-space: nowrap;
+
+      #tmdb-rating {
+        h3 {
+          font-family: "GTVCS", serif;
+          font-weight: bold;
+
+          span {
+            font-weight: normal;
+          }
+        }
+      }
+    }
+
+  }
+
 }
 
 
 @media (max-width: 400px) {
   #meta {
     margin: 0.5rem 1.5rem 1rem 0.5rem;
-  }
+    #metadata {
 
+      #tmdb-rating {
+        h3 {
+          margin: 0;
+        }
+      }
+    }
+  }
 }
