@@ -222,7 +222,7 @@
     <h2 class="section-title">Lists</h2>
     <div class="lists">
       <div *ngFor="let list of this.user().content_lists">
-        <app-lists-visualizer [list]="list" *ngIf="list.public"/>
+        <app-lists-visualizer [list]="list"/>
       </div>
     </div>
   </div>
