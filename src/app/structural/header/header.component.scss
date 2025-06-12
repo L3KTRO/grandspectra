@@ -175,24 +175,28 @@
 
 // Overlay de búsqueda
 .search-overlay {
+  font-family: "GTVCS", serif;
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
+  // Mantenemos el fondo listo, pero el contenedor estará invisible
   background-color: rgba(0, 0, 0, 0.8);
   backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px); // Prefijo para Safari
+
   display: flex;
   justify-content: center;
   align-items: flex-start;
   padding-top: 10vh;
-  z-index: 10;
-  transition: all 0.3s ease;
-  opacity: 0;
+  z-index: 10000;
+
+  // En lugar de animar la opacidad del overlay, controlamos su visibilidad
   visibility: hidden;
+  transition: visibility 0.3s;
 
   &.active {
-    opacity: 1;
     visibility: visible;
   }
 }
@@ -204,11 +208,26 @@
   border-radius: 16px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
   overflow: hidden;
-  transform: translateY(-20px);
-  transition: transform 0.3s ease;
 
+  // ESTA es la clave: animamos el hijo, no el padre con el backdrop-filter
+  transform: translateY(-20px);
+  opacity: 0;
+  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+
+  // Cuando el overlay está activo, el contenedor aparece
   .search-overlay.active & {
     transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@-moz-document url-prefix() {
+  .search-overlay.active {
+    // Desactivamos el filtro que causa el problema en Firefox
+    backdrop-filter: none !important;
+
+    // Usamos un color de fondo más sólido para compensar la falta de blur
+    background-color: rgba(15, 15, 15, 0.95) !important;
   }
 }
 
@@ -233,7 +252,7 @@
     font-size: 1.2rem;
     color: styles.$text;
     padding-left: 3rem;
-    font-family: 'CharisSIL', "GTVCS", serif;
+    font-family: "GTVCS", serif;
 
     &::placeholder {
       color: rgba(styles.$text, 0.6);
@@ -303,6 +322,12 @@
     }
   }
 
+  .result-metadata {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+  }
+
   .result-content {
     flex: 1;
     min-width: 0;
@@ -328,6 +353,7 @@
       margin: 0;
       color: rgba(styles.$text, 0.7);
       font-size: 0.8rem;
+      font-weight: 400;
     }
   }
 }

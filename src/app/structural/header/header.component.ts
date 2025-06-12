@@ -1,13 +1,15 @@
 // header.component.ts
 import {
+  AfterViewChecked,
+  AfterViewInit,
   Component,
-  computed,
+  computed, ElementRef,
   HostListener,
   inject,
   OnDestroy,
   OnInit,
   resource,
-  signal,
+  signal, ViewChild,
   WritableSignal
 } from '@angular/core';
 import {CommonModule, NgOptimizedImage} from '@angular/common';
@@ -20,6 +22,21 @@ import {Me} from '../../models/Me';
 import {NotificationService} from '../../services/notification/notification.service';
 import {NotificationsHelper} from '../../helpers/NotificationsHelper';
 import {toggler} from '../../helpers/Toggler';
+import {Tv} from '../../models/Tv';
+
+
+interface Result {
+  id: number;
+  title: string;
+  name: string;
+  _index: "tv" | "movies" | "people";
+  poster: string;
+  still: string;
+  known_for_department?: string;
+  episode_run_time?: number;
+  release_date?: string;
+  first_air_date?: string;
+}
 
 @Component({
   selector: 'app-header',
@@ -28,7 +45,10 @@ import {toggler} from '../../helpers/Toggler';
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
-export class HeaderComponent implements OnInit, OnDestroy {
+export class HeaderComponent implements OnInit, OnDestroy, AfterViewChecked {
+  @ViewChild('searchInput', {static: false}) searchInput: ElementRef<HTMLInputElement> | undefined;
+
+
   constructor(public syncStore: SyncStore, public notificationsHelper: NotificationsHelper, public router: Router) {
     this.initialSync.set(syncStore.loginSync())
   }
@@ -63,6 +83,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.windowWidth.set(window.innerWidth);
   }
 
+  ngAfterViewChecked() {
+    if (this.searchInput) {
+      this.searchInput.nativeElement.focus();
+    }
+  }
+
   ngOnDestroy() {
     window.removeEventListener('resize', this.onResize);
     if (this.searchDebounceTimer) {
@@ -76,7 +102,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   isSearchOpen = signal(false);
   searchQuery = signal('');
-  searchResults = signal<any[]>([]);
+  searchResults = signal<Result[]>([]);
   isSearching = signal(false);
   searchDebounceTimer: any = null;
 
@@ -112,7 +138,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
         // Aquí llamarías a tu endpoint de búsqueda
         const response = await this.backendService.globalSearch(query);
         if (response.status === 200) {
-          this.searchResults.set(response.data);
+          this.searchResults.set(response.data.slice(0, 10)); // Limitar a 10 resultados
         }
       } catch (error) {
         console.error('Error en búsqueda:', error);
@@ -120,7 +146,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       } finally {
         this.isSearching.set(false);
       }
-    }, 300);
+    }, 100);
   }
 
   // Método para manejar teclas especiales
@@ -133,43 +159,30 @@ export class HeaderComponent implements OnInit, OnDestroy {
     }
   }
 
-
-  // Método para cerrar al hacer click fuera
-  @HostListener('document:click', ['$event'])
-  onDocumentClick(event: Event) {
-    const target = event.target as HTMLElement;
-    const searchContainer = document.querySelector('.search-overlay');
-    const searchIcon = document.getElementById('lupa');
-
-
-    if (this.isSearchOpen() &&
-      !searchContainer?.contains(target) &&
-      !searchIcon?.contains(target)) {
-      this.toggleSearch();
-    }
-  }
-
   // Añade este método a tu componente
-  navigateToResult(result: any) {
+  navigateToResult(result: Result) {
     // Cerrar el buscador
     this.toggleSearch();
 
     // Navegar según el tipo de resultado
-    switch (result.type) {
-      case 'movie':
+    console.log(result._index)
+    switch (result._index) {
+      case 'movies':
         this.router.navigate(['/movie', result.id]);
         break;
       case 'tv':
         this.router.navigate(['/tv', result.id]);
         break;
-      case 'user':
-        this.router.navigate(['/spectator', result.username]);
+      case 'people':
+        this.router.navigate(['/person', result.id]);
         break;
-      default:
-        console.log('Tipo de resultado no reconocido:', result.type);
     }
   }
 
+  getPoster(path: string | undefined){
+    if (!path) return "https://placehold.co/50x75";
+    return path.replace("original", "w92");
+  }
 
   protected readonly toggler = toggler;
 }

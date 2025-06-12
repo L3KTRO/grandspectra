@@ -109,8 +109,8 @@
     </a>
   </div>
 
-  <div class="search-overlay" [class.active]="isSearchOpen()" (click)="$event.stopPropagation()">
-    <div class="search-container">
+  <div class="search-overlay" [class.active]="isSearchOpen()" (click)="toggleSearch()">
+    <div class="search-container" (click)="$event.stopPropagation()">
       <div class="search-input-wrapper">
         <svg class="search-input-icon" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
           <path
@@ -118,12 +118,14 @@
             stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
         <input
+          #searchInput
           id="global-search-input"
           type="text"
           placeholder="Search for movies, series, people..."
           [value]="searchQuery()"
           (input)="onSearchInput($event)"
-          class="search-input">
+          class="search-input"
+        >
       </div>
 
       <!-- Resultados de búsqueda -->
@@ -141,26 +143,29 @@
                (click)="navigateToResult(result)">
             <div class="result-image">
               <img
-                [ngSrc]="result.poster || result.still || (result.known_for_department ? '/assets/placeholder.jpg' : '')"
+                [ngSrc]="getPoster(result.poster || result.still)"
+                width="50" height="75"
                 [alt]="result.title || result.name"
                 loading="lazy">
             </div>
             <div class="result-content">
-              <h4>{{ result.title || result.name }}</h4>
-              <p class="result-type">{{ result.type | titlecase }}</p>
-              <p class="result-year" *ngIf="result.release_date || result.first_air_date">
-                {{ (result.release_date || result.first_air_date) | date:'yyyy' }}
-              </p>
-              <p class="result-year" *ngIf="result.known_for_department">
-                {{ result.known_for_department }}
-              </p>
+              <h4 style="font-family: 'CharisSIL', serif">{{ result.title || result.name }}</h4>
+              <div class="result-metadata">
+                <p class="result-type">{{ result._index | titlecase }}</p>
+                <p class="result-year" *ngIf="result.release_date || result.first_air_date">
+                  {{ (result.release_date || result.first_air_date) | date:'yyyy' }}
+                </p>
+                <p class="result-year" *ngIf="result.known_for_department">
+                  {{ result.known_for_department }}
+                </p>
+              </div>
             </div>
           </div>
         </div>
 
         <!-- Sin resultados -->
         <div class="no-results" *ngIf="!isSearching() && searchResults().length === 0">
-          <p>No se encontraron resultados para "{{ searchQuery() }}"</p>
+          <p>No results found for "{{ searchQuery() }}"</p>
         </div>
       </div>
     </div>
