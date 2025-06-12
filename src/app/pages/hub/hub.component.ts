@@ -58,11 +58,22 @@ export class HubComponent {
   showFilters = signal(false);
   genres: { id: number, name: string }[] = []
   selectedGenres = signal<string[]>([]);
+  @ViewChild('content') content!: ElementRef;
 
   constructor() {
     this.backend.getGenres().then((response) => {
       this.genres = response.data.data;
     })
+
+    effect(() => {
+      try {
+        if (this.content) {
+          this.content.nativeElement.scrollTop = this.content.nativeElement.scrollHeight;
+        }
+      } catch (err) {
+        console.error('Error scrolling to bottom:', err);
+      }
+    });
   }
 
   toggleSelectedGenre(genre: string) {

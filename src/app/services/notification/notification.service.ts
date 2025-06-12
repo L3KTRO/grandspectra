@@ -1,5 +1,5 @@
 // notification.service.ts
-import {Injectable} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {Notification} from '../../models/Notification';
 import {BackendService} from '../backend/backend.service';
 
@@ -7,20 +7,22 @@ import {BackendService} from '../backend/backend.service';
   providedIn: 'root'
 })
 export class NotificationService {
-  private apiUrl = '/api/notifications';
+  private apiUrl = '/me/notifications';
+  backend = inject(BackendService);
 
-  constructor(private backend: BackendService) {
-  }
-
-  getNotifications() {
-    return this.backend.api.get<{ data: Notification[] }>(`${this.apiUrl}`);
+  async getNotifications() {
+    return await this.backend.authRequest(`${this.apiUrl}`);
   }
 
   markAsRead(notificationId: string) {
-    return this.backend.api.patch(`${this.apiUrl}/${notificationId}/read`, {});
+    return this.backend.authRequest(`${this.apiUrl}/${notificationId}/read`, {method: 'POST'});
   }
 
   markAllAsRead() {
-    return this.backend.api.patch(`${this.apiUrl}/mark-all-read`, {});
+    return this.backend.authRequest(`${this.apiUrl}/read-all`, {method: 'POST'});
+  }
+
+  unreadCount() {
+    return this.backend.authRequest(`${this.apiUrl}/unread-count`);
   }
 }

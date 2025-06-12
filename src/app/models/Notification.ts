@@ -1,17 +1,10 @@
 export interface Notification {
   id: string;
-  type: 'follow' | 'like' | 'comment' | 'list' | 'recommendation';
-  title: string;
-  message: string;
-  user?: {
-    username: string;
-    avatar: string;
-  };
-  content?: {
-    title: string;
-    poster: string;
-    type: 'movie' | 'series';
-  };
+  data: {
+    type: "content_list_updated" | "content_list_deleted" | "new_follower",
+    message: string,
+  }
   read_at: string | null;
   created_at: string;
+  updated_at: string;
 }

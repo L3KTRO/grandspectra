@@ -57,6 +57,14 @@ export class BackendService {
     });
   }
 
+  globalSearch(filter: string = "") {
+    return this.api.get('/meili/all', {
+      params: {
+        search: filter
+      }
+    });
+  }
+
   getUsers(sortBy: string = 'followers') {
     return this.api.get('/users', {
       params: {
@@ -88,7 +96,7 @@ export class BackendService {
 
   // AUTH
 
-  authRequest(endpoint: string, options: AxiosRequestConfig = {}) {
+  public authRequest(endpoint: string, options: AxiosRequestConfig = {}) {
     console.log(`${endpoint}`)
     const req = this.api.request({
       url: endpoint,
@@ -100,10 +108,9 @@ export class BackendService {
     })
 
     req.then((it) => {
-      console.log(it)
+      console.log(it);
       if (options.method && options.method !== "GET") this.syncStore.addChangeProfile()
     });
-
 
     return req
   }

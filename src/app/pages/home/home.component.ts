@@ -5,12 +5,13 @@ import {Movie} from '../../models/Movie';
 import {Tv} from '../../models/Tv';
 import {BackendService} from '../../services/backend/backend.service';
 import {ContentlistnumberedComponent} from '../../shared/contentlistnumbered/contentlistnumbered.component';
-import {RouterLink} from '@angular/router'; // Asegúrate de tener la interfaz Movie
+import {RouterLink} from '@angular/router';
+import {SpotlightComponent} from '../../shared/spotlight/spotlight.component'; // Asegúrate de tener la interfaz Movie
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, ContentlistnumberedComponent, RouterLink],
+  imports: [CommonModule, ContentlistnumberedComponent, RouterLink, SpotlightComponent],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })

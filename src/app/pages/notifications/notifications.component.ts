@@ -1,10 +1,12 @@
 // notifications.component.ts
-import {Component, computed, OnInit, signal} from '@angular/core';
+import {Component, computed, OnInit, resource, Signal, signal} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {RouterModule} from '@angular/router';
 import {NotificationService} from '../../services/notification/notification.service';
 import {Notification} from '../../models/Notification';
 import {ChecksliderComponent} from '../../shared/checkslider/checkslider.component';
+import {computedResource} from '../../helpers/Resources';
+import {NotificationsHelper} from '../../helpers/NotificationsHelper';
 
 
 @Component({
@@ -14,50 +16,20 @@ import {ChecksliderComponent} from '../../shared/checkslider/checkslider.compone
   templateUrl: './notifications.component.html',
   styleUrl: './notifications.component.scss'
 })
-export class NotificationsComponent implements OnInit {
-  notifications = signal<Notification[]>([]);
+export class NotificationsComponent {
   unread = signal<boolean>(false);
 
-  filteredNotifications = computed(() => {
-    const filter = this.unread();
-    const notifs = this.notifications();
-
-    if (filter) {
-      return notifs.filter(n => !n.read_at);
-    }
-    return notifs;
-  });
-
-  unreadCount = computed(() =>
-    this.notifications().filter(n => !n.read_at).length
-  );
-
-  constructor(private notificationService: NotificationService) {
+  constructor(protected notificationService: NotificationsHelper) {
   }
 
-  ngOnInit() {
-    this.loadNotifications();
-  }
-
-  async loadNotifications() {
-    try {
-      const response = (await this.notificationService.getNotifications())?.data.data;
-      if (response) this.notifications.set(response);
-    } catch (error) {
-      console.error('Error loading notifications:', error);
-    }
-  }
+  notifications: Signal<Notification[]> = computed(() => this.notificationService.notificationsResource.asReadonly().value()?.notifications.data?.filter(
+    (a: Notification) => (this.unread() && a.read_at === null) || (!this.unread())
+  ) ?? []);
 
   async markAsRead(notificationId: string) {
     try {
       await this.notificationService.markAsRead(notificationId);
-      this.notifications.update(notifications =>
-        notifications.map(n =>
-          n.id === notificationId
-            ? {...n, read_at: new Date().toISOString()}
-            : n
-        )
-      );
+      this.notificationService.notificationsResource.reload()
     } catch (error) {
       console.error('Error marking notification as read:', error);
     }
@@ -66,21 +38,22 @@ export class NotificationsComponent implements OnInit {
   async markAllAsRead() {
     try {
       await this.notificationService.markAllAsRead();
-      this.notifications.update(notifications =>
-        notifications.map(n => ({...n, read_at: new Date().toISOString()}))
-      );
+      this.notificationService.notificationsResource.reload()
     } catch (error) {
       console.error('Error marking all as read:', error);
     }
   }
 
-  getNotificationIcon(type: 'follow' | 'like' | 'comment' | 'list' | 'recommendation'): string {
-    const icons: Record<'follow' | 'like' | 'comment' | 'list' | 'recommendation', string> = {
-      follow: '👤',
-      like: '❤️',
-      comment: '💬',
-      list: '📝',
-      recommendation: '🎬'
+  getNotificationIcon(type: 'content_list_updated' | "content_list_deleted" | "new_follower"): string {
+    const icons: Record<'content_list_updated' | 'content_list_deleted' | "new_follower", string> = {
+      // follow: '👤',
+      // like: '❤️',
+      // comment: '💬',
+      // list: '📝',
+      // recommendation: '🎬'
+      new_follower: "👥",
+      content_list_updated: "📄",
+      content_list_deleted: "🗑️",
     };
     return icons[type] || '🔔';
   }
@@ -90,9 +63,9 @@ export class NotificationsComponent implements OnInit {
     const now = new Date();
     const diffInHours = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60));
 
-    if (diffInHours < 1) return 'Hace unos minutos';
-    if (diffInHours < 24) return `Hace ${diffInHours}h`;
-    if (diffInHours < 168) return `Hace ${Math.floor(diffInHours / 24)}d`;
+    if (diffInHours < 1) return 'A few minutes ago';
+    if (diffInHours < 24) return `About ${diffInHours}h ago`;
+    if (diffInHours < 168) return `About ${Math.floor(diffInHours / 24)}d ago`;
     return date.toLocaleDateString();
   }
 
