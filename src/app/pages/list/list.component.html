@@ -24,11 +24,11 @@
         <textarea id="description" [(ngModel)]="descriptionList"
                   [disabled]="!editMode()" [ngClass]="editMode() ? 'editing' : 'not-editing'"></textarea>
         <small *ngIf="!descriptionList() && editMode()">Description is required</small>
-        <div id="visibility" *ngIf="(list().user.id === me().id) && editMode()">
+        <div id="visibility" *ngIf="(list()?.user?.id === me()?.id) && editMode()">
           <h3>Private</h3>
           <app-checkslider [checked]="visibility" [enable]="editMode"/>
           <h3>Public</h3>
-          <div (click)="dialog.open()">
+          <div (click)="dialog.open()" style="margin-left: auto">
             <svg width="35px" height="35px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
               <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -51,9 +51,56 @@
               </g>
             </svg>
           </div>
-
         </div>
 
+
+        <!-- list.component.html -->
+        <!-- Añade esto dentro de tu bloque @if (editMode()) { ... } -->
+
+        @if (editMode()) {
+          <!-- Contenedor del buscador para gestionar el "click outside" -->
+          <div #searchContainer class="search-content-container">
+            <input
+              id="search"
+              type="text"
+              class="search-input"
+              placeholder="Search movies or series to add..."
+              [value]="searchQuery()"
+              (input)="onSearchInput($event)"
+              (focus)="showResults.set(true)"
+              autocomplete="off"
+            />
+
+            <!-- Contenedor flotante de resultados -->
+            @if (showResults() && (isSearching() || searchResults().length > 0 || searchQuery().length > 1)) {
+              <div class="search-results-dropdown">
+                @if (isSearching()) {
+                  <div class="result-item-info">Searching...</div>
+                } @else {
+                  @if (searchResults().length > 0) {
+                    @for (result of searchResults(); track result.id) {
+                      <div class="result-item" (click)="addContentToList(result)">
+                        <img [ngSrc]="result.poster" [alt]="result.title || result.name" class="result-poster"
+                             width="50" height="75">
+                        <div class="result-details">
+                          <span class="result-title">{{ result.title || result.name }}</span>
+                          <div class="result-metadata">
+                            <p class="result-type">{{ result._index | titlecase }}</p>
+                            <span
+                              class="result-year">{{ (result.release_date || result.first_air_date) | slice:0:4 }}</span>
+                          </div>
+
+                        </div>
+                      </div>
+                    }
+                  } @else if (searchQuery().length > 1) {
+                    <div class="result-item-info">No results found.</div>
+                  }
+                }
+              </div>
+            }
+          </div>
+        }
 
       </div>
       <div id="actions">
@@ -190,7 +237,24 @@
     </div>
     <div id="down-part">
       @if (content() && content().length > 0) {
-        <app-contentlist-wrap [content]="content()" style="margin-top: 1rem;"/>
+        <div id="container" style="margin-top: 1rem;">
+          <div id="contents">
+            @if (content()) {
+              @for (item of content(); track item.id) {
+                <div>
+                  <span id="deleteX" (click)="deleteContentFromList(item)" *ngIf="editMode()">X</span>
+                  <div class="item">
+                    <div class="item" routerLink="/{{ isMovie(item) ? 'movie' : 'tv'}}/{{ item.id }}">
+                      <img class="poster" ngSrc="{{ intrinsic(item.poster) }}" alt="{{ getTitle(item) }}"
+                           width="{{sizes.width}}" height="{{sizes.height}}"/>
+                      <h2 class="title" [style.width.px]="sizes.width">{{ getTitle(item) }}</h2>
+                    </div>
+                  </div>
+                </div>
+              }
+            }
+          </div>
+        </div>
       } @else {
         <p id="no-content">No content yet</p>
       }

@@ -240,7 +240,7 @@ export class MediaContentDisplayComponent implements OnDestroy, OnInit {
         tv_id: this.isMovie ? null : this.id,
       }
     }).then((res) => {
-      console.log(res)
+      window.location.reload()
       this.reviewDialog.close();
     }).catch((err) => {
       console.error(err);

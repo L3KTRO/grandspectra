@@ -65,6 +65,14 @@ export class BackendService {
     });
   }
 
+  mediaSearch(filter: string = "") {
+    return this.api.get('/meili/media', {
+      params: {
+        search: filter
+      }
+    });
+  }
+
   getUsers(sortBy: string = 'followers') {
     return this.api.get('/users', {
       params: {

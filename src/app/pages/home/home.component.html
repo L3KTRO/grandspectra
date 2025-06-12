@@ -15,8 +15,6 @@
   }
 </div>
 
-<app-spotlight/>
-
 <div id="trending">
   <div *ngIf="movies.asReadonly().value()">
     <app-contentlist-numbered [title]="'Top movies today'" [content]="movies.asReadonly().value()!"/>

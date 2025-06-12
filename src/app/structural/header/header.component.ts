@@ -19,24 +19,9 @@ import {BackendService} from '../../services/backend/backend.service';
 import {SyncStore} from '../../stores/SyncStore';
 import {computedResource} from '../../helpers/Resources';
 import {Me} from '../../models/Me';
-import {NotificationService} from '../../services/notification/notification.service';
 import {NotificationsHelper} from '../../helpers/NotificationsHelper';
 import {toggler} from '../../helpers/Toggler';
-import {Tv} from '../../models/Tv';
-
-
-interface Result {
-  id: number;
-  title: string;
-  name: string;
-  _index: "tv" | "movies" | "people";
-  poster: string;
-  still: string;
-  known_for_department?: string;
-  episode_run_time?: number;
-  release_date?: string;
-  first_air_date?: string;
-}
+import {Result} from '../../models/Result';
 
 @Component({
   selector: 'app-header',
@@ -164,8 +149,7 @@ export class HeaderComponent implements OnInit, OnDestroy, AfterViewChecked {
     // Cerrar el buscador
     this.toggleSearch();
 
-    // Navegar según el tipo de resultado
-    console.log(result._index)
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     switch (result._index) {
       case 'movies':
         this.router.navigate(['/movie', result.id]);
@@ -179,7 +163,7 @@ export class HeaderComponent implements OnInit, OnDestroy, AfterViewChecked {
     }
   }
 
-  getPoster(path: string | undefined){
+  getPoster(path: string | undefined) {
     if (!path) return "https://placehold.co/50x75";
     return path.replace("original", "w92");
   }

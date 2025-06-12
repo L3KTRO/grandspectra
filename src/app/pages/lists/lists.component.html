@@ -1,5 +1,5 @@
 <div id="body">
-  <a routerLink="/list/create" id="list-creator" *ngIf="meResource()">Create a list</a>
+  <div class="button" routerLink="/list/create" id="list-creator" *ngIf="meResource()">Create a list</div>
   <h2 *ngIf="!meResource()" style="text-align: center">Join Us to unlock this feature!</h2>
   <div class="row">
     <h2 class="title">Most voted lists</h2>

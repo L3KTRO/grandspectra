@@ -137,12 +137,12 @@
 #unauthed {
   z-index: 10;
   position: absolute;
-  position: absolute;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  padding: 1.5rem 8.5rem;
+  padding: 1.5rem 10rem;
+  transform: translateX(-.5rem);
   background-color: rgba(0, 0, 0, 0.5);
   white-space: nowrap;
 
@@ -492,6 +492,7 @@
 @media (max-width: 400px) {
   #meta {
     margin: 0.5rem 1.5rem 1rem 0.5rem;
+
     #metadata {
 
       #tmdb-rating {
