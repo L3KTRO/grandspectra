@@ -26,7 +26,7 @@ import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/
 import {ProgressSpinnerComponent} from '../../shared/progress-spinner/progress-spinner.component';
 import {toggler} from '../../helpers/Toggler';
 import {RequestResendVerification} from '../../stores/RequestResendVerification';
-import {ImageCroppedEvent, ImageCropperComponent, LoadedImage} from 'ngx-image-cropper';
+import {CropperPosition, ImageCroppedEvent, ImageCropperComponent, LoadedImage} from 'ngx-image-cropper';
 import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
 
 @Component({
@@ -68,6 +68,19 @@ export class ProfileComponent implements OnInit, OnDestroy {
     effect(() => {
       if (this.syncStore.profileSync() > this.initialSync()) {
         this.triggerSync.update(res => res + 1);
+      }
+    });
+
+    effect(() => {
+      if (this.cropping() && this.cropped === null) {
+        this.isLoading.set(true)
+        const interval = setInterval(() => {
+          console.log("interval")
+          if (this.cropped !== null) {
+            this.isLoading.set(false)
+            clearInterval(interval);
+          }
+        }, 100);
       }
     });
 
@@ -226,25 +239,35 @@ export class ProfileComponent implements OnInit, OnDestroy {
         } else {
           this.editError.set([res.data.message]);
         }
-      });
+        this.isLoading.set(false);
+      }).catch(err => {
+        console.log(err.status)
+        if (err.status === 413) {
+          this.editError.set(["Image too large, please upload a smaller image."]);
+        }
+        this.isLoading.set(false);
+      })
     } else {
       this.editForm.markAllAsTouched();
     }
-    this.isLoading.set(false);
   }
 
   imageChangedEvent: Event | null = null;
   croppedImage: SafeUrl = '';
   cropped: Blob | null = null;
+  cropping = signal(false);
 
   @ViewChild("cropperDialog") cropperDialog!: DialogComponent;
   @ViewChild(ImageCropperComponent) imageCropper!: ImageCropperComponent;
 
+
   fileChangeEvent(event: Event): void {
+    console.log("change")
     this.imageChangedEvent = event;
   }
 
   imageCropped(event: ImageCroppedEvent) {
+    this.cropping.set(true)
     if (event.objectUrl != null) {
       this.croppedImage = this.sanitizer.bypassSecurityTrustUrl(event.objectUrl);
     }
@@ -255,6 +278,11 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   cropperReady() {
+    console.log("cropper ready");
+  }
+
+  cropperChange(event: CropperPosition) {
+    console.log("change")
   }
 
   loadImageFailed() {
@@ -266,6 +294,10 @@ export class ProfileComponent implements OnInit, OnDestroy {
       this.cropped = res.blob ?? null
     });
     this.cropperDialog.close();
+  }
+
+  fileUploadWaiting() {
+    console.log("waiting for file upload");
   }
 
   protected readonly Math = Math;

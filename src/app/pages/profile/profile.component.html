@@ -82,10 +82,11 @@
         (imageCropped)="imageCropped($event)"
         (imageLoaded)="imageLoaded($event)"
         (cropperReady)="cropperReady()"
+        (cropperChange)="cropperChange($event)"
         (loadImageFailed)="loadImageFailed()"
-      ></image-cropper>
+      />
 
-      <div style="margin: 1rem auto;">
+      <div style="margin: 1rem auto; width: fit-content" class="profile-avatar">
         <img [ngSrc]="croppedImage" width="100" height="100" alt="photo"/>
       </div>
 
