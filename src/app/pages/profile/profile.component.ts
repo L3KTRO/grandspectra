@@ -85,8 +85,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
     });
 
     this.editForm = this.fb.group({
-      email: ["", [Validators.required, Validators.email]],
-      username: ["", [Validators.required, Validators.minLength(5), Validators.pattern('^[a-z0-9]+$'), Validators.maxLength(20)]],
+      email: ["", [Validators.email]],
+      username: ["", [Validators.minLength(5), Validators.pattern('^[a-z0-9]+$'), Validators.maxLength(20)]],
       password: ["", [Validators.minLength(8)]],
       password_confirmation: ["", [(control: {
         parent: { get: (arg0: string) => { (): any; new(): any; value: any; }; };
@@ -223,8 +223,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    this.isLoading.set(true)
     if (this.editForm.valid) {
+      this.isLoading.set(true)
       this.backend.editProfile({
         ...this.editForm.value,
         avatar: this.cropped ?? null
