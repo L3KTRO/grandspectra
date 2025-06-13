@@ -31,6 +31,7 @@ import {Result} from '../../models/Result';
   styleUrl: './header.component.scss'
 })
 export class HeaderComponent implements OnInit, OnDestroy, AfterViewChecked {
+  @ViewChild("overlay") overlay: ElementRef<HTMLDivElement> | undefined;
   @ViewChild('searchInput', {static: false}) searchInput: ElementRef<HTMLInputElement> | undefined;
 
 
@@ -71,6 +72,15 @@ export class HeaderComponent implements OnInit, OnDestroy, AfterViewChecked {
   ngAfterViewChecked() {
     if (this.searchInput) {
       this.searchInput.nativeElement.focus();
+    }
+
+    const root = document.querySelector('html') as HTMLElement;
+    // Controlar el scroll del body
+    if (this.isMenuOpen() || this.isSearchOpen()) {
+      console.log("Disabling body scroll");
+      if (root) root.style.overflow = 'hidden';
+    } else {
+      if (root) root.style.overflow = '';
     }
   }
 
